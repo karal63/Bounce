@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { computed, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-const route = useRoute();
+import { computed, ref } from "vue";
+import { useAuthStore } from "../../stores/authStore";
+
+type User = {
+    email: string;
+    password: string;
+    passwordRepeat?: string;
+    name?: string;
+};
+
+const authStore = useAuthStore();
 
 const props = defineProps<{
     mode: string;
@@ -11,6 +19,21 @@ const props = defineProps<{
 const isLoginAuthMode = computed(() => {
     return props.mode === "login";
 });
+
+const user = ref<User>({
+    email: "",
+    password: "",
+    passwordRepeat: "",
+    name: "",
+});
+
+const handleSubmit = () => {
+    if (isLoginAuthMode) {
+        authStore.login(user.value.email, user.value.password);
+    } else {
+        authStore.register(user);
+    }
+};
 </script>
 
 <template>
@@ -23,6 +46,7 @@ const isLoginAuthMode = computed(() => {
 
         <div class="h-[calc(100%-70px)] flex-center">
             <form
+                @submit.prevent="handleSubmit"
                 class="text-white flex-col items-center py-10 w-[400px] bg-gray-900 border border-purple-950 px-10 rounded-2xl"
             >
                 <h1 class="text-3xl font-bold mb-5">
@@ -62,11 +86,13 @@ const isLoginAuthMode = computed(() => {
                 <div class="flex-col gap-2 w-full">
                     <input
                         type="text"
+                        v-model="user.email"
                         placeholder="Email"
                         class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
                     />
                     <input
                         type="password"
+                        v-model="user.password"
                         placeholder="Password"
                         class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
                     />
@@ -74,11 +100,13 @@ const isLoginAuthMode = computed(() => {
                     <div v-if="!isLoginAuthMode" class="flex-col gap-2">
                         <input
                             type="password"
+                            v-model="user.passwordRepeat"
                             placeholder="Password (repeat)"
                             class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
                         />
                         <input
                             type="text"
+                            v-model="user.name"
                             placeholder="Name"
                             class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
                         />
@@ -86,6 +114,7 @@ const isLoginAuthMode = computed(() => {
                 </div>
 
                 <button
+                    @click.prevent
                     v-if="isLoginAuthMode"
                     class="mt-3 text-purple-400 cursor-pointer"
                 >
@@ -93,6 +122,7 @@ const isLoginAuthMode = computed(() => {
                 </button>
 
                 <button
+                    type="submit"
                     class="mt-4 bg-purple-600 px-10 py-2 rounded-md cursor-pointer"
                 >
                     {{ isLoginAuthMode ? "Log in" : "Sign up" }}
