@@ -20,10 +20,12 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/login",
         component: AuthFormPage,
+        props: { mode: "login" },
     },
     {
         path: "/sign-up",
         component: AuthFormPage,
+        props: { mode: "signup" },
     },
 ];
 
