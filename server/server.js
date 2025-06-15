@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const router = require("./router/index");
 const redisClient = require("./redisClient");
+const cookieParser = require("cookie-parser");
 
 app.use(express.json());
 app.use(
@@ -11,6 +12,7 @@ app.use(
         credentials: true,
     })
 );
+app.use(cookieParser());
 app.use("/api", router);
 
 app.listen(process.env.PORT, async () => {

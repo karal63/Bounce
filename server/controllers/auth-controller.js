@@ -11,7 +11,6 @@ class AuthController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
             });
-
             return res.status(200).json(userData.accessToken);
         } catch (error) {
             console.log(error);
@@ -19,8 +18,18 @@ class AuthController {
         }
     }
 
-    async login(req, res, next) {}
-    async logout(req, res, next) {}
+    async login(req, res, next) {
+        try {
+            const { email, password } = req.body;
+        } catch (error) {
+            console.log(error);
+        }
+        res.status(200).send("login");
+    }
+    async logout(req, res, next) {
+        res.clearCookie("refreshToken");
+        res.status(200).send("logout");
+    }
     async refresh(req, res, next) {}
     async activate(req, res, next) {}
 }
