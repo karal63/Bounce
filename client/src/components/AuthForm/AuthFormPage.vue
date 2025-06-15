@@ -28,10 +28,10 @@ const user = ref<User>({
 });
 
 const handleSubmit = () => {
-    if (isLoginAuthMode) {
+    if (props.mode === "login") {
         authStore.login(user.value.email, user.value.password);
     } else {
-        authStore.register(user);
+        authStore.register(user.value);
     }
 };
 </script>
