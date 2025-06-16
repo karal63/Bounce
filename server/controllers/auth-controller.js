@@ -24,12 +24,10 @@ class AuthController {
             const { email, password } = req.body;
             const userData = await user.login(email, password);
             const { tokens, dbUser } = userData;
-            console.log(tokens.accessToken);
             res.cookie("refreshToken", tokens.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
             });
-            console.log(dbUser);
             return res.status(200).json({
                 accessToken: tokens.accessToken,
                 user: dbUser,
@@ -44,7 +42,27 @@ class AuthController {
         res.clearCookie("refreshToken");
         res.status(200).send("logout");
     }
-    async refresh(req, res, next) {}
+
+    async refresh(req, res, next) {
+        try {
+            const refreshToken = req.cookies.refreshToken;
+            const userData = await user.refresh(refreshToken, req.user);
+            const { tokens, dbUser } = userData;
+
+            res.cookie("refreshToken", tokens.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+            });
+            return res.status(200).json({
+                accessToken: tokens.accessToken,
+                dbUser,
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(401).json({ message: "Error during refreshing tokens" });
+        }
+    }
+
     async activate(req, res, next) {}
 }
 

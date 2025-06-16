@@ -51,6 +51,23 @@ class UserService {
             console.log(error);
         }
     }
+
+    async refresh(refreshToken, userDto) {
+        if (!refreshToken) return { messege: "Token is not provided" };
+        const tokens = await token.generateTokens(userDto.email, userDto.name);
+
+        try {
+            const query = "SELECT * FROM users WHERE email = ?";
+            const [rows] = await db.query(query, [userDto.email]);
+            const dbUser = rows[0];
+            return {
+                tokens,
+                dbUser,
+            };
+        } catch (error) {
+            return { message: "Database error" };
+        }
+    }
 }
 
 module.exports = UserService;
