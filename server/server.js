@@ -5,6 +5,7 @@ const app = express();
 const router = require("./router/index");
 const redisClient = require("./redisClient");
 const cookieParser = require("cookie-parser");
+const errorMiddleware = require("./middlewares/error-middleware");
 
 app.use(express.json());
 app.use(
@@ -14,6 +15,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use("/api", router);
+app.use(errorMiddleware);
 
 app.listen(process.env.PORT, async () => {
     await redisClient.connect();

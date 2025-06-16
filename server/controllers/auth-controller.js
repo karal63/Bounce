@@ -12,10 +12,7 @@ class AuthController {
             });
             return res.status(200).json(userData.accessToken);
         } catch (error) {
-            console.log(error);
-            console.log("================");
-            return res.status(400).json({ messege: "Database error" });
-            // add error handling, show where duplicate keys or whatever
+            next(error);
         }
     }
 
@@ -33,14 +30,17 @@ class AuthController {
                 user: dbUser,
             });
         } catch (error) {
-            res.sendStatus(401);
-            console.log(error);
+            next(error);
         }
     }
 
     async logout(req, res, next) {
-        res.clearCookie("refreshToken");
-        res.status(200).send("logout");
+        try {
+            res.clearCookie("refreshToken");
+            res.status(200).send("logout");
+        } catch (error) {
+            next(error);
+        }
     }
 
     async refresh(req, res, next) {
@@ -58,12 +58,17 @@ class AuthController {
                 dbUser,
             });
         } catch (error) {
-            console.log(error);
-            res.status(401).json({ message: "Error during refreshing tokens" });
+            next(error);
         }
     }
 
-    async activate(req, res, next) {}
+    async activate(req, res, next) {
+        try {
+            const userDto = req.user;
+            const userData = await user.activate(userDto);
+            res.status(200).json({ message: "accound activated" });
+        } catch (error) {}
+    }
 }
 
 module.exports = AuthController;
