@@ -30,6 +30,27 @@ class UserService {
         //     }
         // );
     }
+
+    async login(email, password) {
+        try {
+            const query = "SELECT * FROM users WHERE email = ?";
+            const [rows] = await db.query(query, [email]);
+            if (!rows[0]) return { messege: "User doesnt exist" };
+
+            const matchingPassword = await bcrypt.compare(
+                password,
+                rows[0].password
+            );
+            if (!matchingPassword) return { messege: "Wrong password" };
+
+            const tokens = await token.generateTokens(email, rows[0].name);
+            const dbUser = rows[0];
+
+            return { tokens, dbUser };
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = UserService;

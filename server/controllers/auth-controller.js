@@ -6,7 +6,6 @@ class AuthController {
         try {
             const { email, password, name } = req.body;
             const userData = await user.signup(email, password, name);
-
             res.cookie("refreshToken", userData.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
@@ -14,18 +13,33 @@ class AuthController {
             return res.status(200).json(userData.accessToken);
         } catch (error) {
             console.log(error);
-            return res.status(400);
+            console.log("================");
+            return res.status(400).json({ messege: "Database error" });
+            // add error handling, show where duplicate keys or whatever
         }
     }
 
     async login(req, res, next) {
         try {
             const { email, password } = req.body;
+            const userData = await user.login(email, password);
+            const { tokens, dbUser } = userData;
+            console.log(tokens.accessToken);
+            res.cookie("refreshToken", tokens.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+            });
+            console.log(dbUser);
+            return res.status(200).json({
+                accessToken: tokens.accessToken,
+                user: dbUser,
+            });
         } catch (error) {
+            res.sendStatus(401);
             console.log(error);
         }
-        res.status(200).send("login");
     }
+
     async logout(req, res, next) {
         res.clearCookie("refreshToken");
         res.status(200).send("logout");
