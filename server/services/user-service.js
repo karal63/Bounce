@@ -24,11 +24,14 @@ class UserService {
         const hashPassword = await bcrypt.hash(password, 10);
         const activationLink = uuid.v4();
 
-        // await db.query(
-        //     "INSERT INTO users (email, password, name, activationLink) VALUES (?, ?, ?, ?)",
-        //     [email, hashPassword, name, activationLink]
-        // );
-        await mail.sendActivationMail(email, activationLink);
+        await db.query(
+            "INSERT INTO users (email, password, name, activationLink) VALUES (?, ?, ?, ?)",
+            [email, hashPassword, name, activationLink]
+        );
+        await mail.sendActivationMail(
+            email,
+            `${process.env.SERVER_HOST}/api/activate/${activationLink}`
+        );
 
         const tokens = await token.generateTokens(email, name);
         return { ...tokens };
@@ -78,8 +81,16 @@ class UserService {
         };
     }
 
-    async activate(userDto) {
-        console.log(userDto);
+    async activate(activationLink) {
+        const [rows] = await db.query(
+            "SELECT * FROM users WHERE activationLink = ?",
+            [activationLink]
+        );
+        if (!rows[0]) throw ApiError.BadRequest("Invalid activation link.");
+        await db.query(
+            "UPDATE users SET isActivated = TRUE WHERE activationLink = ?",
+            [activationLink]
+        );
     }
 }
 

@@ -64,10 +64,9 @@ class AuthController {
 
     async activate(req, res, next) {
         try {
-            const userDto = req.user;
-            console.log(req.params.id);
-            const userData = await user.activate(userDto);
-            res.status(200).json({ message: "accound activated" });
+            const activationLink = req.params.link;
+            await user.activate(activationLink);
+            res.status(200).redirect(process.env.CLIENT_HOST);
         } catch (error) {
             next(error);
         }

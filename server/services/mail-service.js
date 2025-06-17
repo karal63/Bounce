@@ -14,21 +14,18 @@ class MailService {
     }
 
     async sendActivationMail(to, link) {
-        try {
-            await this.transporter.sendMail({
-                from: process.env.SMTP_USER,
-                to,
-                subject: "Account activation.",
-                text: "",
-                html: `
+        console.log(link);
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to,
+            subject: "Account activation.",
+            text: "",
+            html: `
                 <div>
                     <h1>Activate your account</h1>
                     <a href='${link}'>${link}</a>
                 </div>`,
-            });
-        } catch (error) {
-            console.log(error);
-        }
+        });
     }
 }
 
