@@ -5,6 +5,9 @@ const token = new TokenService();
 const uuid = require("uuid");
 const db = require("../db");
 const ApiError = require("../exceptions/api-error");
+const MailService = require("./mail-service");
+
+const mail = new MailService();
 
 class UserService {
     async signup(email, password, name) {
@@ -19,10 +22,14 @@ class UserService {
             );
         }
         const hashPassword = await bcrypt.hash(password, 10);
-        await db.query(
-            "INSERT INTO users (email, password, name) VALUES (?, ?, ?)",
-            [email, hashPassword, name]
-        );
+        const activationLink = uuid.v4();
+
+        // await db.query(
+        //     "INSERT INTO users (email, password, name, activationLink) VALUES (?, ?, ?, ?)",
+        //     [email, hashPassword, name, activationLink]
+        // );
+        await mail.sendActivationMail(email, activationLink);
+
         const tokens = await token.generateTokens(email, name);
         return { ...tokens };
 

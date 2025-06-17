@@ -13,7 +13,7 @@ router.get("/logout", verifyToken, (req, res, next) =>
 router.get("/refresh", verifyToken, (req, res, next) =>
     auth.refresh(req, res, next)
 );
-router.get("/activate", verifyToken, (req, res, next) =>
+router.get("/activate/:link", verifyToken, (req, res, next) =>
     auth.activate(req, res, next)
 );
 
