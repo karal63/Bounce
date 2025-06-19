@@ -31,4 +31,11 @@ router.get("/activate/:link", (req, res, next) =>
     auth.activate(req, res, next)
 );
 
+router.get("/users", verifyToken, (req, res) => {
+    res.status(200).json([
+        { id: 1, name: "Leo" },
+        { id: 2, name: "Steve" },
+    ]);
+});
+
 module.exports = router;

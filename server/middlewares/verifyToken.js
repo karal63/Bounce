@@ -1,9 +1,10 @@
 const db = require("../db");
 const jwt = require("jsonwebtoken");
+const ApiError = require("../exceptions/api-error");
 
 const verifyToken = async (req, res, next) => {
     const token = req.cookies.refreshToken;
-    if (!token) return res.status(401).json({ messege: "No token provided" });
+    if (!token) throw ApiError.UnauthorizedError();
 
     try {
         const user = jwt.verify(
