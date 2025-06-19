@@ -1,9 +1,16 @@
+const { validationResult } = require("express-validator");
 const UserService = require("../services/user-service");
 const user = new UserService();
+const ApiError = require("../exceptions/api-error");
 
 class AuthController {
     async signup(req, res, next) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return next(ApiError.BadRequest("Validation error."));
+            }
+
             const { email, password, name } = req.body;
             const userData = await user.signup(email, password, name);
             res.cookie("refreshToken", userData.refreshToken, {
@@ -18,6 +25,10 @@ class AuthController {
 
     async login(req, res, next) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return next(ApiError.BadRequest("Validation error."));
+            }
             const { email, password } = req.body;
             const userData = await user.login(email, password);
             const { tokens, dbUser } = userData;

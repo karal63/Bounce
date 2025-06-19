@@ -2,11 +2,25 @@ const express = require("express");
 const router = express.Router();
 const AuthController = require("../controllers/auth-controller");
 const verifyToken = require("../middlewares/verifyToken");
+const { body } = require("express-validator");
 
 const auth = new AuthController();
 
-router.post("/signup", (req, res, next) => auth.signup(req, res, next));
-router.post("/login", (req, res, next) => auth.login(req, res, next));
+router.post(
+    "/signup",
+    body("email").isEmail(),
+    body("password").isLength({ min: 4, max: 32 }),
+    body("name").isLength({ min: 3, max: 25 }),
+    (req, res, next) => auth.signup(req, res, next)
+);
+
+router.post(
+    "/login",
+    body("email").isEmail(),
+    body("password").isLength({ min: 4, max: 32 }),
+    (req, res, next) => auth.login(req, res, next)
+);
+
 router.get("/logout", verifyToken, (req, res, next) =>
     auth.logout(req, res, next)
 );
