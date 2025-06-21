@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
-
-type User = {
-    email: string;
-    password: string;
-    passwordRepeat?: string;
-    name?: string;
-};
+import type { User } from "./types/user";
+import { Icon } from "@iconify/vue";
 
 const props = defineProps<{
     mode: string;
 }>();
-
-const isLoginAuthMode = computed(() => {
-    return props.mode === "login";
-});
 
 const user = ref<User>({
     email: "",
@@ -24,12 +14,12 @@ const user = ref<User>({
     name: "",
 });
 
+const isLoginAuthMode = computed(() => {
+    return props.mode === "login";
+});
+
 const handleSubmit = () => {
-    if (props.mode === "login") {
-        console.log("login");
-    } else {
-        console.log("sign-up");
-    }
+    // call function from hook and pass mode to it
 };
 </script>
 

@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
-import Landing from "../../pages/landing/index.vue";
-import Auth from "../../pages/auth/index.vue";
+import Landing from "../../pages/landingPage/index.vue";
+import Login from "../../pages/loginPage/index.vue";
+import Signup from "../../pages/signupPage/index.vue";
 
 export const routes: RouteRecordRaw[] = [
     {
@@ -9,12 +10,10 @@ export const routes: RouteRecordRaw[] = [
     },
     {
         path: "/login",
-        component: Auth,
-        props: { mode: "login" },
+        component: Login,
     },
     {
         path: "/sign-up",
-        component: Auth,
-        props: { mode: "signup" },
+        component: Signup,
     },
 ];
