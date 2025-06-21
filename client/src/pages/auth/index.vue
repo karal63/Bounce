@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
-import { useAuthStore } from "../../stores/authStore";
 
 type User = {
     email: string;
@@ -9,8 +8,6 @@ type User = {
     passwordRepeat?: string;
     name?: string;
 };
-
-const authStore = useAuthStore();
 
 const props = defineProps<{
     mode: string;
@@ -29,9 +26,9 @@ const user = ref<User>({
 
 const handleSubmit = () => {
     if (props.mode === "login") {
-        authStore.login(user.value.email, user.value.password);
+        console.log("login");
     } else {
-        authStore.register(user.value);
+        console.log("sign-up");
     }
 };
 </script>
