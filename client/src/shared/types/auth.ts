@@ -6,5 +6,6 @@ export type LoginProps = {
 export type SignupProps = {
     email: string;
     password: string;
+    passwordRepeat: string;
     name: string;
 };

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import AuthForm from "../../shared/UI/AuthForm.vue";
-import { login } from "../../features/auth/login";
 import type { User } from "../../shared/types/user";
+import { signup } from "../../features/auth/signup";
 
-const handleSubmit = (user: User) => {
-    const res = login(user);
-    // console.log(user);
+const handleSubmit = async (user: User) => {
+    await signup(user);
 };
 </script>
 
