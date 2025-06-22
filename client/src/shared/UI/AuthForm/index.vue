@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import type { User } from "./types/user";
-import { Icon } from "@iconify/vue";
+import LoginLinks from "./LoginLinks.vue";
+import LoginFields from "./LoginFields.vue";
+import SignupFields from "./SignupFields.vue";
 
 const props = defineProps<{
     mode: string;
@@ -21,6 +23,7 @@ const isLoginAuthMode = computed(() => {
     return props.mode === "login";
 });
 
+// try to move emit to sub-component, separate auth form from main index.vue
 const handleSubmit = () => {
     emits("submit", user.value);
 };
@@ -42,65 +45,17 @@ const handleSubmit = () => {
                 <h1 class="text-3xl font-bold mb-5">
                     {{ isLoginAuthMode ? "Log in" : "Sign up" }}
                 </h1>
-                <div class="flex gap-2">
-                    <a
-                        href="#"
-                        class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"
-                    >
-                        <Icon icon="mdi:google"
-                    /></a>
-                    <a
-                        href="#"
-                        class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"
-                    >
-                        <Icon icon="ic:baseline-apple"
-                    /></a>
-                    <a
-                        href="#"
-                        class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"
-                    >
-                        <Icon icon="ic:baseline-facebook"
-                    /></a>
-                    <a
-                        href="#"
-                        class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"
-                    >
-                        <Icon icon="mdi:github" />
-                    </a>
-                </div>
+
+                <LoginLinks />
+
                 <span class="mt-5 text-sm mb-2 text-gray-400"
                     >or use your email for
                     {{ isLoginAuthMode ? "logging in" : "regestration" }}</span
                 >
 
                 <div class="flex-col gap-2 w-full">
-                    <input
-                        type="text"
-                        v-model="user.email"
-                        placeholder="Email"
-                        class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
-                    />
-                    <input
-                        type="password"
-                        v-model="user.password"
-                        placeholder="Password"
-                        class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
-                    />
-
-                    <div v-if="!isLoginAuthMode" class="flex-col gap-2">
-                        <input
-                            type="password"
-                            v-model="user.passwordRepeat"
-                            placeholder="Password (repeat)"
-                            class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
-                        />
-                        <input
-                            type="text"
-                            v-model="user.name"
-                            placeholder="Name"
-                            class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
-                        />
-                    </div>
+                    <LoginFields v-model="user" />
+                    <SignupFields v-if="!isLoginAuthMode" v-model="user" />
                 </div>
 
                 <button
