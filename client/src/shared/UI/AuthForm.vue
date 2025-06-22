@@ -6,6 +6,9 @@ import { Icon } from "@iconify/vue";
 const props = defineProps<{
     mode: string;
 }>();
+const emits = defineEmits<{
+    (event: "submit", payload: User): void;
+}>();
 
 const user = ref<User>({
     email: "",
@@ -19,7 +22,7 @@ const isLoginAuthMode = computed(() => {
 });
 
 const handleSubmit = () => {
-    // call function from hook and pass mode to it
+    emits("submit", user.value);
 };
 </script>
 

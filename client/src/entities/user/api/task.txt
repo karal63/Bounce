@@ -1,0 +1,3 @@
+// only requests and what is related to them
+// ex. createNewUser.ts
+// CRUD operations

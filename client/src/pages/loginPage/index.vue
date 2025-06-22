@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import LoginAuthForm from "../../widgets/LoginAuthForm/index.vue";
+import AuthWidgetLogin from "../../widgets/auth/AuthWidgetLogin.vue";
 </script>
 
 <template>
-    <LoginAuthForm />
+    <AuthWidgetLogin />
 </template>
