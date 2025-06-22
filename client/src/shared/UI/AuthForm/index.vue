@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { User } from "./types/user";
-import LoginLinks from "./LoginLinks.vue";
-import LoginFields from "./LoginFields.vue";
-import SignupFields from "./SignupFields.vue";
+import type { User } from "@/shared/types/user";
+import SocialLinks from "@/shared/UI/AuthForm/SocialLinks.vue";
+import LoginFields from "@/shared/UI/AuthForm/LoginFields.vue";
+import SignupFields from "@/shared/UI/AuthForm/SignupFields.vue";
 
 const props = defineProps<{
     mode: string;
@@ -46,7 +46,7 @@ const handleSubmit = () => {
                     {{ isLoginAuthMode ? "Log in" : "Sign up" }}
                 </h1>
 
-                <LoginLinks />
+                <SocialLinks />
 
                 <span class="mt-5 text-sm mb-2 text-gray-400"
                     >or use your email for

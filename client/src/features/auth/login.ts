@@ -1,5 +1,5 @@
-import { apiLogin } from "../../entities/User/api/login";
-import type { User } from "../../shared/types/user";
+import { apiLogin } from "@/entities/User/api/login";
+import type { User } from "@/shared/types/user";
 
 export const login = async (user: User) => {
     const res = await apiLogin({

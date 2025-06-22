@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
-import Landing from "../../pages/landingPage/index.vue";
-import Login from "../../pages/loginPage/index.vue";
-import Signup from "../../pages/signupPage/index.vue";
+import Landing from "@/pages/landingPage/index.vue";
+import Login from "@/pages/loginPage/index.vue";
+import Signup from "@/pages/signupPage/index.vue";
 
 export const routes: RouteRecordRaw[] = [
     {
