@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import type { User } from "@/shared/types/user";
-import SocialLinks from "@/shared/UI/AuthForm/SocialLinks.vue";
-import LoginFields from "@/shared/UI/AuthForm/LoginFields.vue";
-import SignupFields from "@/shared/UI/AuthForm/SignupFields.vue";
+import SocialLinks from "@/features/auth/AuthForm/ui/SocialLinks.vue";
+import LoginFields from "@/features/auth/AuthForm/ui/LoginFields.vue";
+import SignupFields from "@/features/auth/AuthForm/ui/SignupFields.vue";
 
 const props = defineProps<{
     mode: string;
