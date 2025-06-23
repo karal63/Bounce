@@ -4,6 +4,10 @@ import type { User } from "@/shared/types/user";
 import SocialLinks from "@/features/auth/AuthForm/ui/SocialLinks.vue";
 import LoginFields from "@/features/auth/AuthForm/ui/LoginFields.vue";
 import SignupFields from "@/features/auth/AuthForm/ui/SignupFields.vue";
+import { useAuthStore } from "@/features/auth/model/authStore";
+import { Icon } from "@iconify/vue";
+
+const authStore = useAuthStore();
 
 const props = defineProps<{
     mode: string;
@@ -25,6 +29,7 @@ const isLoginAuthMode = computed(() => {
 
 // try to move emit to sub-component, separate auth form from main index.vue
 const handleSubmit = () => {
+    authStore.isLoading = true;
     emits("submit", user.value);
 };
 </script>
@@ -66,7 +71,15 @@ const handleSubmit = () => {
                     Forgot password?
                 </button>
 
+                <div
+                    v-if="authStore.isLoading"
+                    class="mt-4 bg-purple-600 px-10 py-2 rounded-md cursor-pointer"
+                >
+                    <Icon icon="line-md:loading-loop" class="text-xl" />
+                </div>
+
                 <button
+                    v-else
                     type="submit"
                     class="mt-4 bg-purple-600 px-10 py-2 rounded-md cursor-pointer"
                 >

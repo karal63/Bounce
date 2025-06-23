@@ -1,4 +1,4 @@
-import { apiSignup } from "@/features/auth/signup/signupAPI";
+import { apiSignup } from "@/features/auth/signup/apiSignup";
 import type { User } from "@/shared/types/user";
 
 export const signup = async ({
