@@ -1,0 +1,14 @@
+features/
+├── auth/
+│   ├── login/
+│   └── signup/
+│
+├── post/
+│   ├── create-post/
+│   ├── like-post/
+│   └── delete-post/
+│
+├── user/
+│   ├── follow-user/
+│   ├── block-user/
+│   └── edit-profile/

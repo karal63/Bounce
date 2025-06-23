@@ -1,4 +1,4 @@
-import { apiLogin } from "@/entities/User/api/login";
+import { apiLogin } from "@/features/auth/login/loginAPI";
 import type { User } from "@/shared/types/user";
 
 export const login = async (user: User) => {
