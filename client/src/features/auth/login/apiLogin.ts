@@ -1,5 +1,5 @@
 import type { LoginProps } from "@/shared/types/auth";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useAuthStore } from "@/features/auth/model/authStore";
 
 export const apiLogin = async ({ email, password }: LoginProps) => {
@@ -10,9 +10,15 @@ export const apiLogin = async ({ email, password }: LoginProps) => {
             password,
         });
         authStore.isLoading = false;
+        authStore.error = "";
         return res;
-    } catch (error) {
+    } catch (e) {
         authStore.isLoading = false;
-        return error;
+        if (e instanceof AxiosError && e.response && e.message) {
+            authStore.error = e.response.data.message;
+        } else {
+            authStore.error = "An unexpected error occurred.";
+        }
+        return e;
     }
 };

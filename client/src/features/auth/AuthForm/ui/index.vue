@@ -86,6 +86,8 @@ const handleSubmit = () => {
                     {{ isLoginAuthMode ? "Log in" : "Sign up" }}
                 </button>
 
+                <p class="text-red-400 text-sm mt-1">{{ authStore.error }}</p>
+
                 <p class="mt-5 text-gray-400">
                     {{
                         isLoginAuthMode
