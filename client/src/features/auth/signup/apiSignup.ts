@@ -1,5 +1,19 @@
-import type { User } from "@/shared/types/user";
+import type { SignupProps } from "@/shared/types/auth";
+import axios, { type AxiosResponse } from "axios";
 
-export const apiSignup = ({ email, password, name }: User): string => {
-    return `Signing up ${email} with password ${password} & ${name}`;
+// move this to axios config and dont write it all the time
+axios.defaults.withCredentials;
+
+export const apiSignup = async ({
+    email,
+    password,
+    name,
+}: SignupProps): Promise<AxiosResponse> => {
+    const res = await axios.post("http://localhost:5000/api/signup", {
+        email,
+        password,
+        name,
+    });
+
+    return res;
 };

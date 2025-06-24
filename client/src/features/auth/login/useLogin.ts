@@ -6,6 +6,5 @@ export const login = async (user: User) => {
         email: user.email,
         password: user.password,
     });
-    console.log(res);
     // next step: store fetched user in store and access token in localstorage
 };
