@@ -18,6 +18,7 @@ export const useLogin = () => {
 
             authStore.isLoading = false;
             authStore.error = "";
+            authStore.isLoggedUser = true;
         } catch (e) {
             authStore.isLoading = false;
             if (e instanceof AxiosError && e.response && e.message) {

@@ -85,7 +85,12 @@ class UserService {
         const dbUser = rows[0];
         return {
             tokens,
-            dbUser,
+            dbUser: {
+                id: dbUser.id,
+                email: dbUser.email,
+                name: dbUser.name,
+                accountActivated: dbUser.isActivated,
+            },
         };
     }
 
