@@ -57,7 +57,7 @@ class AuthController {
     async refresh(req, res, next) {
         try {
             const refreshToken = req.cookies.refreshToken;
-            const userData = await user.refresh(refreshToken, req.user);
+            const userData = await user.refresh(refreshToken);
             const { tokens, dbUser } = userData;
 
             res.cookie("refreshToken", tokens.refreshToken, {
@@ -66,7 +66,7 @@ class AuthController {
             });
             return res.status(200).json({
                 accessToken: tokens.accessToken,
-                dbUser,
+                user: dbUser,
             });
         } catch (error) {
             next(error);

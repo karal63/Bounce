@@ -24,9 +24,7 @@ router.post(
 router.get("/logout", verifyToken, (req, res, next) =>
     auth.logout(req, res, next)
 );
-router.get("/refresh", verifyToken, (req, res, next) =>
-    auth.refresh(req, res, next)
-);
+router.get("/refresh", (req, res, next) => auth.refresh(req, res, next));
 router.get("/activate/:link", (req, res, next) =>
     auth.activate(req, res, next)
 );

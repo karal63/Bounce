@@ -74,8 +74,10 @@ class UserService {
         };
     }
 
-    async refresh(refreshToken, userDto) {
+    async refresh(refreshToken) {
         if (!refreshToken) throw ApiError.BadRequest("Token is not provided.");
+        const userDto = await token.validateRefreshToken(refreshToken);
+        if (!userDto) throw ApiError.UnauthorizedError();
         const tokens = await token.generateTokens(userDto.email, userDto.name);
 
         const query = "SELECT * FROM users WHERE email = ?";

@@ -3,18 +3,18 @@ const jwt = require("jsonwebtoken");
 const ApiError = require("../exceptions/api-error");
 
 const verifyToken = async (req, res, next) => {
-    const token = req.cookies.refreshToken;
-    if (!token) throw ApiError.UnauthorizedError();
+    const authHeader = req.headers.authorization;
+    if (!authHeader) next(ApiError.UnauthorizedError());
+
+    const accessToken = authHeader.split(" ")[1];
+    if (!accessToken) next(ApiError.UnauthorizedError());
 
     try {
-        const user = jwt.verify(
-            req.cookies.refreshToken,
-            process.env.REFRESH_TOKEN
-        );
+        const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN);
         req.user = user;
         next();
     } catch (error) {
-        return res.status(401).json({ messege: "Invalid token." });
+        next(ApiError.UnauthorizedError());
     }
 };
 
