@@ -2,6 +2,8 @@ import type { LoginProps } from "@/shared/types/auth";
 import axios, { AxiosError } from "axios";
 import { useAuthStore } from "@/features/auth/model/authStore";
 
+axios.defaults.withCredentials = true;
+
 export const apiLogin = async ({ email, password }: LoginProps) => {
     const authStore = useAuthStore();
     try {
