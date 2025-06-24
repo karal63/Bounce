@@ -1,13 +1,12 @@
+import { axiosInstance } from "@/shared/config/axiosInstance";
 import type { LoginProps } from "@/shared/types/auth";
-import axios, { AxiosError } from "axios";
-
-axios.defaults.withCredentials = true;
 
 export const apiLogin = async ({ email, password }: LoginProps) => {
-    const res = await axios.post("http://localhost:5000/api/login", {
+    const res = await axiosInstance.post("http://localhost:5000/api/login", {
         email,
         password,
     });
+    console.log(res);
 
     return res;
 };
