@@ -6,7 +6,6 @@ export const apiLogin = async ({ email, password }: LoginProps) => {
         email,
         password,
     });
-    console.log(res);
 
     return res;
 };

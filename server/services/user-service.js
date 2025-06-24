@@ -53,19 +53,25 @@ class UserService {
         const [rows] = await db.query("SELECT * FROM users WHERE email = ?", [
             email,
         ]);
+        const user = rows[0];
 
-        const matchingPassword = await bcrypt.compare(
-            password,
-            rows[0].password
-        );
+        const matchingPassword = await bcrypt.compare(password, user.password);
 
-        if (!matchingPassword || !rows[0])
+        if (!matchingPassword || !user)
             throw ApiError.BadRequest("Email or password are not correct.");
 
-        const tokens = await token.generateTokens(email, rows[0].name);
-        const dbUser = rows[0];
+        const tokens = await token.generateTokens(email, user.name);
 
-        return { tokens, dbUser };
+        // Add what you want to return (what properties will user have)
+        return {
+            tokens,
+            dbUser: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                accountActivated: user.isActivated,
+            },
+        };
     }
 
     async refresh(refreshToken, userDto) {

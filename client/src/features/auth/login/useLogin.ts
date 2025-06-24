@@ -12,6 +12,10 @@ export const useLogin = () => {
                 email: user.email,
                 password: user.password,
             });
+
+            localStorage.setItem("accessToken", res.data.accessToken);
+            authStore.user = res.data.user;
+
             authStore.isLoading = false;
             authStore.error = "";
         } catch (e) {
