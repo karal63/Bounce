@@ -23,8 +23,9 @@
     --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
 
     --color-mainDarkBg: #0e0e11;
+    --color-mainHoverDarkBg: #17171c;
 
-    --color-mainBorder: #d1d5dc;
+    --color-mainBorder: #242324;
     --color-grayDull: #4a5565;
     --color-secondary: #666666;
     --shadow-mainShadow: 0 0 20px rgba(0, 0, 0, 0.3);

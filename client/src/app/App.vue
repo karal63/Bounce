@@ -16,7 +16,7 @@ watchEffect(() => {
 <template>
     <DefaultLayout>
         <router-view />
-        <div>
+        <!-- <div>
             <p
                 v-if="authStore.isLoggedUser"
                 class="text-purple-500 font-bold text-4xl"
@@ -24,6 +24,6 @@ watchEffect(() => {
                 User authorizated, hello {{ authStore.user?.name }}
             </p>
             <p v-else>User unauthorizated</p>
-        </div>
+        </div> -->
     </DefaultLayout>
 </template>
