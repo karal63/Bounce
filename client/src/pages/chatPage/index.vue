@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ChatPageWidget from "@/widgets/ChatLayout/ChatPagePayout.vue";
+import ChatPageWidget from "@/widgets/ChatLayout/ChatPageLayout.vue";
 </script>
 
 <template>
