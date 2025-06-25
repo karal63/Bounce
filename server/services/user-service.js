@@ -54,11 +54,12 @@ class UserService {
             email,
         ]);
         const user = rows[0];
+        if (!user)
+            throw ApiError.BadRequest("Email or password are incorrect.");
 
-        const matchingPassword = await bcrypt.compare(password, user.password);
-
-        if (!matchingPassword || !user)
-            throw ApiError.BadRequest("Email or password are not correct.");
+        const matchingPassword = await bcrypt.compare(password, user?.password);
+        if (!matchingPassword)
+            throw ApiError.BadRequest("Email or password are incorrect.");
 
         const tokens = await token.generateTokens(email, user.name);
 
