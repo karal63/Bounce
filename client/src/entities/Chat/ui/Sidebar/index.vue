@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
+import { Icon } from "@iconify/vue";
 </script>
 
 <template>
@@ -14,7 +15,34 @@ import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
 
             <!-- chats -->
             <h1 class="text-3xl font-light mt-6">Chats</h1>
-            <div class="mt-5 h-[500px] bg-mainHoverDarkBg rounded-xl"></div>
+            <ul
+                class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
+            >
+                <li
+                    class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
+                >
+                    <Icon
+                        icon="lets-icons:chat-light"
+                        class="text-3xl text-grayDull"
+                    />Group_2ap
+                </li>
+                <li
+                    class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
+                >
+                    <Icon
+                        icon="lets-icons:chat-light"
+                        class="text-3xl text-grayDull"
+                    />My group
+                </li>
+                <li
+                    class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
+                >
+                    <Icon
+                        icon="lets-icons:chat-light"
+                        class="text-3xl text-grayDull"
+                    />Official Karal63's group
+                </li>
+            </ul>
         </div>
 
         <!-- menu context -->

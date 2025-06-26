@@ -8,14 +8,14 @@ export const useAuthStore = defineStore("authStore", () => {
 
     const isLoading = ref(false);
     const error = ref("");
-    const isLoggedUser = ref(false);
+    const isAuthenticated = ref(false);
 
     const checkAuth = async () => {
         const response = await axiosInstance.get(`${API_URL}/refresh`);
         localStorage.setItem("accessToken", response.data.accessToken);
         user.value = response.data.user;
-        isLoggedUser.value = true;
+        isAuthenticated.value = true;
     };
 
-    return { isLoading, error, user, checkAuth, isLoggedUser };
+    return { isLoading, error, user, checkAuth, isAuthenticated };
 });
