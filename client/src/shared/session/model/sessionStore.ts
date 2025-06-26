@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useSessionStore = defineStore("sessionStore", () => {
-    const user = ref<User>();
+    const user = ref<User | null>();
     const isAuthenticated = ref(false);
 
     const checkAuth = async () => {

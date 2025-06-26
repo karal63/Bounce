@@ -7,6 +7,10 @@ import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const chatStore = useChatStore();
 const sessionStore = useSessionStore();
+
+const emit = defineEmits<{
+    (event: "logout"): void;
+}>();
 </script>
 
 <template>
@@ -34,6 +38,6 @@ const sessionStore = useSessionStore();
             <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
         </div>
 
-        <ProfileContext />
+        <ProfileContext @logout="emit('logout')" />
     </div>
 </template>

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
 import { Icon } from "@iconify/vue";
+
+const emit = defineEmits<{
+    (event: "logout"): void;
+}>();
 </script>
 
 <template>
@@ -46,6 +50,6 @@ import { Icon } from "@iconify/vue";
         </div>
 
         <!-- menu context -->
-        <ProfileBar />
+        <ProfileBar @logout="emit('logout')" />
     </div>
 </template>
