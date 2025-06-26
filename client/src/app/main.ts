@@ -12,6 +12,7 @@ app.use(pinia);
 const sessionStore = useSessionStore();
 
 if (localStorage.getItem("accessToken")) {
+    console.log(localStorage.getItem("accessToken"));
     await sessionStore.checkAuth();
 }
 
