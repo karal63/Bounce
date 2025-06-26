@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, type Router } from "vue-router";
 import { routes } from "@/app/router/routes";
-import { useAuthStore } from "@/features/auth/model/authStore";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const appRouter: Router = createRouter({
     history: createWebHistory(),
@@ -8,7 +8,7 @@ const appRouter: Router = createRouter({
 });
 
 appRouter.beforeEach((to, from, next) => {
-    const auth = useAuthStore();
+    const auth = useSessionStore();
     if (to.meta.requiresAuth && !auth.isAuthenticated) {
         next("/login");
     } else {

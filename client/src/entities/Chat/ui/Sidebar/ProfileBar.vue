@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { useChatStore } from "../../model/charStore";
+import { useChatStore } from "../../model/chatStore";
 
 import { Icon } from "@iconify/vue";
 import ProfileContext from "./ProfileContext.vue";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const chatStore = useChatStore();
+const sessionStore = useSessionStore();
 </script>
 
 <template>
@@ -22,7 +24,7 @@ const chatStore = useChatStore();
                     <div class="w-10 h-10 rounded-full bg-purple-600"></div>
                 </div>
                 <div>
-                    <h4>Karal63</h4>
+                    <h4>{{ sessionStore.user?.name }}</h4>
                     <div class="mt-1">
                         <span class="text-sm pr-1">🟢</span>Active
                     </div>

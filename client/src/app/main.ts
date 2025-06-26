@@ -3,6 +3,16 @@ import "@/app/style.css";
 import App from "@/app/App.vue";
 import appRouter from "@/app/router/index";
 import { createPinia } from "pinia";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
+const app = createApp(App);
 const pinia = createPinia();
-createApp(App).use(appRouter).use(pinia).mount("#app");
+app.use(pinia);
+
+const sessionStore = useSessionStore();
+
+if (localStorage.getItem("accessToken")) {
+    await sessionStore.checkAuth();
+}
+
+app.use(appRouter).mount("#app");

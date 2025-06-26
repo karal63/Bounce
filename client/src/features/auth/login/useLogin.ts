@@ -1,12 +1,17 @@
 import { apiLogin } from "@/features/auth/login/apiLogin";
-import type { User } from "@/shared/types/user";
-import { useAuthStore } from "../model/authStore";
+import type { AuthUser } from "@/features/auth/model/types/authUser";
+import { useAuthStore } from "@/features/auth/model/authStore";
 import { AxiosError } from "axios";
+import { useRouter } from "vue-router";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 export const useLogin = () => {
     const authStore = useAuthStore();
+    const sessionStore = useSessionStore();
 
-    const login = async (user: User) => {
+    const router = useRouter();
+
+    const login = async (user: AuthUser) => {
         try {
             const res = await apiLogin({
                 email: user.email,
@@ -14,11 +19,12 @@ export const useLogin = () => {
             });
 
             localStorage.setItem("accessToken", res.data.accessToken);
-            authStore.user = res.data.user;
+            sessionStore.user = res.data.user;
 
             authStore.isLoading = false;
             authStore.error = "";
-            authStore.isAuthenticated = true;
+            sessionStore.isAuthenticated = true;
+            router.push("/chat/2ap");
         } catch (e) {
             authStore.isLoading = false;
             if (e instanceof AxiosError && e.response && e.message) {

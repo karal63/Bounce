@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { User } from "@/shared/types/user";
 import SocialLinks from "@/features/auth/AuthForm/ui/SocialLinks.vue";
 import LoginFields from "@/features/auth/AuthForm/ui/LoginFields.vue";
 import SignupFields from "@/features/auth/AuthForm/ui/SignupFields.vue";
 import { useAuthStore } from "@/features/auth/model/authStore";
 import { Icon } from "@iconify/vue";
+import type { AuthUser } from "@/features/auth/AuthForm/model/types/authUser";
 
 const authStore = useAuthStore();
 
@@ -13,10 +13,10 @@ const props = defineProps<{
     mode: string;
 }>();
 const emits = defineEmits<{
-    (event: "submit", payload: User): void;
+    (event: "submit", payload: AuthUser): void;
 }>();
 
-const user = ref<User>({
+const user = ref<AuthUser>({
     email: "",
     password: "",
     passwordRepeat: "",
@@ -27,7 +27,6 @@ const isLoginAuthMode = computed(() => {
     return props.mode === "login";
 });
 
-// try to move emit to sub-component, separate auth form from main index.vue
 const handleSubmit = () => {
     authStore.isLoading = true;
     emits("submit", user.value);

@@ -1,23 +1,31 @@
 import { apiSignup } from "@/features/auth/signup/apiSignup";
-import type { User } from "@/shared/types/user";
+import type { AuthUser } from "@/features/auth/model/types/authUser";
 import { useAuthStore } from "@/features/auth/model/authStore";
 import { AxiosError } from "axios";
+import { useRouter } from "vue-router";
 
 export const useSignup = () => {
     const authStore = useAuthStore();
+    const router = useRouter();
 
-    const signup = async ({ email, password, passwordRepeat, name }: User) => {
+    const signup = async ({
+        email,
+        password,
+        passwordRepeat,
+        name,
+    }: AuthUser) => {
         if (password !== passwordRepeat) {
             return (authStore.error = "Passwords are not the same.");
         }
         try {
-            const res = await apiSignup({
+            await apiSignup({
                 email,
                 password,
                 name,
             });
             authStore.isLoading = false;
             authStore.error = "";
+            router.push("/login");
         } catch (e) {
             authStore.isLoading = false;
             if (e instanceof AxiosError && e.response && e.message) {

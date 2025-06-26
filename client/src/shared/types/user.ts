@@ -1,6 +1,6 @@
 export type User = {
+    id: number;
     email: string;
-    password: string;
-    passwordRepeat?: string;
     name: string;
+    accountActivated: boolean;
 };
