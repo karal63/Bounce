@@ -48,7 +48,10 @@ const checkPerson = (message: ReadyMessage) => {
                 class="flex items-center gap-3"
                 :class="checkPerson(message) && 'flex-row-reverse'"
             >
-                <div class="w-8 h-8 bg-purple-700 flex-center rounded-full">
+                <div
+                    v-if="message.sender"
+                    class="w-8 h-8 bg-purple-700 flex-center rounded-full"
+                >
                     {{ message.sender[0] }}
                 </div>
                 <div
