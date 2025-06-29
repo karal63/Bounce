@@ -3,17 +3,18 @@ import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { useSendMessage } from "../model/useSendMessage";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import type { Message } from "@/features/Chat/sendMessege/model/types/Message";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 
-const message = ref({
+const message = ref<Message>({
     sender: sessionStore.user?.name,
     content: "",
 });
 
 const submit = () => {
-    send(message.value.content);
+    send(message.value);
 };
 </script>
 

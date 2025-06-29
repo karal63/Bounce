@@ -1,15 +1,14 @@
 import { apiSendMessage } from "@/features/Chat/sendMessege/model/apiSendMessage";
-import type { Message } from "@/features/Chat/sendMessege/model/types/message";
+import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/message";
 
-// ;
 export const useSendMessage = () => {
-    const send = async (message: Message) => {
+    const send = async (message: ReadyMessage) => {
         try {
-            const readyMessage: Message & { sentAt: Date } = {
+            const readyMessage: ReadyMessage = {
                 ...message,
                 sentAt: new Date(),
             };
-            await apiSendMessage(message);
+            await apiSendMessage(readyMessage);
         } catch (error) {
             console.log(error);
         }
