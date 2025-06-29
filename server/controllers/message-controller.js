@@ -1,12 +1,11 @@
-const { getIO } = require("../socket");
+const { io } = require("../socket");
 
 class MessageController {
     async sendMessage(req, res, next) {
         try {
-            const io = getIO();
             const { message } = req.body;
-
-            io.emit("message", message);
+            console.log(message);
+            io.to("Group_2ap").emit("message", message);
             res.status(200).json(message);
         } catch (error) {
             console.log(error);

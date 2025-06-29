@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
 import { Icon } from "@iconify/vue";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
 
 const emit = defineEmits<{
     (event: "logout"): void;
 }>();
+
+const setGroup = (room: string) => {
+    console.log(room);
+    socket.emit("set-group", room);
+};
 </script>
 
 <template>
@@ -23,6 +30,7 @@ const emit = defineEmits<{
                 class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
             >
                 <li
+                    @click="setGroup('Group_2ap')"
                     class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
                 >
                     <Icon
@@ -30,15 +38,19 @@ const emit = defineEmits<{
                         class="text-3xl text-grayDull"
                     />Group_2ap
                 </li>
+
                 <li
+                    @click="setGroup('My group')"
                     class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
                 >
                     <Icon
                         icon="lets-icons:chat-light"
                         class="text-3xl text-grayDull"
-                    />My group
+                    />
+                    My group
                 </li>
                 <li
+                    @click="setGroup('Official Karal63`s group')"
                     class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
                 >
                     <Icon
