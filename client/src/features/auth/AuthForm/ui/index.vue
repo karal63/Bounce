@@ -5,7 +5,7 @@ import LoginFields from "@/features/auth/AuthForm/ui/LoginFields.vue";
 import SignupFields from "@/features/auth/AuthForm/ui/SignupFields.vue";
 import { useAuthStore } from "@/features/auth/model/authStore";
 import { Icon } from "@iconify/vue";
-import type { AuthUser } from "@/features/auth/AuthForm/model/types/authUser";
+import type { AuthUser } from "@/features/auth/model/types/authUser";
 
 const authStore = useAuthStore();
 

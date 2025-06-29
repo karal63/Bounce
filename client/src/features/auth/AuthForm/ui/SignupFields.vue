@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AuthUser } from "@/features/auth/AuthForm/model/types/authUser";
+import type { AuthUser } from "@/features/auth/model/types/authUser";
 
 const modelValue = defineModel<AuthUser>();
 </script>
