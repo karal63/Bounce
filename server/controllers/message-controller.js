@@ -4,8 +4,7 @@ class MessageController {
     async sendMessage(req, res, next) {
         try {
             const io = getIO();
-            const messageBody = req.body;
-            const message = messageBody[0];
+            const { message } = req.body;
 
             io.emit("message", message);
             res.status(200).json(message);

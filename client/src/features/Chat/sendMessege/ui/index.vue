@@ -2,10 +2,13 @@
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { useSendMessage } from "../model/useSendMessage";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const { send } = useSendMessage();
+const sessionStore = useSessionStore();
 
 const message = ref({
+    sender: sessionStore.user?.name,
     content: "",
 });
 
