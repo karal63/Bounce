@@ -3,8 +3,10 @@ const router = express.Router();
 const AuthController = require("../controllers/auth-controller");
 const verifyToken = require("../middlewares/verifyToken");
 const { body } = require("express-validator");
+const MessageController = require("../controllers/message-controller");
 
 const auth = new AuthController();
+const message = new MessageController();
 
 router.post(
     "/signup",
@@ -24,7 +26,9 @@ router.post(
 router.get("/logout", verifyToken, (req, res, next) =>
     auth.logout(req, res, next)
 );
+
 router.get("/refresh", (req, res, next) => auth.refresh(req, res, next));
+
 router.get("/activate/:link", (req, res, next) =>
     auth.activate(req, res, next)
 );
@@ -35,5 +39,9 @@ router.get("/users", verifyToken, (req, res) => {
         { id: 2, name: "Steve" },
     ]);
 });
+
+router.post("/send-message", (req, res, next) =>
+    message.sendMessage(req, res, next)
+);
 
 module.exports = router;
