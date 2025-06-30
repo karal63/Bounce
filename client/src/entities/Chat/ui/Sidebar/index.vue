@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
 import { Icon } from "@iconify/vue";
-import { io } from "socket.io-client";
-const socket = io("http://localhost:5000");
+import socket from "@/shared/config/socket";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+
+const currentChatStore = useCurrentChatStore();
 
 const emit = defineEmits<{
     (event: "logout"): void;
 }>();
 
 const setGroup = (room: string) => {
-    console.log(room);
+    currentChatStore.currentRoom = room;
     socket.emit("set-group", room);
 };
 </script>

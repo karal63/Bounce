@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { io } from "socket.io-client";
+import socket from "@/shared/config/socket";
 import { ref } from "vue";
 
-const socket = io("http://localhost:5000");
 const sessionStore = useSessionStore();
 
 const messages = ref<ReadyMessage[]>([
@@ -26,7 +25,6 @@ const messages = ref<ReadyMessage[]>([
 ]);
 
 socket.on("message", (msg) => {
-    console.log(msg);
     messages.value = [...messages.value, msg];
 });
 

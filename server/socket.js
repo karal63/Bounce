@@ -37,11 +37,7 @@ io.on("connection", (socket) => {
     console.log("A user connected: ", socket.id);
 
     socket.on("set-group", async (room) => {
-        console.log(`Socket ${socket.id} joining room: ${room}`);
         socket.join(room);
-        console.log([...socket.rooms]);
-        const socketsInRoom = await io.in("Group_2ap").allSockets();
-        console.log("Sockets in 'Group_2ap':", socketsInRoom); // Should show socket IDs
     });
 
     socket.on("disconnect", () => {
