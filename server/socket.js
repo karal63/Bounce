@@ -37,7 +37,6 @@ io.on("connection", (socket) => {
     });
 
     socket.on("get-members-list", async ({ room, socketId }) => {
-        console.log(123);
         const clients = await io.in(room).fetchSockets();
         const memberList = clients.map((client) => ({
             id: client.id,

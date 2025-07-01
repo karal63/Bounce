@@ -9,7 +9,7 @@ const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 
 const message = ref<Message>({
-    sender: sessionStore.user?.name,
+    senderId: sessionStore.user?.name,
     content: "",
 });
 

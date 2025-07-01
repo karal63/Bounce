@@ -33,15 +33,12 @@ router.get("/activate/:link", (req, res, next) =>
     auth.activate(req, res, next)
 );
 
-router.get("/users", verifyToken, (req, res) => {
-    res.status(200).json([
-        { id: 1, name: "Leo" },
-        { id: 2, name: "Steve" },
-    ]);
-});
-
-router.post("/send-message", (req, res, next) =>
+router.post("/send-message", verifyToken, (req, res, next) =>
     message.sendMessage(req, res, next)
+);
+
+router.get("/messages/:groupId", verifyToken, (req, res, next) =>
+    message.getMessages(req, res, next)
 );
 
 module.exports = router;

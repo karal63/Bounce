@@ -3,16 +3,19 @@ import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
 import { Icon } from "@iconify/vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
+import { useGetMessages } from "@/entities/Chat/api/getMessages/useGetMessages";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
+const { getMessages } = useGetMessages();
 
 const emit = defineEmits<{
     (event: "logout"): void;
 }>();
 
-const setGroup = (room: string) => {
+const setGroup = async (room: string) => {
     currentChatStore.currentRoom = room;
+    currentChatStore.messages = await getMessages();
     socket.emit("set-group", room);
 };
 </script>

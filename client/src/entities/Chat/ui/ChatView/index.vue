@@ -11,23 +11,23 @@ const currentChatStore = useCurrentChatStore();
 const chatStore = useChatStore();
 const { socket } = useSocket();
 
-const messages = ref<ReadyMessage[]>([
-    {
-        sender: "1111",
-        content: "Hello!",
-        sentAt: new Date(),
-    },
-    {
-        sender: "1111",
-        content: "Nice!",
-        sentAt: new Date(),
-    },
-    {
-        sender: "test",
-        content: "WoW!",
-        sentAt: new Date(),
-    },
-]);
+// const messages = ref<ReadyMessage[]>([
+//     {
+//         groupId: "Group_2ap",
+//         senderId: "1111",
+//         content: "Hello!",
+//     },
+//     {
+//         groupId: "Group_2ap",
+//         senderId: "1111",
+//         content: "Nice!",
+//     },
+//     {
+//         groupId: "Group_2ap",
+//         senderId: "test",
+//         content: "WoW!",
+//     },
+// ]);
 const members = ref();
 const isMembersDropdown = ref(false);
 
@@ -37,7 +37,7 @@ watchEffect(() => {
 });
 
 socket.on("message", (msg) => {
-    messages.value = [...messages.value, msg];
+    currentChatStore.messages = [...currentChatStore.messages, msg];
 });
 socket.on("members-list", (activeMembers) => {
     console.log(activeMembers);
@@ -75,7 +75,7 @@ socket.on("members-list", (activeMembers) => {
 
     <div class="flex-col gap-4 mt-10">
         <div
-            v-for="message of messages"
+            v-for="message of currentChatStore.messages"
             class="flex"
             :class="checkPerson(message) ? 'justify-end' : 'justify-start'"
         >
@@ -84,10 +84,10 @@ socket.on("members-list", (activeMembers) => {
                 :class="checkPerson(message) && 'flex-row-reverse'"
             >
                 <div
-                    v-if="message.sender"
+                    v-if="message.senderId"
                     class="w-8 h-8 bg-purple-700 flex-center rounded-full"
                 >
-                    {{ message.sender[0] }}
+                    {{ message.senderId[0] }}
                 </div>
                 <div
                     class="max-w-max px-3 py-2 rounded-2xl"

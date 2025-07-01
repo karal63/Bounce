@@ -12,7 +12,7 @@ export const useSendMessage = () => {
         try {
             const readyMessage: ReadyMessage = {
                 ...message,
-                sentAt: new Date(),
+                groupId: currentChatStore.currentRoom,
             };
             await apiSendMessage(readyMessage, currentChatStore.currentRoom);
         } catch (error) {

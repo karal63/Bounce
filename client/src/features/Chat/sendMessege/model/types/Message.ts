@@ -1,10 +1,10 @@
 export type Message = {
-    sender?: string;
+    senderId?: string;
     content: string;
 };
 
 export type ReadyMessage = {
-    sender?: string;
+    groupId: string;
+    senderId?: string;
     content: string;
-    sentAt: Date;
 };
