@@ -4,10 +4,12 @@ import { useAuthStore } from "@/features/auth/model/authStore";
 import { AxiosError } from "axios";
 import { useRouter } from "vue-router";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { useSocket } from "@/shared/config/useSocketStore";
 
 export const useLogin = () => {
     const authStore = useAuthStore();
     const sessionStore = useSessionStore();
+    const { connectSocket } = useSocket();
 
     const router = useRouter();
 
@@ -20,6 +22,7 @@ export const useLogin = () => {
 
             localStorage.setItem("accessToken", res.data.accessToken);
             sessionStore.user = res.data.user;
+            connectSocket();
 
             authStore.isLoading = false;
             authStore.error = "";

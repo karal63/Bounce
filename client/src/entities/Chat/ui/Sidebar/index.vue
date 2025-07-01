@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
 import { Icon } from "@iconify/vue";
-import socket from "@/shared/config/socket";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { useSocket } from "@/shared/config/useSocketStore";
 
 const currentChatStore = useCurrentChatStore();
+const { socket } = useSocket();
 
 const emit = defineEmits<{
     (event: "logout"): void;
