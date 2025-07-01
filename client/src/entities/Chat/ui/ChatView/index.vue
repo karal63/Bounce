@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { ref, watchEffect } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { Icon } from "@iconify/vue";
+import { useChatStore } from "@/entities/Chat/model/chatStore";
+import { checkPerson } from "@/entities/Chat/lib/checkPerson";
 
-const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
+const chatStore = useChatStore();
 const { socket } = useSocket();
 
 const messages = ref<ReadyMessage[]>([
@@ -30,19 +31,9 @@ const messages = ref<ReadyMessage[]>([
 const members = ref();
 const isMembersDropdown = ref(false);
 
-const checkPerson = (message: ReadyMessage) => {
-    return sessionStore.user?.name === message.sender;
-};
-
-const getMembersList = () => {
-    socket.emit("get-members-list", {
-        room: currentChatStore.currentRoom,
-        socketId: socket.id,
-    });
-};
-
 watchEffect(() => {
-    getMembersList();
+    // must be an api call in api folder
+    chatStore.getMembersList();
 });
 
 socket.on("message", (msg) => {
