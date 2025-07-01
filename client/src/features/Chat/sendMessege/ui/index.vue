@@ -3,12 +3,13 @@ import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { useSendMessage } from "@/features/Chat/sendMessege/model/useSendMessage";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import type { Message } from "@/features/Chat/sendMessege/model/types/Message";
+import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 
-const message = ref<Message>({
+const message = ref<ReadyMessage>({
+    groupId: "",
     senderId: sessionStore.user?.name,
     content: "",
 });

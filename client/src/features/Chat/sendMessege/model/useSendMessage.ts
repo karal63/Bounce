@@ -1,14 +1,11 @@
 import { apiSendMessage } from "@/features/Chat/sendMessege/model/apiSendMessage";
-import type {
-    ReadyMessage,
-    Message,
-} from "@/features/Chat/sendMessege/model/types/Message";
+import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 export const useSendMessage = () => {
     const currentChatStore = useCurrentChatStore();
 
-    const send = async (message: Message) => {
+    const send = async (message: ReadyMessage) => {
         try {
             const readyMessage: ReadyMessage = {
                 ...message,
