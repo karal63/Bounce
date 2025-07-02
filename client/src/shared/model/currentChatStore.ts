@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useCurrentChatStore = defineStore("currentChat", () => {
-    const currentRoom = ref("");
+    const currentRoom = ref<number | null>(null);
     const messages = ref<Message[]>([]);
     const members = ref<Member[]>([]);
 

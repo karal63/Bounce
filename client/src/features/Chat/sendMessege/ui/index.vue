@@ -9,8 +9,8 @@ const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 
 const message = ref<ReadyMessage>({
-    groupId: "",
-    senderId: sessionStore.user?.name,
+    groupId: null,
+    senderId: sessionStore.user?.id,
     content: "",
 });
 

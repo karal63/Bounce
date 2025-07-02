@@ -54,7 +54,7 @@ socket.on("message", (msg) => {
                     v-if="message.senderId"
                     class="w-8 h-8 bg-purple-700 flex-center rounded-full"
                 >
-                    {{ message.senderId[0] }}
+                    {{ message.senderId }}
                 </div>
                 <div
                     class="max-w-max px-3 py-2 rounded-2xl"

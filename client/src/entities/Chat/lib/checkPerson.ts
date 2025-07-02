@@ -3,5 +3,5 @@ import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 export const checkPerson = (message: ReadyMessage) => {
     const sessionStore = useSessionStore();
-    return sessionStore.user?.name === message.senderId;
+    return sessionStore.user?.id === message.senderId;
 };

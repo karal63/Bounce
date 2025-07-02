@@ -9,7 +9,7 @@ export const useGetMembers = () => {
 
     const getMembers = async (): Promise<Member[]> => {
         try {
-            if (!socket.id) return [];
+            if (!socket.id || !currentChatStore.currentRoom) return [];
             const members = await getAllMembers(
                 socket.id,
                 currentChatStore.currentRoom
