@@ -4,10 +4,12 @@ import { Icon } from "@iconify/vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useGetMessages } from "@/entities/Chat/api/getMessages/useGetMessages";
+import { useGetMembers } from "../../api/getMembers/useGetMembers";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
+const { getMembers } = useGetMembers();
 
 const emit = defineEmits<{
     (event: "logout"): void;
@@ -16,6 +18,7 @@ const emit = defineEmits<{
 const setGroup = async (room: string) => {
     currentChatStore.currentRoom = room;
     currentChatStore.messages = await getMessages();
+    currentChatStore.members = await getMembers();
     socket.emit("set-group", room);
 };
 </script>
@@ -39,7 +42,7 @@ const setGroup = async (room: string) => {
                 class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
             >
                 <li
-                    @click="setGroup('Group_2ap')"
+                    @click="setGroup('1')"
                     class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
                 >
                     <Icon

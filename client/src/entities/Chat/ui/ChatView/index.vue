@@ -1,47 +1,18 @@
 <script setup lang="ts">
-import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { Icon } from "@iconify/vue";
-import { useChatStore } from "@/entities/Chat/model/chatStore";
 import { checkPerson } from "@/entities/Chat/lib/checkPerson";
+import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
 
 const currentChatStore = useCurrentChatStore();
-const chatStore = useChatStore();
 const { socket } = useSocket();
 
-// const messages = ref<ReadyMessage[]>([
-//     {
-//         groupId: "Group_2ap",
-//         senderId: "1111",
-//         content: "Hello!",
-//     },
-//     {
-//         groupId: "Group_2ap",
-//         senderId: "1111",
-//         content: "Nice!",
-//     },
-//     {
-//         groupId: "Group_2ap",
-//         senderId: "test",
-//         content: "WoW!",
-//     },
-// ]);
-const members = ref();
 const isMembersDropdown = ref(false);
-
-watchEffect(() => {
-    // must be an api call in api folder
-    chatStore.getMembersList();
-});
 
 socket.on("message", (msg) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
-});
-socket.on("members-list", (activeMembers) => {
-    console.log(activeMembers);
-    members.value = activeMembers;
 });
 </script>
 
@@ -64,12 +35,7 @@ socket.on("members-list", (activeMembers) => {
             </button>
 
             <!-- dropdown -->
-            <div
-                class="absolute bg-purple-400 w-full top-full rounded-md transition-all overflow-hidden"
-                :class="isMembersDropdown ? 'h-full' : 'h-0'"
-            >
-                123
-            </div>
+            <MembersDropdown :isMembersDropdown="isMembersDropdown" />
         </div>
     </div>
 

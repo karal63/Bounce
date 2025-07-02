@@ -4,9 +4,11 @@ const AuthController = require("../controllers/auth-controller");
 const verifyToken = require("../middlewares/verifyToken");
 const { body } = require("express-validator");
 const MessageController = require("../controllers/message-controller");
+const MemberController = require("../controllers/member-controller");
 
 const auth = new AuthController();
 const message = new MessageController();
+const member = new MemberController();
 
 router.post(
     "/signup",
@@ -39,6 +41,10 @@ router.post("/send-message", verifyToken, (req, res, next) =>
 
 router.get("/messages/:groupId", verifyToken, (req, res, next) =>
     message.getMessages(req, res, next)
+);
+
+router.post("/members/:groupId", verifyToken, (req, res, next) =>
+    member.getMembers(req, res, next)
 );
 
 module.exports = router;

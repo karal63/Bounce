@@ -31,19 +31,24 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log("A user connected: ", socket.id);
+    // let prevRoom;
 
     socket.on("set-group", async (room) => {
+        // if (prevRoom) socket.leave(prevRoom);
         socket.join(room);
-    });
+        // prevRoom = room;
 
-    socket.on("get-members-list", async ({ room, socketId }) => {
-        const clients = await io.in(room).fetchSockets();
-        const memberList = clients.map((client) => ({
-            id: client.id,
-            name: client.handshake.query.username,
-            // add more custom data if needed: client.handshake.query.username, etc.
-        }));
-        io.to(socketId).emit("members-list", memberList);
+        // setTimeout(async () => {
+        //     console.log(room);
+        //     const clients = await io.in(room).fetchSockets();
+        //     const memberList = clients.map((client) => ({
+        //         id: client.id,
+        //         name: client.handshake.query.username, // or wherever you're storing it
+        //     }));
+
+        //     io.to(room).emit("members-list", memberList);
+        //     io.to(socket.id).emit("members-list", memberList);
+        // }, 100); // Delay 100ms to allow join to complete
     });
 
     socket.on("disconnect", () => {
