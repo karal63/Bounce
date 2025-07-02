@@ -25,8 +25,15 @@ export function useSocket() {
         }
     };
 
+    const disconnectSocket = () => {
+        if (socket && socket.connected) {
+            socket.disconnect();
+        }
+    };
+
     return {
         socket,
         connectSocket,
+        disconnectSocket,
     };
 }
