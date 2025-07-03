@@ -5,13 +5,14 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { Icon } from "@iconify/vue";
 import { checkPerson } from "@/entities/Chat/lib/checkPerson";
 import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
+import type { MessageWithName } from "@/features/Chat/sendMessege/model/types/Message";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
 const isMembersDropdown = ref(false);
 
-socket.on("message", (msg) => {
+socket.on("newMessage", (msg: MessageWithName) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
 });
 </script>
@@ -39,7 +40,7 @@ socket.on("message", (msg) => {
         </div>
     </div>
 
-    <div class="flex-col gap-4 mt-10">
+    <div class="flex-col gap-4 pt-10 pr-4 overflow-y-scroll max-h-[84%]">
         <div
             v-if="currentChatStore.currentRoom"
             v-for="message of currentChatStore.messages"
@@ -54,7 +55,7 @@ socket.on("message", (msg) => {
                     v-if="message.senderId"
                     class="w-8 h-8 bg-purple-700 flex-center rounded-full"
                 >
-                    {{ message.senderId }}
+                    {{ message.name[0] }}
                 </div>
                 <div
                     class="max-w-max px-3 py-2 rounded-2xl"

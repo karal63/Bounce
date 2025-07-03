@@ -2,7 +2,7 @@
 import { useSocket } from "@/shared/config/useSocketStore";
 import { Icon } from "@iconify/vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { watch, watchEffect } from "vue";
+import type { MemberWithName } from "@/entities/Chat/model/types/Member";
 
 const { socket } = useSocket();
 const currentChatStore = useCurrentChatStore();
@@ -11,7 +11,7 @@ defineProps<{
     isMembersDropdown: boolean;
 }>();
 
-socket.on("members-list", (activeMembers) => {
+socket.on("members-list", (activeMembers: MemberWithName[]) => {
     currentChatStore.members = activeMembers;
 });
 </script>
@@ -29,7 +29,7 @@ socket.on("members-list", (activeMembers) => {
                 <div
                     class="w-8 h-8 rounded-full bg-purple-400 flex-center text-lg"
                 >
-                    {{ member.id }}
+                    {{ member.name[0] }}
                 </div>
                 <div class="flex-col justify-center">
                     <h3 class="text-lg">{{ member.userId }}</h3>

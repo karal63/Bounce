@@ -7,8 +7,8 @@ class MessageController {
     async sendMessage(req, res, next) {
         try {
             const { message, room } = req.body;
-            io.to(room).emit("message", message);
-            await messageService.send(message);
+            const messageWithName = await messageService.send(message);
+            io.to(room).emit("newMessage", messageWithName);
             res.status(200).json(message);
         } catch (error) {
             console.log(error);

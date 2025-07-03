@@ -7,3 +7,7 @@ export type Member = {
     isMuted: boolean;
     isBanned: boolean;
 };
+
+export type MemberWithName = Member & {
+    name: string;
+};

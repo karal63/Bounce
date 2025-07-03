@@ -15,7 +15,7 @@ const emit = defineEmits<{
     (event: "logout"): void;
 }>();
 
-const setGroup = async (room: string) => {
+const setGroup = async (room: number) => {
     currentChatStore.currentRoom = room;
     currentChatStore.messages = await getMessages();
     currentChatStore.members = await getMembers();
@@ -28,7 +28,7 @@ const setGroup = async (room: string) => {
         <div>
             <!-- logo -->
             <button
-                @click="currentChatStore.currentRoom = ''"
+                @click="currentChatStore.currentRoom = null"
                 class="flex-col gap-1 cursor-pointer"
             >
                 <div class="bg-purple-500 w-6 h-2 rounded-xl -ml-1"></div>
@@ -42,7 +42,7 @@ const setGroup = async (room: string) => {
                 class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
             >
                 <li
-                    @click="setGroup('1')"
+                    @click="setGroup(1)"
                     class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
                 >
                     <Icon

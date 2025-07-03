@@ -13,3 +13,7 @@ export type Message = {
     editedAt: Date | null;
     isDeleted: boolean;
 };
+
+export type MessageWithName = Message & {
+    name: string;
+};
