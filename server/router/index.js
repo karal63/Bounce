@@ -5,10 +5,12 @@ const verifyToken = require("../middlewares/verifyToken");
 const { body } = require("express-validator");
 const MessageController = require("../controllers/message-controller");
 const MemberController = require("../controllers/member-controller");
+const GroupController = require("../controllers/group-controller");
 
 const auth = new AuthController();
 const message = new MessageController();
 const member = new MemberController();
+const group = new GroupController();
 
 router.post(
     "/signup",
@@ -45,6 +47,10 @@ router.get("/messages/:groupId", verifyToken, (req, res, next) =>
 
 router.post("/members/:groupId", verifyToken, (req, res, next) =>
     member.getMembers(req, res, next)
+);
+
+router.get("/groups/:userId", verifyToken, (req, res, next) =>
+    group.getGroups(req, res, next)
 );
 
 module.exports = router;

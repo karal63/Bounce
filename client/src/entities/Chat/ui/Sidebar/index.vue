@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
+import { watchEffect } from "vue";
 import { Icon } from "@iconify/vue";
+import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useGetMessages } from "@/entities/Chat/api/getMessages/useGetMessages";
-import { useGetMembers } from "../../api/getMembers/useGetMembers";
+import { useGetMembers } from "@/entities/Chat/api/getMembers/useGetMembers";
+import { useGetGroups } from "@/entities/Chat/api/getGroups/useGetGroups";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
 const { getMembers } = useGetMembers();
+const { getGroups } = useGetGroups();
 
 const emit = defineEmits<{
     (event: "logout"): void;
@@ -21,6 +24,10 @@ const setGroup = async (room: number) => {
     currentChatStore.members = await getMembers();
     socket.emit("set-group", room);
 };
+
+watchEffect(async () => {
+    await getGroups();
+});
 </script>
 
 <template>
@@ -42,33 +49,14 @@ const setGroup = async (room: number) => {
                 class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
             >
                 <li
+                    v-for="group of currentChatStore.groups"
                     @click="setGroup(1)"
                     class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
                 >
                     <Icon
                         icon="lets-icons:chat-light"
                         class="text-3xl text-grayDull"
-                    />Group_2ap
-                </li>
-
-                <li
-                    @click="setGroup('My group')"
-                    class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
-                >
-                    <Icon
-                        icon="lets-icons:chat-light"
-                        class="text-3xl text-grayDull"
-                    />
-                    My group
-                </li>
-                <li
-                    @click="setGroup('Official Karal63`s group')"
-                    class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
-                >
-                    <Icon
-                        icon="lets-icons:chat-light"
-                        class="text-3xl text-grayDull"
-                    />Official Karal63's group
+                    />{{ group.name }}
                 </li>
             </ul>
         </div>
