@@ -43,8 +43,14 @@ watchEffect(async () => {
                 <div class="bg-purple-500 w-6 h-2 rounded-xl ml-1"></div>
             </button>
 
+            <button
+                class="mt-10 mb-5 border border-purple-400 w-full text-lg rounded-md py-2 bg-purple-950 cursor-pointer"
+            >
+                Add Chat
+            </button>
+
             <!-- chats -->
-            <h1 class="text-3xl font-light mt-6">Chats</h1>
+            <h1 class="text-3xl font-light">Chats</h1>
             <ul
                 class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
             >
