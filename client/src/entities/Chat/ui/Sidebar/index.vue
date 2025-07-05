@@ -6,7 +6,7 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useGetMessages } from "@/entities/Chat/api/getMessages/useGetMessages";
 import { useGetMembers } from "@/entities/Chat/api/getMembers/useGetMembers";
-import { useGetGroups } from "@/entities/Chat/api/getGroups/useGetGroups";
+import { useGetGroups } from "@/features/chat-groups/model/useGetGroups";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
