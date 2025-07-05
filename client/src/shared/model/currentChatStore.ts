@@ -1,5 +1,5 @@
 // you have to move those types into shared folder
-import type { MemberWithName } from "@/entities/Chat/model/types/Member";
+import type { MemberWithName } from "@/entities/chat/model/types/Member";
 import type { MessageWithName } from "@/features/Chat/sendMessege/model/types/Message";
 import { defineStore } from "pinia";
 import { ref } from "vue";

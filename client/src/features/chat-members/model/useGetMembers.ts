@@ -1,7 +1,7 @@
 import { getAllMembers } from "@/entities/Chat/api/getMembers/apiGetMembers";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import type { MemberWithName } from "@/entities/Chat/model/types/Member";
+import type { MemberWithName } from "@/entities/chat/model/types/Member";
 
 export const useGetMembers = () => {
     const currentChatStore = useCurrentChatStore();

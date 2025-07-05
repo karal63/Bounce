@@ -2,7 +2,7 @@
 import { useSocket } from "@/shared/config/useSocketStore";
 import { Icon } from "@iconify/vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import type { MemberWithName } from "@/entities/Chat/model/types/Member";
+import type { MemberWithName } from "@/entities/chat/model/types/Member";
 
 const { socket } = useSocket();
 const currentChatStore = useCurrentChatStore();
