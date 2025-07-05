@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import ChatPageWidget from "@/widgets/ChatLayout/ChatPageLayout.vue";
+import Sidebar from "@/widgets/sidebar/Sidebar.vue";
 </script>
 
 <template>
-    <div class="text-white h-full py-5">
-        <ChatPageWidget />
+    <div class="text-white flex h-full py-5">
+        <Sidebar />
+        <div>
+            <!-- <MessageList /> -->
+            <!-- <MessageInputBlock /> -->
+        </div>
+        <!-- <MembersList /> -->
     </div>
 </template>

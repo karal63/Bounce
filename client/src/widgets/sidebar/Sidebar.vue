@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { watchEffect } from "vue";
+import { onMounted } from "vue";
 import { Icon } from "@iconify/vue";
-import ProfileBar from "@/entities/Chat/ui/Sidebar/ProfileBar.vue";
+import ProfileBar from "@/widgets/sidebar/ui/ProfileBar.vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { useGetMessages } from "@/entities/Chat/api/getMessages/useGetMessages";
-import { useGetMembers } from "@/entities/Chat/api/getMembers/useGetMembers";
+import { useGetMessages } from "@/features/chat-messages/model/useGetMessages";
+import { useGetMembers } from "@/features/chat-members/model/useGetMembers";
 import { useGetGroups } from "@/features/chat-groups/model/useGetGroups";
 
 const currentChatStore = useCurrentChatStore();
@@ -25,7 +25,7 @@ const setGroup = async (room: number) => {
     socket.emit("set-group", room);
 };
 
-watchEffect(async () => {
+onMounted(async () => {
     await getGroups();
 });
 </script>

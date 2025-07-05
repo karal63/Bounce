@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useChatStore } from "../../model/chatStore";
-const chatStore = useChatStore();
+import { sidebarStore } from "../model/sidebarStore";
+const sidebar = sidebarStore();
 
 const emit = defineEmits<{
     (event: "logout"): void;
@@ -9,7 +9,7 @@ const emit = defineEmits<{
 
 <template>
     <div
-        v-if="chatStore.isProfileContextOpen"
+        v-if="sidebar.isProfileContextOpen"
         class="absolute bottom-[120%] left-0 w-full rounded-md border border-mainBorder bg-mainDarkBg"
     >
         <button

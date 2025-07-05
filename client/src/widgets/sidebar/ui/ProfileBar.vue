@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useChatStore } from "../../model/chatStore";
-
+import { sidebarStore } from "../model/sidebarStore";
 import { Icon } from "@iconify/vue";
 import ProfileContext from "./ProfileContext.vue";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 
-const chatStore = useChatStore();
+const sidebar = sidebarStore();
 const sessionStore = useSessionStore();
 
 const emit = defineEmits<{
@@ -19,7 +18,7 @@ const emit = defineEmits<{
     >
         <div
             @click="
-                chatStore.isProfileContextOpen = !chatStore.isProfileContextOpen
+                sidebar.isProfileContextOpen = !sidebar.isProfileContextOpen
             "
             class="flex justify-between items-center hover:bg-mainHoverDarkBg transition-all cursor-pointer px-4 py-2 rounded-xl"
         >

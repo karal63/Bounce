@@ -1,4 +1,4 @@
-import { getAllMembers } from "@/entities/Chat/api/getMembers/apiGetMembers";
+import { getAllMembers } from "@/shared/api/chat/getMembers";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import type { MemberWithName } from "@/entities/chat/model/types/Member";
