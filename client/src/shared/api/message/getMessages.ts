@@ -1,4 +1,4 @@
-import type { MessageWithName } from "@/entities/message/types/Message";
+import type { MessageWithName } from "@/entities/message/model/types";
 import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
 import type { AxiosResponse } from "axios";
 

@@ -1,5 +1,5 @@
 import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
-import type { Group } from "@/entities/group/types/Group";
+import type { Group } from "@/entities/group/model/types";
 import type { AxiosResponse } from "axios";
 
 export const apiGetGroups = async (

@@ -3,7 +3,7 @@ import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { useSendMessage } from "../model/useSendMessage";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import type { ReadyMessage } from "@/entities/message/types/Message";
+import type { ReadyMessage } from "@/entities/message/model/types";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();

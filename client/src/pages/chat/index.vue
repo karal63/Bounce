@@ -6,7 +6,7 @@ import MessageInputBlock from "@/features/send-messege/ui/index.vue";
 <template>
     <div class="text-white flex h-full py-5">
         <Sidebar />
-        <div>
+        <div class="relative ml-10">
             <!-- <MessageList /> -->
             <MessageInputBlock />
         </div>
