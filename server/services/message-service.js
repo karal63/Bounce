@@ -21,7 +21,7 @@ class MessageService {
 
     async getAll(groupId) {
         const [rows] = await db.query(
-            "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE groupId = ?",
+            "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE groupId = ? ORDER BY messages.sentAt ASC;",
             [groupId]
         );
         return rows;
