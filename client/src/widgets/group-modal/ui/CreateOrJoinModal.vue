@@ -4,7 +4,6 @@ import CreateButton from "./CreateButton.vue";
 import { useModalStore } from "@/features/create-or-join/model/modal.store";
 import CreateForm from "@/features/create-or-join/ui/CreateForm.vue";
 import JoinForm from "@/features/create-or-join/ui/JoinForm.vue";
-import FooterButtons from "@/features/create-or-join/ui/FooterButtons.vue";
 
 const modalStore = useModalStore();
 

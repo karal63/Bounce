@@ -7,6 +7,9 @@ export const useCreateGroup = () => {
     const currentChatStore = useCurrentChatStore();
 
     const createGroup = async (groupName: string) => {
+        if (!sessionStore.user?.id) {
+            return;
+        }
         const newGroup = await apiCreateGroup(
             groupName,
             sessionStore.user?.id,
