@@ -45,8 +45,7 @@ onMounted(async () => {
                 <div class="bg-purple-500 w-6 h-2 rounded-xl ml-1"></div>
             </button>
 
-            <!-- chats -->
-            <h1 class="text-3xl font-light mt-10 mb-5">Chats</h1>
+            <h1 class="text-xl font-light mt-10 mb-2 text-grayDull">Chats</h1>
 
             <button
                 @click="modal.isModalOpen = true"
