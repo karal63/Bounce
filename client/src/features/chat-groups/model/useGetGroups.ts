@@ -1,4 +1,4 @@
-import { apiGetGroups } from "@/shared/api/chat/getGroups";
+import { apiGetGroups } from "@/shared/api/group/getGroups";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 

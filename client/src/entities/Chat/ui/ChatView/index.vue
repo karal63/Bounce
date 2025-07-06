@@ -3,7 +3,7 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import { ref } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { Icon } from "@iconify/vue";
-import { checkPerson } from "@/features/COPYME/lib/checkPerson";
+import { checkPerson } from "@/features/chat-messages/lib/checkPerson";
 import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
 import type { MessageWithName } from "@/features/Chat/sendMessege/model/types/Message";
 

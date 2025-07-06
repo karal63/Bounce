@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Sidebar from "@/widgets/sidebar/Sidebar.vue";
+import MessageInputBlock from "@/features/send-messege/ui/index.vue";
 </script>
 
 <template>
@@ -7,7 +8,7 @@ import Sidebar from "@/widgets/sidebar/Sidebar.vue";
         <Sidebar />
         <div>
             <!-- <MessageList /> -->
-            <!-- <MessageInputBlock /> -->
+            <MessageInputBlock />
         </div>
         <!-- <MembersList /> -->
     </div>

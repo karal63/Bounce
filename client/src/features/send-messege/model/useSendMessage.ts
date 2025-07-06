@@ -1,5 +1,5 @@
-import { apiSendMessage } from "@/features/Chat/sendMessege/model/apiSendMessage";
-import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
+import { apiSendMessage } from "@/shared/api/message/sendMessage";
+import type { ReadyMessage } from "@/entities/message/types/Message";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 export const useSendMessage = () => {

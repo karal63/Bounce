@@ -1,6 +1,6 @@
 import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
 import type { AxiosResponse } from "axios";
-import type { MemberWithName } from "@/entities/chat/model/types/Member";
+import type { MemberWithName } from "@/entities/member/types/Member";
 
 export const getAllMembers = async (
     senderId: string,

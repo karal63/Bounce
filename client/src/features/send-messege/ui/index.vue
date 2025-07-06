@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
-import { useSendMessage } from "@/features/Chat/sendMessege/model/useSendMessage";
+import { useSendMessage } from "../model/useSendMessage";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
+import type { ReadyMessage } from "@/entities/message/types/Message";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
