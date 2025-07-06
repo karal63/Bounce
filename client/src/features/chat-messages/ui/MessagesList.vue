@@ -4,13 +4,13 @@ import { ref } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { Icon } from "@iconify/vue";
 import { checkPerson } from "@/features/chat-messages/lib/checkPerson";
-import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
-import type { MessageWithName } from "@/features/Chat/sendMessege/model/types/Message";
+// import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
+import type { MessageWithName } from "@/entities/message/model/types";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
-const isMembersDropdown = ref(false);
+// const isMembersDropdown = ref(false);
 
 socket.on("newMessage", (msg: MessageWithName) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
@@ -18,28 +18,6 @@ socket.on("newMessage", (msg: MessageWithName) => {
 </script>
 
 <template>
-    <div
-        class="bg-mainHoverDarkBg px-4 py-2 rounded-md flex justify-between items-center"
-    >
-        <h1 class="text-2xl">{{ currentChatStore.currentRoom }}</h1>
-        <div class="relative">
-            <button
-                @click="isMembersDropdown = !isMembersDropdown"
-                class="flex items-center gap-2 hover:bg-white/10 px-2 py-1 rounded-md cursor-pointer"
-            >
-                <Icon icon="fluent:person-32-filled" class="text-3xl" />Members
-                <Icon
-                    icon="iconamoon:arrow-up-2-thin"
-                    class="text-3xl transform transition-all duration-300"
-                    :class="isMembersDropdown ? 'rotate-180' : ''"
-                />
-            </button>
-
-            <!-- dropdown -->
-            <MembersDropdown :isMembersDropdown="isMembersDropdown" />
-        </div>
-    </div>
-
     <div class="flex-col gap-4 pt-10 pr-4 overflow-y-scroll max-h-[84%]">
         <div
             v-if="currentChatStore.currentRoom"

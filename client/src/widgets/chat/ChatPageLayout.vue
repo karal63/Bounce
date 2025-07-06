@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ChatPage from "@/entities/chat/ui/Sidebar/index.vue";
-import ChatView from "@/entities/chat/ui/ChatView/index.vue";
+import ChatView from "@/features/chat-messages/ui/MessagesList.vue";
 import SendMessagePanel from "@/features/Chat/sendMessege/ui/index.vue";
 import { useLogout } from "@/features/auth/logout/useLogout";
 import { CreateOrJoinModal } from "@/features/Chat";

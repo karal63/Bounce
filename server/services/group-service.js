@@ -24,6 +24,11 @@ class GroupService {
             [name, ownerId, description]
         );
 
+        await db.query(
+            "INSERT INTO members (groupId, userId, role) VALUES (?, ?, ?)",
+            [rows.insertId, ownerId, "member"]
+        );
+
         const [newGroup] = await db.query("SELECT * FROM groups WHERE id = ?", [
             rows.insertId,
         ]);
