@@ -2,6 +2,9 @@
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import CreateButton from "./CreateButton.vue";
 import { useModalStore } from "@/features/create-or-join/model/modal.store";
+import CreateForm from "@/features/create-or-join/ui/CreateForm.vue";
+import JoinForm from "@/features/create-or-join/ui/JoinForm.vue";
+import FooterButtons from "@/features/create-or-join/ui/FooterButtons.vue";
 
 const modalStore = useModalStore();
 
@@ -15,7 +18,6 @@ const closeModal = () => {
 
 const setMode = (mode: string) => {
     modalStore.mode = mode;
-    console.log(modalStore.mode);
 };
 
 watch(
@@ -50,11 +52,11 @@ onMounted(() => {
             <div
                 v-show="showContent"
                 ref="contentRef"
-                class="transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl p-5 flex flex-col gap-3"
+                class="transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl flex flex-col gap-3"
                 :class="
                     modalStore.mode
-                        ? 'w-[400px] h-[400px]'
-                        : 'w-[400px] h-[200px]'
+                        ? 'w-[400px] h-[300px] px-7 pb-4'
+                        : 'w-[400px] h-[200px] p-5'
                 "
             >
                 <!-- Default button selection -->
@@ -69,24 +71,12 @@ onMounted(() => {
                         <h1
                             class="text-center text-2xl font-semibold mt-5 mb-2"
                         >
-                            {{ modalStore.mode }} server
+                            {{ modalStore.mode }} group
                         </h1>
 
-                        <div
-                            v-if="modalStore.mode === 'Join'"
-                            class="flex-col items-center"
-                        >
-                            <p
-                                class="text-sm text-white/70 text-center max-w-3/4"
-                            >
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Atque doloribus
-                            </p>
-
-                            <input
-                                type="text"
-                                class="border border-mainDarkBg"
-                            />
+                        <div class="flex-col items-center h-full">
+                            <JoinForm v-if="modalStore.mode === 'Join'" />
+                            <CreateForm v-else />
                         </div>
                     </div>
                 </template>

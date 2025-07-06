@@ -1,3 +1,5 @@
+const { validationResult } = require("express-validator");
+const ApiError = require("../exceptions/api-error");
 const GroupService = require("../services/group-service");
 
 const group = new GroupService();
@@ -10,7 +12,21 @@ class GroupController {
             res.status(200).json(groups);
         } catch (error) {
             console.log(error);
-            next();
+            next(error);
+        }
+    }
+
+    async createGroup(req, res, next) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return next(ApiError.BadRequest("Validation error."));
+            }
+            const { name, ownerId, description } = req.body;
+            const newGroup = await group.create(name, ownerId, description);
+            res.status(200).json(newGroup);
+        } catch (error) {
+            next(error);
         }
     }
 }
