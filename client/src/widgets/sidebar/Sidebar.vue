@@ -7,12 +7,14 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import { useGetMessages } from "@/features/chat-messages/model/useGetMessages";
 import { useGetMembers } from "@/features/chat-members/model/useGetMembers";
 import { useGetGroups } from "@/features/chat-groups/model/useGetGroups";
+import { useModalStore } from "@/features/create-or-join/model/modal.store";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
 const { getMembers } = useGetMembers();
 const { getGroups } = useGetGroups();
+const modal = useModalStore();
 
 const emit = defineEmits<{
     (event: "logout"): void;
@@ -43,14 +45,17 @@ onMounted(async () => {
                 <div class="bg-purple-500 w-6 h-2 rounded-xl ml-1"></div>
             </button>
 
+            <!-- chats -->
+            <h1 class="text-3xl font-light mt-10 mb-5">Chats</h1>
+
             <button
-                class="mt-10 mb-5 border border-purple-400 w-full text-lg rounded-md py-2 bg-purple-950 cursor-pointer"
+                @click="modal.isModalOpen = true"
+                class="w-full bg-mainHoverDarkBg border border-mainBorder py-3 px-3 rounded-xl cursor-pointer gap-2 transition-all flex justify-between items-center"
             >
                 Add Chat
+                <Icon icon="iconoir:plus" class="text-purple-400 text-2xl" />
             </button>
 
-            <!-- chats -->
-            <h1 class="text-3xl font-light">Chats</h1>
             <ul
                 class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
             >

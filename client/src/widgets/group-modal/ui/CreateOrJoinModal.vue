@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { ref } from "vue";
 import CreateButton from "./CreateButton.vue";
-import { useModalStore } from "../model/modal.store";
+import { useModalStore } from "@/features/create-or-join/model/modal.store";
 
 const modalStore = useModalStore();
 
 const contentRef = ref<HTMLElement | null>(null);
 
-const closeModal = (e) => {
-    if (!contentRef.value?.contains(e.target)) {
+const closeModal = (e: MouseEvent) => {
+    if (!contentRef.value?.contains(e.target as HTMLElement)) {
         modalStore.isModalOpen = false;
-        console.log(e.target);
-        console.log(contentRef.value);
     }
 };
 </script>

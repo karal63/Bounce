@@ -1,1 +1,1 @@
-export { default as CreateOrJoinModal } from "./create-or-join/ui/CreateOrJoinModal.vue";
+export { default as CreateOrJoinModal } from "../widgets/group-modal/ui/CreateOrJoinModal.vue";
