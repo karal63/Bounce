@@ -14,7 +14,6 @@ import ChatTopBar from "@/widgets/chat-top-bar/ui/ChatTopBar.vue";
             <MessagesList />
             <MessageInputBlock />
         </div>
-        <!-- <MembersList /> -->
 
         <!-- modal -->
         <CreateOrJoinModal />
@@ -22,12 +21,10 @@ import ChatTopBar from "@/widgets/chat-top-bar/ui/ChatTopBar.vue";
 </template>
 
 <!-- // END POINT HERE -->
-<!-- // 7. Replace groups list with real group list from features -->
 
 <!-- To complete -->
 <!-- Learn transitions in vue -->
 <!-- Emits to know for 100% -->
 
-<!-- create create group api in shared folder (or ask where IN NEW CHAT) -->
-<!-- connect use function with api -->
+<!--  !!! create create group api in shared folder (or ask where IN NEW CHAT) -->
 <!-- fix logout -->

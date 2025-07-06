@@ -8,6 +8,7 @@ import { useGetMessages } from "@/features/chat-messages/model/useGetMessages";
 import { useGetMembers } from "@/features/chat-members/model/useGetMembers";
 import { useGetGroups } from "@/features/chat-groups/model/useGetGroups";
 import { useModalStore } from "@/features/create-or-join/model/modal.store";
+import { useLogout } from "@/features/auth/logout/useLogout";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
@@ -15,10 +16,7 @@ const { getMessages } = useGetMessages();
 const { getMembers } = useGetMembers();
 const { getGroups } = useGetGroups();
 const modal = useModalStore();
-
-const emit = defineEmits<{
-    (event: "logout"): void;
-}>();
+const { logout } = useLogout();
 
 const setGroup = async (room: number) => {
     currentChatStore.currentRoom = room;
@@ -72,6 +70,6 @@ onMounted(async () => {
         </div>
 
         <!-- menu context -->
-        <ProfileBar @logout="emit('logout')" />
+        <ProfileBar @logout="logout" />
     </div>
 </template>
