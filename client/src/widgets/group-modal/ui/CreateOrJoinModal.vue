@@ -74,14 +74,19 @@ onMounted(() => {
 
                         <div
                             v-if="modalStore.mode === 'Join'"
-                            class="flex justify-center"
+                            class="flex-col items-center"
                         >
                             <p
-                                class="text-sm text-grayDull text-center max-w-3/4"
+                                class="text-sm text-white/70 text-center max-w-3/4"
                             >
                                 Lorem ipsum dolor sit amet consectetur
                                 adipisicing elit. Atque doloribus
                             </p>
+
+                            <input
+                                type="text"
+                                class="border border-mainDarkBg"
+                            />
                         </div>
                     </div>
                 </template>

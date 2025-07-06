@@ -21,3 +21,7 @@ import CreateOrJoinModal from "@/widgets/group-modal/ui/CreateOrJoinModal.vue";
 <!-- // END POINT HERE -->
 <!-- // 6. commit: 'refactor: move types to entities, change features folder structure' -->
 <!-- // 7. Replace groups list with real group list from features -->
+
+<!-- To complete -->
+<!-- Learn transitions in vue -->
+<!-- Emits to know for 100% -->

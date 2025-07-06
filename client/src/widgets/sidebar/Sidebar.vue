@@ -60,7 +60,7 @@ onMounted(async () => {
             >
                 <li
                     v-for="group of currentChatStore.groups"
-                    @click="setGroup(1)"
+                    @click="setGroup(group.id)"
                     class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
                 >
                     <Icon
