@@ -19,10 +19,13 @@ const modal = useModalStore();
 const { logout } = useLogout();
 
 const setGroup = async (room: number) => {
+    socket.emit("set-group", {
+        prevRoom: currentChatStore.currentRoom,
+        newRoom: room,
+    });
     currentChatStore.currentRoom = room;
     currentChatStore.messages = await getMessages();
     currentChatStore.members = await getMembers();
-    socket.emit("set-group", room);
 };
 
 onMounted(async () => {

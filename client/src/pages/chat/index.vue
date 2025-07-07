@@ -26,5 +26,4 @@ import ChatTopBar from "@/widgets/chat-top-bar/ui/ChatTopBar.vue";
 <!-- Learn transitions in vue -->
 <!-- Emits to know for 100% -->
 
-<!--  !!! create create group api in shared folder (or ask where IN NEW CHAT) -->
-<!-- fix logout -->
+<!-- delete socket when swithing group -->
