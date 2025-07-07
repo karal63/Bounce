@@ -53,4 +53,11 @@ router.get("/groups/:userId", verifyToken, (req, res, next) =>
     group.getGroups(req, res, next)
 );
 
+router.post(
+    "/create-group",
+    body("name").isLength({ min: 3, max: 25 }),
+    verifyToken,
+    (req, res, next) => group.createGroup(req, res, next)
+);
+
 module.exports = router;

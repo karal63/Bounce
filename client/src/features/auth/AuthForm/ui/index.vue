@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import SocialLinks from "@/features/auth/AuthForm/ui/SocialLinks.vue";
-import LoginFields from "@/features/auth/AuthForm/ui/LoginFields.vue";
-import SignupFields from "@/features/auth/AuthForm/ui/SignupFields.vue";
-import { useAuthStore } from "@/features/auth/model/authStore";
+import SocialLinks from "./SocialLinks.vue";
+import LoginFields from "./LoginFields.vue";
+import SignupFields from "./SignupFields.vue";
+import { useAuthStore } from "@/features/auth/model/index";
 import { Icon } from "@iconify/vue";
-import type { AuthUser } from "@/features/auth/model/types/authUser";
+import type { AuthUser } from "@/features/auth/model/index";
 
 const authStore = useAuthStore();
 

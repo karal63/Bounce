@@ -1,8 +1,8 @@
-import { apiLogin } from "@/features/auth/login/apiLogin";
-import type { AuthUser } from "@/features/auth/model/types/authUser";
-import { useAuthStore } from "@/features/auth/model/authStore";
 import { AxiosError } from "axios";
 import { useRouter } from "vue-router";
+import { apiLogin } from "@/features/auth/login/index";
+import type { AuthUser } from "@/features/auth/model/index";
+import { useAuthStore } from "@/features/auth/model/index";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 

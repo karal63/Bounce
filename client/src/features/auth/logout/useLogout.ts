@@ -1,6 +1,6 @@
-import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useRouter } from "vue-router";
-import { apiLogout } from "./apiLogout";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { apiLogout } from "@/features/auth/logout/index";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 

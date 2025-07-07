@@ -1,5 +1,0 @@
-// only requests and what is related to them
-// ex. createNewUser.ts
-// CRUD operations
-
-api but for data, that corespondes to static component like post or something we cant do with

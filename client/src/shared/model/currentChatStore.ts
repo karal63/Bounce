@@ -1,8 +1,8 @@
 // you have to move those types into shared folder
-import type { MemberWithName } from "@/entities/Chat/model/types/Member";
-import type { MessageWithName } from "@/features/Chat/sendMessege/model/types/Message";
-import { defineStore } from "pinia";
 import { ref } from "vue";
+import { defineStore } from "pinia";
+import type { MemberWithName } from "@/shared/types/Member";
+import type { MessageWithName } from "@/shared/types/Message";
 import type { Group } from "@/shared/types/Group";
 
 export const useCurrentChatStore = defineStore("currentChat", () => {
