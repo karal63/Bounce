@@ -1,6 +1,6 @@
-import { axiosInstance } from "@/shared/config/axiosInstance";
-import type { SignupProps } from "@/shared/types/auth";
 import { type AxiosResponse } from "axios";
+import { axiosInstance } from "@/shared/config/axiosInstance";
+import type { SignupProps } from "@/features/auth/model/index";
 
 export const apiSignup = async ({
     email,

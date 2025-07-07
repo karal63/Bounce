@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { computed } from "vue";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+
 const currentChatStore = useCurrentChatStore();
 
 const getGroupName = computed(() => {

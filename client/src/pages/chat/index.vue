@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Sidebar from "@/widgets/sidebar/Sidebar.vue";
-import MessageInputBlock from "@/widgets/message-input-block/ui/index.vue";
-import CreateOrJoinModal from "@/widgets/group-modal/ui/CreateOrJoinModal.vue";
-import MessagesList from "@/features/chat-messages/ui/MessagesList.vue";
-import ChatTopBar from "@/widgets/chat-top-bar/ui/ChatTopBar.vue";
+import { Sidebar } from "@/widgets/sidebar";
+import { MessageInputBlock } from "@/widgets/message-input-block";
+import { CreateOrJoinModal } from "@/widgets/group-modal";
+import { MessagesList } from "@/features/chat-messages";
+import { ChatTopBar } from "@/widgets/chat-top-bar";
 </script>
 
 <template>
@@ -27,3 +27,6 @@ import ChatTopBar from "@/widgets/chat-top-bar/ui/ChatTopBar.vue";
 <!-- Emits to know for 100% -->
 
 <!-- delete socket when swithing group -->
+<!-- set linter to block imports not from public api -->
+
+<!-- move types from entities and features back because you use it in shared -->

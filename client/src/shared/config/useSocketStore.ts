@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
 import type { Socket } from "socket.io-client";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 let socket: Socket;
 

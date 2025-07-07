@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import CreateButton from "./CreateButton.vue";
-import { useModalStore } from "@/features/create-or-join/model/modal.store";
-import CreateForm from "@/features/create-or-join/ui/CreateForm.vue";
-import JoinForm from "@/features/create-or-join/ui/JoinForm.vue";
+import { useModalStore } from "@/features/create-or-join";
+import { CreateForm } from "@/features/create-or-join";
+import { JoinForm } from "@/features/create-or-join";
 
 const modalStore = useModalStore();
 

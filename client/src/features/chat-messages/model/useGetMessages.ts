@@ -1,6 +1,6 @@
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { apiGetMessages } from "@/shared/api/message/getMessages";
-import type { MessageWithName } from "@/entities/message/model/types";
+import type { MessageWithName } from "@/entities/message";
 
 export const useGetMessages = () => {
     const currentChatStore = useCurrentChatStore();

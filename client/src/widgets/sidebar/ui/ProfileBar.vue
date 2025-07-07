@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { sidebarStore } from "../model/sidebarStore";
 import { Icon } from "@iconify/vue";
-import ProfileContext from "./ProfileContext.vue";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { sidebarStore } from "../model/sidebarStore";
+import ProfileContext from "./ProfileContext.vue";
 
 const sidebar = sidebarStore();
 const sessionStore = useSessionStore();

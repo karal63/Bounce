@@ -1,5 +1,5 @@
-import type { ReadyMessage } from "@/features/Chat/sendMessege/model/types/Message";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import type { ReadyMessage } from "@/entities/message";
 
 export const checkPerson = (message: ReadyMessage) => {
     const sessionStore = useSessionStore();

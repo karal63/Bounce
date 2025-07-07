@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { Icon } from "@iconify/vue";
-import ProfileBar from "@/widgets/sidebar/ui/ProfileBar.vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { useGetMessages } from "@/features/chat-messages/model/useGetMessages";
-import { useGetMembers } from "@/features/chat-members/model/useGetMembers";
-import { useGetGroups } from "@/features/chat-groups/model/useGetGroups";
-import { useModalStore } from "@/features/create-or-join/model/modal.store";
-import { useLogout } from "@/features/auth/logout/useLogout";
+import ProfileBar from "./ui/ProfileBar.vue";
+import { useGetMessages } from "@/features/chat-messages";
+import { useGetMembers } from "@/features/chat-members";
+import { useGetGroups } from "@/features/chat-groups";
+import { useModalStore } from "@/features/create-or-join";
+import { useLogout } from "@/features/auth/logout";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();

@@ -1,8 +1,8 @@
-import { apiSignup } from "@/features/auth/signup/apiSignup";
-import type { AuthUser } from "@/features/auth/model/types/authUser";
-import { useAuthStore } from "@/features/auth/model/authStore";
-import { AxiosError } from "axios";
 import { useRouter } from "vue-router";
+import { AxiosError } from "axios";
+import { apiSignup } from "@/features/auth/signup/index";
+import type { AuthUser } from "@/features/auth/model/index";
+import { useAuthStore } from "@/features/auth/model/index";
 
 export const useSignup = () => {
     const authStore = useAuthStore();

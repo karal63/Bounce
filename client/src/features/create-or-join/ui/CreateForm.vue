@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useModalStore } from "../model/modal.store";
-import { useCreateGroup } from "../model/useCreateGroup";
+import { useModalStore } from "../";
+import { useCreateGroup } from "../";
 const modalStore = useModalStore();
 const { createGroup } = useCreateGroup();
 

@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useSocket } from "@/shared/config/useSocketStore";
-import { ref } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { Icon } from "@iconify/vue";
-import { checkPerson } from "@/features/chat-messages/lib/checkPerson";
+import { checkPerson } from "@/features/chat-messages";
 // import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
-import type { MessageWithName } from "@/entities/message/model/types";
+import type { MessageWithName } from "@/entities/message";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();

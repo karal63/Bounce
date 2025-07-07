@@ -1,6 +1,6 @@
-import { apiGetGroups } from "@/shared/api/group/getGroups";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { apiGetGroups } from "@/shared/api/group/getGroups";
 
 export const useGetGroups = () => {
     const sessionStore = useSessionStore();
