@@ -26,7 +26,6 @@ import { ChatTopBar } from "@/widgets/chat-top-bar";
 <!-- Learn transitions in vue -->
 <!-- Emits to know for 100% -->
 
-<!-- delete socket when swithing group -->
 <!-- set linter to block imports not from public api -->
 
 <!-- move types from entities and features back because you use it in shared -->

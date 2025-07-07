@@ -1,9 +1,9 @@
 // you have to move those types into shared folder
-import type { MemberWithName } from "@/entities/member/model/types";
-import type { MessageWithName } from "@/entities/message/model/types";
-import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { Group } from "@/entities/group/model/types";
+import { defineStore } from "pinia";
+import type { MemberWithName } from "@/shared/types/Member";
+import type { MessageWithName } from "@/shared/types/Message";
+import type { Group } from "@/shared/types/Group";
 
 export const useCurrentChatStore = defineStore("currentChat", () => {
     const currentRoom = ref<number | null>(null);

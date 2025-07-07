@@ -1,4 +1,4 @@
-import type { Group } from "@/entities/group/model/types";
+import type { Group } from "@/shared/types/Group";
 import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
 import type { AxiosResponse } from "axios";
 
