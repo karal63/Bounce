@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import CreateButton from "./CreateButton.vue";
 import { useModalStore } from "@/features/create-or-join";
 import { CreateForm } from "@/features/create-or-join";
@@ -16,6 +16,7 @@ const closeModal = () => {
 };
 
 const setMode = (mode: string) => {
+    console.log(mode);
     modalStore.mode = mode;
 };
 
@@ -34,10 +35,6 @@ watch(
 
 onUnmounted(() => {
     modalStore.mode = "";
-});
-
-onMounted(() => {
-    console.log(modalStore.mode);
 });
 </script>
 
@@ -66,16 +63,16 @@ onMounted(() => {
 
                 <!-- Expanded mode content (placeholder) -->
                 <template v-else>
-                    <div>
+                    <div class="h-full flex-col">
                         <h1
                             class="text-center text-2xl font-semibold mt-5 mb-2"
                         >
                             {{ modalStore.mode }} group
                         </h1>
 
-                        <div class="flex-col items-center h-full">
-                            <JoinForm v-if="modalStore.mode === 'Join'" />
-                            <CreateForm v-else />
+                        <div class="h-full">
+                            <CreateForm v-if="modalStore.mode === 'Create'" />
+                            <JoinForm v-else-if="modalStore.mode === 'Join'" />
                         </div>
                     </div>
                 </template>
