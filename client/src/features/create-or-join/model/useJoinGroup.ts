@@ -1,26 +1,22 @@
-import { apiCreateGroup } from "@/shared/api/group/createGroup";
+import { apiJoinGroup } from "@/shared/api/group/joinGroup";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { useModalStore } from "./modal.store";
 import { AxiosError } from "axios";
+import { useModalStore } from "./modal.store";
 
-export const useCreateGroup = () => {
-    const sessionStore = useSessionStore();
+export const useJoinGroup = () => {
     const currentChatStore = useCurrentChatStore();
+    const sessionStore = useSessionStore();
     const modalStore = useModalStore();
 
-    const createGroup = async (groupName: string) => {
+    const join = async (link: string) => {
         try {
             if (!sessionStore.user?.id) return;
-            const newGroup = await apiCreateGroup(
-                groupName,
-                sessionStore.user?.id,
-                ""
-            );
+            const joinedGroup = await apiJoinGroup(link, sessionStore.user?.id);
+
             modalStore.isModalOpen = false;
             modalStore.mode = "";
-
-            currentChatStore.groups.push(newGroup.data);
+            currentChatStore.groups.push(joinedGroup.data);
         } catch (error) {
             if (
                 error instanceof AxiosError &&
@@ -34,5 +30,5 @@ export const useCreateGroup = () => {
         }
     };
 
-    return { createGroup };
+    return { join };
 };

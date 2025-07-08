@@ -60,4 +60,8 @@ router.post(
     (req, res, next) => group.createGroup(req, res, next)
 );
 
+router.post("/join-group/:link", verifyToken, (req, res, next) =>
+    group.joinGroup(req, res, next)
+);
+
 module.exports = router;

@@ -13,6 +13,7 @@ const showContent = ref(false);
 const closeModal = () => {
     modalStore.isModalOpen = false;
     modalStore.mode = "";
+    modalStore.error = "";
 };
 
 const setMode = (mode: string) => {

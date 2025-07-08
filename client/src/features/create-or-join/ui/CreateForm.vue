@@ -8,8 +8,6 @@ const { createGroup } = useCreateGroup();
 const groupName = ref("");
 
 const handleSubmit = () => {
-    modalStore.isModalOpen = false;
-    modalStore.mode = "";
     createGroup(groupName.value);
 };
 </script>
@@ -22,17 +20,34 @@ const handleSubmit = () => {
                 doloribus
             </p>
 
-            <div class="mt-10">
+            <div class="mt-10 flex-col relative">
+                <span class="text-sm mb-1 text-white/70 pl-3">group name:</span>
                 <input
                     v-model="groupName"
                     type="text"
-                    class="px-3 py-2 text-lg border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                    class="w-[300px] px-3 py-3 border rounded-md focus:outline-none focus:ring-2 focus:border-white/10 focus:ring-purple-500 transition"
+                    :class="
+                        modalStore.error ? 'border-red-500' : 'border-white/10'
+                    "
+                    placeholder="your-group-name"
                 />
+                <p
+                    v-if="modalStore.error"
+                    class="absolute -bottom-2 right-3 text-[.8rem] bg-mainBorder px-2"
+                >
+                    {{ modalStore.error }}
+                </p>
             </div>
         </div>
 
         <div class="flex items-center justify-between">
-            <button @click="modalStore.mode = ''" class="cursor-pointer">
+            <button
+                @click="
+                    modalStore.mode = '';
+                    modalStore.error = '';
+                "
+                class="cursor-pointer"
+            >
                 Back
             </button>
             <button

@@ -1,3 +1,4 @@
+const { nanoid } = require("nanoid");
 const db = require("../db");
 const ApiError = require("../exceptions/api-error");
 
@@ -19,9 +20,11 @@ class GroupService {
             throw ApiError.BadRequest("Name already exists.");
         }
 
+        const invitationLink = nanoid(8);
+
         const [rows] = await db.query(
-            "INSERT INTO groups (name, ownerId, description) VALUES (?, ?, ?)",
-            [name, ownerId, description]
+            "INSERT INTO groups (name, ownerId, description, invitationLink) VALUES (?, ?, ?, ?)",
+            [name, ownerId, description, invitationLink]
         );
 
         await db.query(
@@ -33,6 +36,31 @@ class GroupService {
             rows.insertId,
         ]);
         return newGroup[0];
+    }
+
+    async join(link, userId) {
+        const [matchingGroupRows] = await db.query(
+            "SELECT * FROM groups WHERE invitationLink = ?",
+            [link]
+        );
+        const isValidLink = matchingGroupRows.length > 0;
+        if (!isValidLink) throw ApiError.BadRequest("Link is not valid");
+
+        const groupId = matchingGroupRows[0].id;
+
+        const [membersRows] = await db.query(
+            "SELECT userId FROM members WHERE groupId = ? AND userId = ?",
+            [groupId, userId]
+        );
+
+        if (membersRows.length !== 0)
+            throw ApiError.BadRequest("User already exists in this group.");
+
+        await db.query(
+            "INSERT INTO members (groupId, userId, role) VALUES (?, ?, ?)",
+            [groupId, userId, "member"]
+        );
+        return matchingGroupRows[0];
     }
 }
 

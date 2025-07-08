@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useModalStore } from "../";
+import { useJoinGroup } from "../model/useJoinGroup";
 const modalStore = useModalStore();
+const { join } = useJoinGroup();
 
 const groupLink = ref("");
 
-const handleSubmit = () => {
-    modalStore.isModalOpen = false;
-    modalStore.mode = "";
-    // add group
+const handleSubmit = async () => {
+    await join(groupLink.value);
 };
 </script>
 
@@ -20,19 +20,36 @@ const handleSubmit = () => {
                 doloribus
             </p>
 
-            <div class="mt-10 flex-col items-center">
-                <span class="text-sm mb-1 text-white/70">Join link</span>
+            <div class="mt-10 flex-col relative">
+                <span class="text-sm mb-1 text-white/70 pl-3"
+                    >invitation link:</span
+                >
                 <input
                     v-model="groupLink"
                     type="text"
-                    class="w-[300px] px-3 py-3 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                    class="w-[300px] px-3 py-3 border rounded-md focus:outline-none focus:ring-2 focus:border-white/10 focus:ring-purple-500 transition"
+                    :class="
+                        modalStore.error ? 'border-red-500' : 'border-white/10'
+                    "
                     placeholder="http://localhost:5173/AFs2w41l"
                 />
+                <p
+                    v-if="modalStore.error"
+                    class="absolute -bottom-2 right-3 text-[.8rem] bg-mainBorder px-2"
+                >
+                    {{ modalStore.error }}
+                </p>
             </div>
         </div>
 
         <div class="flex items-center justify-between">
-            <button @click="modalStore.mode = ''" class="cursor-pointer">
+            <button
+                @click="
+                    modalStore.mode = '';
+                    modalStore.error = '';
+                "
+                class="cursor-pointer"
+            >
                 Back
             </button>
             <button

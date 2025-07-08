@@ -11,7 +11,6 @@ class GroupController {
             const groups = await group.get(userId);
             res.status(200).json(groups);
         } catch (error) {
-            console.log(error);
             next(error);
         }
     }
@@ -26,6 +25,18 @@ class GroupController {
             const newGroup = await group.create(name, ownerId, description);
             res.status(200).json(newGroup);
         } catch (error) {
+            next(error);
+        }
+    }
+
+    async joinGroup(req, res, next) {
+        try {
+            const { link } = req.params;
+            const { userId } = req.body;
+            const newGroup = await group.join(link, userId);
+            res.status(200).json(newGroup);
+        } catch (error) {
+            console.log(error);
             next(error);
         }
     }
