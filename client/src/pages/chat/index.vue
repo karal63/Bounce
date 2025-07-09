@@ -4,6 +4,7 @@ import { MessageInputBlock } from "@/widgets/message-input-block";
 import { CreateOrJoinModal } from "@/widgets/group-modal";
 import { MessagesList } from "@/features/chat-messages";
 import { ChatTopBar } from "@/widgets/chat-top-bar";
+import { GroupShareModal } from "@/features/group-share-link";
 </script>
 
 <template>
@@ -17,6 +18,7 @@ import { ChatTopBar } from "@/widgets/chat-top-bar";
 
         <!-- modal -->
         <CreateOrJoinModal />
+        <GroupShareModal />
     </div>
 </template>
 

@@ -5,4 +5,5 @@ export type Group = {
     createdAt: Date;
     isPrivate: boolean;
     description: string;
+    invitationLink: string;
 };

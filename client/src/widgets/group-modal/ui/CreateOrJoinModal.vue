@@ -4,6 +4,7 @@ import CreateButton from "./CreateButton.vue";
 import { useModalStore } from "@/features/create-or-join";
 import { CreateForm } from "@/features/create-or-join";
 import { JoinForm } from "@/features/create-or-join";
+import ModalTransition from "@/shared/ui/ModalTransition.vue";
 
 const modalStore = useModalStore();
 
@@ -45,7 +46,7 @@ onUnmounted(() => {
         @click.self="closeModal"
         class="absolute top-0 left-0 w-full h-full bg-black/40 flex items-center justify-center transition-opacity"
     >
-        <transition name="zoom-fade">
+        <ModalTransition name="zoom-fade">
             <div
                 v-show="showContent"
                 ref="contentRef"
@@ -78,8 +79,6 @@ onUnmounted(() => {
                     </div>
                 </template>
             </div>
-        </transition>
+        </ModalTransition>
     </div>
 </template>
-
-<style scoped src="./group-modal.animations.css"></style>

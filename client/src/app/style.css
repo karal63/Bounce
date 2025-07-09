@@ -25,6 +25,9 @@
     --color-mainDarkBg: #0e0e11;
     --color-mainHoverDarkBg: #17171c;
 
+    --color-mainGray: #4a5565;
+    --color-mainHoverOnGray: rgba(74, 85, 101, 0.3);
+
     --color-mainBorder: #242324;
     --color-grayDull: #4a5565;
     --color-secondary: #666666;
