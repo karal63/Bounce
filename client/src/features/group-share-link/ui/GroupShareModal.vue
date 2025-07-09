@@ -20,7 +20,7 @@ const closeModal = () => {
 
 const copyLink = () => {
     navigator.clipboard.writeText(
-        `http://localhost:5000/${getCurrentGroup()?.invitationLink}`
+        `http://localhost:5173/${getCurrentGroup()?.invitationLink}`
     );
     isCopied.value = true;
 };
@@ -63,7 +63,7 @@ watch(
                     <!-- ADD SHAPE FOR p and put button that will copy content -->
 
                     <p class="mt-5 border border-white/10 px-4 py-3 rounded-md">
-                        http://localhost:5000/{{ currentGroup?.invitationLink }}
+                        http://localhost:5173/{{ currentGroup?.invitationLink }}
                     </p>
 
                     <button

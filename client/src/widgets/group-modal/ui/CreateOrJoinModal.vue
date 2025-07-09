@@ -18,7 +18,6 @@ const closeModal = () => {
 };
 
 const setMode = (mode: string) => {
-    console.log(mode);
     modalStore.mode = mode;
 };
 

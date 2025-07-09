@@ -11,8 +11,13 @@ export const useJoinGroup = () => {
 
     const join = async (link: string) => {
         try {
+            const codeFromLink: string = link.split("/").pop()!;
+
             if (!sessionStore.user?.id) return;
-            const joinedGroup = await apiJoinGroup(link, sessionStore.user?.id);
+            const joinedGroup = await apiJoinGroup(
+                codeFromLink,
+                sessionStore.user?.id
+            );
 
             modalStore.isModalOpen = false;
             modalStore.mode = "";

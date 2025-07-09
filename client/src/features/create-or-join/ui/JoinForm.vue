@@ -8,6 +8,8 @@ const { join } = useJoinGroup();
 const groupLink = ref("");
 
 const handleSubmit = async () => {
+    if (!groupLink.value)
+        return (modalStore.error = "Invitation link input field is empty");
     await join(groupLink.value);
 };
 </script>
