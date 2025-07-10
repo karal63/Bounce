@@ -5,7 +5,7 @@ import ModalTransition from "./ModalTransition.vue";
 const emit = defineEmits<{
     (event: "closeModal"): void;
 }>();
-const props = defineProps<{
+defineProps<{
     event: string;
     storeState: boolean;
 }>();
@@ -27,7 +27,7 @@ onMounted(() => {
         <ModalTransition name="zoom-fade">
             <div
                 v-show="showContent"
-                class="w-[400px] h-[200px] transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl flex flex-col gap-3"
+                class="w-[400px] h-[260px] transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl flex flex-col gap-3"
             >
                 <h1 class="text-center text-2xl font-semibold mt-5 mb-2">
                     {{ event }}
