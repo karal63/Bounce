@@ -8,7 +8,9 @@ const deleteGroupStore = useDeleteGroupStore();
 <template>
     <DefaultModal
         v-if="deleteGroupStore.isDeleteModalOpen"
+        :storeState="deleteGroupStore.isDeleteModalOpen"
         @closeModal="deleteGroupStore.isDeleteModalOpen = false"
+        event="Delete group"
     >
         <div>123</div>
     </DefaultModal>

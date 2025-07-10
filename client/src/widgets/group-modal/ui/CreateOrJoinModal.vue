@@ -8,7 +8,6 @@ import ModalTransition from "@/shared/ui/ModalTransition.vue";
 
 const modalStore = useModalStore();
 
-const contentRef = ref<HTMLElement | null>(null);
 const showContent = ref(false);
 
 const closeModal = () => {
@@ -48,7 +47,6 @@ onUnmounted(() => {
         <ModalTransition name="zoom-fade">
             <div
                 v-show="showContent"
-                ref="contentRef"
                 class="transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl flex flex-col gap-3"
                 :class="
                     modalStore.mode
