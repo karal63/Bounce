@@ -64,4 +64,8 @@ router.post("/join-group/:link", verifyToken, (req, res, next) =>
     group.joinGroup(req, res, next)
 );
 
+router.delete("/delete-group", verifyToken, (req, res, next) =>
+    group.deleteGroup(req, res, next)
+);
+
 module.exports = router;

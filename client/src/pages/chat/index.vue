@@ -5,6 +5,7 @@ import { CreateOrJoinModal } from "@/widgets/group-modal";
 import { MessagesList } from "@/features/chat-messages";
 import { ChatTopBar } from "@/widgets/chat-top-bar";
 import { GroupShareModal } from "@/features/group-share-link";
+import DeleteGroupModal from "@/features/delete-group/ui/DeleteGroupModal.vue";
 </script>
 
 <template>
@@ -19,6 +20,7 @@ import { GroupShareModal } from "@/features/group-share-link";
         <!-- modal -->
         <CreateOrJoinModal />
         <GroupShareModal />
+        <DeleteGroupModal />
     </div>
 </template>
 
@@ -31,3 +33,4 @@ import { GroupShareModal } from "@/features/group-share-link";
 <!-- set linter to block imports not from public api -->
 
 <!-- move types from entities and features back because you use it in shared -->
+<!-- add useClickOutside hook -->

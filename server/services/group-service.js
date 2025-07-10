@@ -62,6 +62,28 @@ class GroupService {
         );
         return matchingGroupRows[0];
     }
+
+    async delete(groupId, userDto) {
+        const [userRows] = await db.query(
+            "SELECT * FROM users WHERE email = ?",
+            [userDto.email]
+        );
+        const user = userRows[0];
+
+        const [groupRows] = await db.query(
+            "SELECT * FROM groups WHERE id = ? AND ownerId = ?",
+            [groupId, user.id]
+        );
+        if (groupRows.length === 0)
+            throw ApiError.BadRequest(
+                "You have no permission to delete this group."
+            );
+
+        await db.query("DELETE FROM groups WHERE id = ? AND ownerId = ?", [
+            groupId,
+            user.id,
+        ]);
+    }
 }
 
 module.exports = GroupService;

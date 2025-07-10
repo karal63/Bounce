@@ -40,6 +40,18 @@ class GroupController {
             next(error);
         }
     }
+
+    async deleteGroup(req, res, next) {
+        try {
+            const { groupId } = req.body;
+            await group.delete(groupId, req.user);
+
+            res.status(200).json("group deleted");
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
 }
 
 module.exports = GroupController;
