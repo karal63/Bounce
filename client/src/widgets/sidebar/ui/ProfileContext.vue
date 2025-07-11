@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRef, type Ref } from "vue";
 import { sidebarStore } from "../model/sidebarStore";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 const sidebar = sidebarStore();
 
-const contextRef = ref<HTMLElement | null>(null);
+const props = defineProps<{ buttonRef: Ref<HTMLElement | null> }>();
+
+const buttonRef = toRef(props, "buttonRef");
 
 const emit = defineEmits<{
     (event: "logout"): void;
 }>();
 
-useClickOutside(contextRef, () => {
-    sidebar.isProfileContextOpen = false;
-});
+const contextRef = ref<HTMLElement | null>(null);
+
+useClickOutside(
+    contextRef,
+    () => {
+        sidebar.isProfileContextOpen = false;
+    },
+    buttonRef
+);
 </script>
 
 <template>

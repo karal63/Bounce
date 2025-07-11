@@ -3,9 +3,11 @@ import { Icon } from "@iconify/vue";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { sidebarStore } from "../model/sidebarStore";
 import ProfileContext from "./ProfileContext.vue";
+import { ref, watchEffect } from "vue";
 
 const sidebar = sidebarStore();
 const sessionStore = useSessionStore();
+const buttonRef = ref<HTMLElement | null>(null);
 
 const emit = defineEmits<{
     (event: "logout"): void;
@@ -17,6 +19,7 @@ const emit = defineEmits<{
         class="border border-mainBorder shadow-purple-400 shadow-xl relative rounded-xl"
     >
         <div
+            ref="buttonRef"
             @click="
                 sidebar.isProfileContextOpen = !sidebar.isProfileContextOpen
             "
@@ -37,6 +40,10 @@ const emit = defineEmits<{
             <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
         </div>
 
-        <ProfileContext @logout="emit('logout')" />
+        <ProfileContext
+            v-if="buttonRef"
+            :buttonRef="buttonRef"
+            @logout="emit('logout')"
+        />
     </div>
 </template>
