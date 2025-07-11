@@ -11,8 +11,7 @@ export const useClickOutside = (
         const clickTarget = e.target as Node;
 
         const clickedOutsideTarget = !targetEl?.contains(clickTarget);
-        const clickedOutsideSecond =
-            !secondEl || !secondEl.contains(clickTarget);
+        const clickedOutsideSecond = !secondEl?.contains(clickTarget);
 
         if (clickedOutsideTarget && clickedOutsideSecond) {
             callback(e);
