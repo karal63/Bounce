@@ -8,6 +8,7 @@ export const useDeleteGroup = () => {
     const deleteGroup = async () => {
         // make request
         // filter array
+        // think about how to separate delete and join buttons and functionalities
 
         try {
             if (!deleteGroupStore.contextGroup?.id) return;

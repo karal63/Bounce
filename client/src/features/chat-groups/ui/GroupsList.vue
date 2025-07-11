@@ -36,8 +36,8 @@ const setGroup = async (room: number) => {
 };
 
 const handleClick = (e: MouseEvent) => {
-    context.value.isVisible = !context.value.isVisible;
-    const ulElement = e.currentTarget;
+    context.value.isVisible = true;
+    const ulElement = e.currentTarget as HTMLElement;
     const rect = ulElement?.getBoundingClientRect();
     context.value = {
         ...context.value,

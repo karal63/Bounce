@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import type { ContextGroup } from "../model/types";
+import { ref } from "vue";
 
 defineProps<{
     context: ContextGroup;
@@ -10,18 +12,21 @@ const emit = defineEmits<{
     (event: "openDeleteModal"): void;
 }>();
 
+const contextRef = ref<HTMLElement | null>(null);
+
 const deleteGroup = () => {
     emit("openDeleteModal");
     emit("closeContext");
 };
-// you cant import feature in feature so do smth with deleteGroupStore
-// add ui for confirm window of deleting group
-// connect to server
-// think about leaving group, not deleting (depends of user role in this group)
+
+useClickOutside(contextRef, () => {
+    emit("closeContext");
+});
 </script>
 
 <template>
     <div
+        ref="contextRef"
         v-if="context.isVisible"
         class="absolute w-30 bg-mainDarkBg border border-mainHoverOnGray rounded-md py-1"
         :style="{ top: `${context.posY}px`, left: `${context.posX}px` }"
