@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(
     cors({
         origin: [process.env.CLIENT_HOST, "https://admin.socket.io/"],
-        methods: ["GET", "POST"],
+        methods: ["GET", "POST", "DELETE"],
         credentials: true,
     })
 );
@@ -24,7 +24,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: [process.env.CLIENT_HOST, "https://admin.socket.io"],
-        methods: ["GET", "POST"],
+        methods: ["GET", "POST", "DELETE"],
         credentials: true,
     },
 });

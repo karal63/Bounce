@@ -5,6 +5,7 @@ import type { Group } from "@/shared/types/Group";
 export const useDeleteGroupStore = defineStore("deleteGroupStore", () => {
     const isDeleteModalOpen = ref(false);
     const contextGroup = ref<Group>();
+    const error = ref("");
 
-    return { isDeleteModalOpen, contextGroup };
+    return { isDeleteModalOpen, contextGroup, error };
 });

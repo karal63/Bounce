@@ -43,7 +43,7 @@ class GroupController {
 
     async deleteGroup(req, res, next) {
         try {
-            const { groupId } = req.body;
+            const { groupId } = req.params;
             await group.delete(groupId, req.user);
 
             res.status(200).json("group deleted");
