@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { Icon } from "@iconify/vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import ProfileBar from "./ui/ProfileBar.vue";
@@ -47,6 +47,7 @@ onMounted(async () => {
 
             <GroupsList
                 @openDeleteModal="deleteGroupStore.isDeleteModalOpen = true"
+                @setContextGroup="deleteGroupStore.contextGroup = $event"
             />
         </div>
 

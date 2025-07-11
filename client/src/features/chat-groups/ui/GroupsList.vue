@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Icon } from "@iconify/vue";
 import { useGetMessages } from "@/features/chat-messages";
 import { useGetMembers } from "@/features/chat-members";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import GroupContext from "./GroupContext.vue";
 import type { ContextGroup } from "../model/types";
+import SingleGroup from "./SingleGroup.vue";
+import type { Group } from "@/shared/types/Group";
 
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
@@ -15,6 +16,7 @@ const currentChatStore = useCurrentChatStore();
 
 const emit = defineEmits<{
     (event: "openDeleteModal"): void;
+    (event: "setContextGroup", group: Group): void;
 }>();
 
 const context = ref<ContextGroup>({
@@ -51,16 +53,12 @@ const handleClick = (e: MouseEvent) => {
             @contextmenu.prevent="handleClick"
             class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
         >
-            <li
+            <SingleGroup
                 v-for="group of currentChatStore.groups"
-                @click="setGroup(group.id)"
-                class="py-3 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"
-            >
-                <Icon
-                    icon="lets-icons:chat-light"
-                    class="text-3xl text-grayDull"
-                />{{ group.name }}
-            </li>
+                @setGroup="setGroup(group.id)"
+                @setContextGroup="emit('setContextGroup', $event)"
+                :group="group"
+            />
         </ul>
 
         <!-- context -->
