@@ -21,8 +21,22 @@ class MessageService {
 
     async getAll(groupId) {
         const [rows] = await db.query(
-            "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE groupId = ? ORDER BY messages.sentAt ASC;",
+            "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE groupId = ? AND isDeleted = false ORDER BY messages.sentAt ASC;",
             [groupId]
+        );
+        return rows;
+    }
+
+    async delete(messageId, userDto) {
+        const [userRows] = await db.query(
+            "SELECT * FROM users WHERE email = ?",
+            [userDto.email]
+        );
+        const user = userRows[0];
+
+        const [rows] = await db.query(
+            "UPDATE messages SET isDeleted = true WHERE messages.id = ? AND (senderId = ? OR ? IN (SELECT userId FROM members WHERE groupId = messages.groupId AND role IN ('admin', 'moderator')));",
+            [messageId, user.id, user.id]
         );
         return rows;
     }

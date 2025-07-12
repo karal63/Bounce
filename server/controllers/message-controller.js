@@ -12,7 +12,7 @@ class MessageController {
             res.status(200).json(message);
         } catch (error) {
             console.log(error);
-            next();
+            next(error);
         }
     }
 
@@ -22,7 +22,18 @@ class MessageController {
             const messages = await messageService.getAll(groupId);
             res.status(200).json(messages);
         } catch (error) {
-            next();
+            next(error);
+        }
+    }
+
+    async deleteMessage(req, res, next) {
+        try {
+            const { messageId } = req.params;
+            await messageService.delete(messageId, req.user);
+            res.status(200).json("message deleted");
+        } catch (error) {
+            console.log(error);
+            next(error);
         }
     }
 }

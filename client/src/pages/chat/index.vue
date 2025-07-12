@@ -14,8 +14,8 @@ import { MembersBar } from "@/widgets/members-bar";
         <Sidebar />
         <div class="relative ml-10 w-full flex-col">
             <ChatTopBar />
-            <div class="flex overflow-hidden h-full">
-                <div class="relative w-full h-full overflow-hidden">
+            <div class="flex h-full">
+                <div class="relative w-full h-full">
                     <MessagesList />
                     <MessageInputBlock />
                 </div>
