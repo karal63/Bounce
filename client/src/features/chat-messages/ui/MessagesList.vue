@@ -3,20 +3,46 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { checkPerson } from "@/features/chat-messages";
 // import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
-import type { MessageWithName } from "@/entities/message";
+import type { MessageWithName } from "@/shared/types/Message";
+import { onMounted, ref, watch } from "vue";
+import { Icon } from "@iconify/vue";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
-
-// const isMembersDropdown = ref(false);
+const listRef = ref<HTMLElement | null>(null);
+const isLoading = ref(false);
 
 socket.on("newMessage", (msg: MessageWithName) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
 });
+
+watch(
+    () => currentChatStore.currentRoom,
+    () => {
+        isLoading.value = true;
+        setTimeout(() => {
+            listRef.value?.scroll({
+                top: listRef.value.scrollHeight,
+            });
+            isLoading.value = false;
+        }, 20);
+    }
+);
 </script>
 
 <template>
-    <div class="flex-col gap-4 pt-10 pr-4 overflow-y-scroll max-h-[84%]">
+    <div
+        ref="listRef"
+        class="flex-col gap-4 pt-10 pr-4 overflow-y-auto max-h-[91%]"
+    >
+        <!-- loading -->
+        <div
+            v-if="isLoading"
+            class="absolute top-0 left-0 w-full h-[91%] flex-center bg-mainDarkBg"
+        >
+            <Icon icon="line-md:loading-loop" class="text-4xl" />
+        </div>
+
         <div
             v-if="currentChatStore.currentRoom"
             v-for="message of currentChatStore.messages"

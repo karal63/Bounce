@@ -12,12 +12,16 @@ import { MembersBar } from "@/widgets/members-bar";
 <template>
     <div class="text-white flex h-full py-5">
         <Sidebar />
-        <div class="relative ml-10 w-full">
+        <div class="relative ml-10 w-full flex-col">
             <ChatTopBar />
-            <MessagesList />
-            <MessageInputBlock />
+            <div class="flex overflow-hidden h-full">
+                <div class="relative w-full h-full overflow-hidden">
+                    <MessagesList />
+                    <MessageInputBlock />
+                </div>
+                <MembersBar />
+            </div>
         </div>
-        <MembersBar />
 
         <!-- modal -->
         <CreateOrJoinModal />

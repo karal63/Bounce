@@ -6,7 +6,6 @@ const uiStore = useUiStore();
 
 <template>
     <div v-if="uiStore.isMembersBarOpen" class="w-[300px] ml-5">
-        <div class="h-16"></div>
         <MembersList />
     </div>
 </template>
