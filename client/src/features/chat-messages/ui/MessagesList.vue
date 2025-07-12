@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { checkPerson } from "@/features/chat-messages";
-// import MembersDropdown from "@/entities/Chat/ui/ChatView/MembersDropdown.vue";
 import type { MessageWithName } from "@/shared/types/Message";
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
+import SingleMessage from "./SingleMessage.vue";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
@@ -31,45 +30,12 @@ watch(
 </script>
 
 <template>
-    <div
-        ref="listRef"
-        class="flex-col gap-4 pt-10 pr-4 overflow-y-auto max-h-[91%]"
-    >
-        <!-- loading -->
-        <div
-            v-if="isLoading"
-            class="absolute top-0 left-0 w-full h-[91%] flex-center bg-mainDarkBg"
-        >
-            <Icon icon="line-md:loading-loop" class="text-4xl" />
-        </div>
-
-        <div
-            v-if="currentChatStore.currentRoom"
-            v-for="message of currentChatStore.messages"
-            class="flex"
-            :class="checkPerson(message) ? 'justify-end' : 'justify-start'"
-        >
-            <div
-                class="flex items-center gap-3"
-                :class="checkPerson(message) && 'flex-row-reverse'"
-            >
-                <div
-                    v-if="message.senderId"
-                    class="w-8 h-8 bg-purple-700 flex-center rounded-full"
-                >
-                    {{ message.name[0] }}
-                </div>
-                <div
-                    class="max-w-max px-3 py-2 rounded-2xl"
-                    :class="
-                        checkPerson(message)
-                            ? 'bg-purple-500 rounded-br-none'
-                            : 'bg-white/20 rounded-bl-none'
-                    "
-                >
-                    {{ message.content }}
-                </div>
-            </div>
+    <div ref="listRef" class="pt-10 pr-4 max-h-[91%] overflow-y-scroll">
+        <div v-if="currentChatStore.currentRoom" class="flex-col gap-4 h-full">
+            <SingleMessage
+                v-for="message of currentChatStore.messages"
+                :message="message"
+            />
         </div>
 
         <div v-else class="flex-center flex-col mt-20">
@@ -96,6 +62,14 @@ watch(
                     >Sidebar</span
                 >.
             </div>
+        </div>
+
+        <!-- loading -->
+        <div
+            v-if="isLoading"
+            class="absolute top-0 left-0 w-full h-[91%] flex-center bg-mainDarkBg"
+        >
+            <Icon icon="line-md:loading-loop" class="text-4xl" />
         </div>
     </div>
 </template>
