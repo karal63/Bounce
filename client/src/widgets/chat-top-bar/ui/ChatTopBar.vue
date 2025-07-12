@@ -3,8 +3,10 @@ import { Icon } from "@iconify/vue";
 import { computed } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useShareModalStore } from "@/features/group-share-link";
+import { useUiStore } from "@/shared/model/uiStore";
 
 const shareModalStore = useShareModalStore();
+const uiStore = useUiStore();
 
 const currentChatStore = useCurrentChatStore();
 
@@ -27,7 +29,7 @@ const showShareLinkModal = () => {
         <h1 class="text-2xl">{{ getGroupName }}</h1>
         <div
             v-if="currentChatStore.currentRoom"
-            class="relative flex items-center gap-2"
+            class="flex items-center gap-2"
         >
             <button
                 @click="showShareLinkModal"
@@ -36,19 +38,11 @@ const showShareLinkModal = () => {
                 <Icon icon="solar:share-line-duotone" />
             </button>
             <button
-                class="flex items-center gap-2 hover:bg-mainHoverOnGray px-2 py-1 rounded-md cursor-pointer"
+                @click="uiStore.toggleMembersBar()"
+                class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >
-                <Icon icon="fluent:person-32-filled" class="text-3xl" />Members
-                <Icon
-                    icon="iconamoon:arrow-up-2-thin"
-                    class="text-3xl transform transition-all duration-300"
-                />
+                <Icon icon="fluent:person-32-filled" />
             </button>
-
-            <!-- :class="isMembersDropdown ? 'rotate-180' : ''" -->
-
-            <!-- dropdown -->
-            <!-- <MembersDropdown :isMembersDropdown="isMembersDropdown" /> -->
         </div>
     </div>
 </template>

@@ -6,6 +6,7 @@ import { MessagesList } from "@/features/chat-messages";
 import { ChatTopBar } from "@/widgets/chat-top-bar";
 import { GroupShareModal } from "@/features/group-share-link";
 import DeleteGroupModal from "@/features/delete-group/ui/DeleteGroupModal.vue";
+import { MembersBar } from "@/widgets/members-bar";
 </script>
 
 <template>
@@ -16,6 +17,7 @@ import DeleteGroupModal from "@/features/delete-group/ui/DeleteGroupModal.vue";
             <MessagesList />
             <MessageInputBlock />
         </div>
+        <MembersBar />
 
         <!-- modal -->
         <CreateOrJoinModal />
