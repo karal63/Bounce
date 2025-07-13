@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDeleteMessage } from "@/features/delete-message";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
+import type { Context } from "@/shared/types/Context";
 import type { MessageWithName } from "@/shared/types/Message";
 import { ref } from "vue";
 
@@ -11,6 +12,7 @@ const emit = defineEmits<{
 }>();
 const props = defineProps<{
     message: MessageWithName;
+    messageContext: Context;
 }>();
 const contextRef = ref<HTMLElement | null>(null);
 
@@ -22,10 +24,14 @@ const handleDelete = async () => {
 };
 </script>
 
+<!-- top-0 breaks button look -->
+<!-- make this part work or even change everything -->
+
 <template>
     <ul
         ref="contextRef"
-        class="absolute bottom-full right-30 bg-mainGray border border-mainBorder rounded-md rounded-br-none"
+        class="absolute bottom-full bg-mainGray border border-mainBorder rounded-md rounded-br-none"
+        :style="{ left: `${messageContext.posX}px` }"
     >
         <li>
             <button

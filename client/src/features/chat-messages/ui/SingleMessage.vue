@@ -5,14 +5,20 @@ import { ref } from "vue";
 import { useHover } from "@/shared/lib/hooks/useHover";
 import { Icon } from "@iconify/vue";
 import MessageContext from "./MessageContext.vue";
+import type { Context } from "@/shared/types/Context";
 
 defineProps<{
     message: MessageWithName;
 }>();
 
 const messageRef = ref<HTMLElement | null>(null);
+const buttonRef = ref<HTMLElement | null>(null);
+
 const isHovering = ref(false);
-const isMessageContextOpen = ref(false);
+const messageContext = ref<Context>({
+    isVisible: false,
+    posX: 0,
+});
 
 useHover(
     messageRef,
@@ -21,7 +27,18 @@ useHover(
 );
 
 const hideContext = () => {
-    isMessageContextOpen.value = false;
+    messageContext.value.isVisible = false;
+};
+
+const showContext = () => {
+    const button = buttonRef.value as HTMLElement;
+    if (!button) return;
+    const rect = button.getBoundingClientRect();
+
+    messageContext.value = {
+        isVisible: true,
+        posX: rect.left / 2,
+    };
 };
 </script>
 
@@ -53,8 +70,9 @@ const hideContext = () => {
             </div>
 
             <button
-                v-if="isHovering"
-                @click="isMessageContextOpen = true"
+                v-show="isHovering"
+                ref="buttonRef"
+                @click="showContext"
                 class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
             >
                 <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
@@ -62,8 +80,9 @@ const hideContext = () => {
         </div>
 
         <MessageContext
-            v-if="isMessageContextOpen"
+            v-if="messageContext.isVisible && buttonRef"
             :message="message"
+            :messageContext="messageContext"
             @hideContext="hideContext"
         />
     </div>

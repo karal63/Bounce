@@ -39,6 +39,7 @@ const handleClick = (e: MouseEvent) => {
     context.value.isVisible = true;
     const ulElement = e.currentTarget as HTMLElement;
     const rect = ulElement?.getBoundingClientRect();
+
     context.value = {
         ...context.value,
         posX: e.clientX - rect.left,
