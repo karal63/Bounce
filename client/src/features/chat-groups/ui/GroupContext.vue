@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import type { ContextGroup } from "../model/types";
-import { onMounted, ref, watch } from "vue";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useDeleteGroupStore } from "@/features/delete-group";
+import { useLeaveGroup } from "@/features/leave-group";
 
 const sessionStore = useSessionStore();
 const deleteGroupStore = useDeleteGroupStore();
+const { leaveGroup } = useLeaveGroup();
 
 const props = defineProps<{
     context: ContextGroup;
@@ -18,11 +20,20 @@ const emit = defineEmits<{
 }>();
 
 const contextRef = ref<HTMLElement | null>(null);
-const canDelete = ref(false);
+const permissions = ref({
+    canDelete: false,
+    canLeave: false,
+});
 
 const handleDelete = () => {
     emit("openDeleteModal");
     emit("closeContext");
+};
+
+const handleLeave = async () => {
+    emit("closeContext");
+    if (!deleteGroupStore.contextGroup?.id) return;
+    await leaveGroup(deleteGroupStore.contextGroup?.id);
 };
 
 useClickOutside(contextRef, () => {
@@ -33,7 +44,9 @@ watch(
     () => deleteGroupStore.contextGroup,
     () => {
         if (sessionStore.user?.id === deleteGroupStore.contextGroup?.ownerId) {
-            canDelete.value = true;
+            permissions.value.canDelete = true;
+        } else {
+            permissions.value.canDelete = false;
         }
     }
 );
@@ -52,11 +65,18 @@ watch(
             Info
         </button>
         <button
-            v-if="canDelete"
+            v-if="permissions.canDelete"
             @click="handleDelete"
             class="text-red-500 w-full text-center py-1 cursor-pointer bg-mainDarkBg hover:bg-mainHoverDarkBg"
         >
             Delete
+        </button>
+        <button
+            v-else
+            @click="handleLeave"
+            class="text-red-500 w-full text-center py-1 cursor-pointer bg-mainDarkBg hover:bg-mainHoverDarkBg"
+        >
+            Leave
         </button>
     </div>
 </template>

@@ -106,6 +106,14 @@ class UserService {
             [activationLink]
         );
     }
+
+    async getUser(userDto) {
+        const [userRows] = await db.query(
+            "SELECT * FROM users WHERE email = ?",
+            [userDto.email]
+        );
+        return userRows[0];
+    }
 }
 
 module.exports = UserService;

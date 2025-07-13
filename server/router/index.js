@@ -72,4 +72,8 @@ router.delete("/delete-message/:messageId", verifyToken, (req, res, next) =>
     message.deleteMessage(req, res, next)
 );
 
+router.delete("/leave-group/:groupId", verifyToken, (req, res, next) =>
+    group.leaveGroup(req, res, next)
+);
+
 module.exports = router;

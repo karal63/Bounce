@@ -1,6 +1,9 @@
 const { nanoid } = require("nanoid");
 const db = require("../db");
 const ApiError = require("../exceptions/api-error");
+const UserService = require("./user-service");
+
+const userService = new UserService();
 
 class GroupService {
     async get(userId) {
@@ -80,6 +83,14 @@ class GroupService {
             );
 
         await db.query("DELETE FROM groups WHERE id = ? AND ownerId = ?", [
+            groupId,
+            user.id,
+        ]);
+    }
+
+    async leave(groupId, userDto) {
+        const user = await userService.getUser(userDto);
+        await db.query("DELETE FROM members WHERE groupId = ? AND userId = ?", [
             groupId,
             user.id,
         ]);

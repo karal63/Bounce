@@ -52,6 +52,17 @@ class GroupController {
             next(error);
         }
     }
+
+    async leaveGroup(req, res, next) {
+        try {
+            const { groupId } = req.params;
+            await group.leave(groupId, req.user);
+            res.status(200).json("group left");
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
 }
 
 module.exports = GroupController;
