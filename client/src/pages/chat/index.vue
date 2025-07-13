@@ -42,3 +42,4 @@ import { MembersBar } from "@/widgets/members-bar";
 <!-- add useClickOutside hook -->
 <!-- i think i dont add MEMBERS locally in array -->
 <!-- when user creates a group make him admin -->
+<!-- check if user can delete group -->

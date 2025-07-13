@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import type { ContextGroup } from "../model/types";
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { useDeleteGroupStore } from "@/features/delete-group";
 
-defineProps<{
+const sessionStore = useSessionStore();
+const deleteGroupStore = useDeleteGroupStore();
+
+const props = defineProps<{
     context: ContextGroup;
 }>();
 
@@ -13,8 +18,9 @@ const emit = defineEmits<{
 }>();
 
 const contextRef = ref<HTMLElement | null>(null);
+const canDelete = ref(false);
 
-const deleteGroup = () => {
+const handleDelete = () => {
     emit("openDeleteModal");
     emit("closeContext");
 };
@@ -22,6 +28,15 @@ const deleteGroup = () => {
 useClickOutside(contextRef, () => {
     emit("closeContext");
 });
+
+watch(
+    () => deleteGroupStore.contextGroup,
+    () => {
+        if (sessionStore.user?.id === deleteGroupStore.contextGroup?.ownerId) {
+            canDelete.value = true;
+        }
+    }
+);
 </script>
 
 <template>
@@ -37,7 +52,8 @@ useClickOutside(contextRef, () => {
             Info
         </button>
         <button
-            @click="deleteGroup"
+            v-if="canDelete"
+            @click="handleDelete"
             class="text-red-500 w-full text-center py-1 cursor-pointer bg-mainDarkBg hover:bg-mainHoverDarkBg"
         >
             Delete
