@@ -40,3 +40,5 @@ import { MembersBar } from "@/widgets/members-bar";
 
 <!-- move types from entities and features back because you use it in shared -->
 <!-- add useClickOutside hook -->
+<!-- i think i dont add MEMBERS locally in array -->
+<!-- when user creates a group make him admin -->

@@ -30,7 +30,7 @@ watch(
 </script>
 
 <template>
-    <div ref="listRef" class="pt-10 pr-4 max-h-[91%] overflow-y-scroll">
+    <div ref="listRef" class="pt-10 pr-4 max-h-[91%] overflow-y-auto">
         <div v-if="currentChatStore.currentRoom" class="flex-col gap-4 h-full">
             <SingleMessage
                 v-for="message of currentChatStore.messages"

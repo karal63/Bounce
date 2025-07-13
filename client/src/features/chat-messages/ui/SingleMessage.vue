@@ -7,7 +7,7 @@ import { Icon } from "@iconify/vue";
 import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
 
-defineProps<{
+const props = defineProps<{
     message: MessageWithName;
 }>();
 
