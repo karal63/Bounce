@@ -29,7 +29,14 @@ class MessageController {
     async deleteMessage(req, res, next) {
         try {
             const { messageId } = req.params;
-            await messageService.delete(messageId, req.user);
+            const deletedMessage = await messageService.delete(
+                messageId,
+                req.user
+            );
+            io.to(deletedMessage.groupId).emit(
+                "message-deleted",
+                deletedMessage.id
+            );
             res.status(200).json("message deleted");
         } catch (error) {
             console.log(error);

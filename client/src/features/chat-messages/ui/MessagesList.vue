@@ -15,6 +15,12 @@ socket.on("newMessage", (msg: MessageWithName) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
 });
 
+socket.on("message-deleted", (messageId: number) => {
+    currentChatStore.messages = currentChatStore.messages.filter(
+        (msg) => msg.id !== messageId
+    );
+});
+
 watch(
     () => currentChatStore.currentRoom,
     () => {

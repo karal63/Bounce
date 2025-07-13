@@ -34,11 +34,17 @@ class MessageService {
         );
         const user = userRows[0];
 
-        const [rows] = await db.query(
+        const [updatedRows] = await db.query(
             "UPDATE messages SET isDeleted = true WHERE messages.id = ? AND (senderId = ? OR ? IN (SELECT userId FROM members WHERE groupId = messages.groupId AND role IN ('admin', 'moderator')));",
             [messageId, user.id, user.id]
         );
-        return rows;
+
+        const [updatedMessage] = await db.query(
+            "SELECT * FROM messages WHERE id = ?",
+            [messageId]
+        );
+
+        return updatedMessage[0];
     }
 }
 
