@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const ApiError = require("../exceptions/api-error");
 const GroupService = require("../services/group-service");
+const { io } = require("../socket");
 
 const group = new GroupService();
 
@@ -33,7 +34,8 @@ class GroupController {
         try {
             const { link } = req.params;
             const { userId } = req.body;
-            const newGroup = await group.join(link, userId);
+            const { newGroup, newMember } = await group.join(link, userId);
+            io.to(newGroup.id).emit("member-joined", newMember);
             res.status(200).json(newGroup);
         } catch (error) {
             console.log(error);

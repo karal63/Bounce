@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import SingleMember from "./SingleMember.vue";
+import { useSocket } from "@/shared/config/useSocketStore";
+
+const { socket } = useSocket();
 
 const currentChatStore = useCurrentChatStore();
-console.log(currentChatStore.members);
+
+socket.on("member-joined", (newMember) => {
+    currentChatStore.members.push(newMember);
+});
 </script>
 
 <template>

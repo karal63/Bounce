@@ -22,6 +22,7 @@ export const useJoinGroup = () => {
             modalStore.isModalOpen = false;
             modalStore.mode = "";
             currentChatStore.groups.push(joinedGroup.data);
+            console.log(currentChatStore.members);
         } catch (error) {
             if (
                 error instanceof AxiosError &&

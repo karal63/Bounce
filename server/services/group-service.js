@@ -59,11 +59,16 @@ class GroupService {
         if (membersRows.length !== 0)
             throw ApiError.BadRequest("User already exists in this group.");
 
-        await db.query(
+        const newMember = await db.query(
             "INSERT INTO members (groupId, userId, role) VALUES (?, ?, ?)",
             [groupId, userId, "member"]
         );
-        return matchingGroupRows[0];
+
+        const [newMemberRows] = await db.query(
+            "SELECT members.*, users.name FROM members JOIN users ON members.userId = users.id WHERE members.id = ?",
+            [newMember[0].insertId]
+        );
+        return { newGroup: matchingGroupRows[0], newMember: newMemberRows[0] };
     }
 
     async delete(groupId, userDto) {

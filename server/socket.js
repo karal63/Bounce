@@ -48,8 +48,3 @@ instrument(io, {
 });
 
 module.exports = { io, app, server };
-
-// TODO:
-// Main functionality works but app structure is kind of broken, unclear, because of this i cant commit changes
-// 1. REMOVE LOGIC FROM App.vue
-// optional check other edited files
