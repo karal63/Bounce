@@ -6,7 +6,7 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import type { Context } from "@/shared/types/Context";
 import type { MessageWithName } from "@/shared/types/Message";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 
 const { deleteMessage } = useDeleteMessage();
 const currentChatStore = useCurrentChatStore();
@@ -56,7 +56,7 @@ onMounted(() => {
 <template>
     <ul
         ref="contextRef"
-        class="absolute bottom-full flex bg-mainGray border border-mainBorder rounded-md rounded-br-none"
+        class="absolute bottom-[110%] flex bg-mainGray border border-mainBorder rounded-md"
         :style="{ left: `${messageContext.posX}px` }"
     >
         <li>

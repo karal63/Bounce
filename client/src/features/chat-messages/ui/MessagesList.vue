@@ -39,6 +39,7 @@ watch(
     <div ref="listRef" class="pt-10 pr-4 max-h-[91%] overflow-y-auto">
         <div v-if="currentChatStore.currentRoom" class="flex-col gap-4 h-full">
             <SingleMessage
+                :posLeft="listRef?.getBoundingClientRect().left"
                 v-for="message of currentChatStore.messages"
                 :message="message"
             />

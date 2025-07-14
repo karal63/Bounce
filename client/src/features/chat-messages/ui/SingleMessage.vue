@@ -9,6 +9,7 @@ import type { Context } from "@/shared/types/Context";
 
 const props = defineProps<{
     message: MessageWithName;
+    posLeft: number | undefined;
 }>();
 
 const messageRef = ref<HTMLElement | null>(null);
@@ -37,7 +38,7 @@ const showContext = () => {
 
     messageContext.value = {
         isVisible: true,
-        posX: rect.left / 2,
+        posX: props.posLeft ? rect.left - props.posLeft : 0,
     };
 };
 </script>
