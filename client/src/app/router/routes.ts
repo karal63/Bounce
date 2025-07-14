@@ -18,7 +18,7 @@ export const routes: RouteRecordRaw[] = [
         component: Signup,
     },
     {
-        path: "/chat/:name",
+        path: "/chat",
         component: ChatPage,
         meta: { requiresAuth: true },
     },

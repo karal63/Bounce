@@ -19,7 +19,7 @@ socket.on("member-left", (memberId) => {
 </script>
 
 <template>
-    <ul class="divide-y divide-mainGray mt-5">
+    <ul class="divide-y divide-mainGray">
         <SingleMember
             v-for="member of currentChatStore.members"
             :member="member"
