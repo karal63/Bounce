@@ -61,7 +61,7 @@ class UserService {
         if (!matchingPassword)
             throw ApiError.BadRequest("Email or password are incorrect.");
 
-        const tokens = await token.generateTokens(email, user.name);
+        const tokens = await token.generateTokens(user.id, email, user.name);
 
         // Add what you want to return (what properties will user have)
         return {
@@ -79,7 +79,11 @@ class UserService {
         if (!refreshToken) throw ApiError.BadRequest("Token is not provided.");
         const userDto = await token.validateRefreshToken(refreshToken);
         if (!userDto) throw ApiError.UnauthorizedError();
-        const tokens = await token.generateTokens(userDto.email, userDto.name);
+        const tokens = await token.generateTokens(
+            userDto.id,
+            userDto.email,
+            userDto.username
+        );
 
         const query = "SELECT * FROM users WHERE email = ?";
         const [rows] = await db.query(query, [userDto.email]);

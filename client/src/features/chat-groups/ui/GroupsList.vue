@@ -46,6 +46,12 @@ const handleClick = (e: MouseEvent) => {
         posY: e.clientY - rect.top,
     };
 };
+
+socket.on("group-deleted", (groupId) => {
+    currentChatStore.groups = currentChatStore.groups.filter(
+        (group) => group.id !== Number(groupId)
+    );
+});
 </script>
 
 <template>

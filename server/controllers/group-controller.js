@@ -2,8 +2,10 @@ const { validationResult } = require("express-validator");
 const ApiError = require("../exceptions/api-error");
 const GroupService = require("../services/group-service");
 const { io } = require("../socket");
+const MemberService = require("../services/member-service");
 
 const group = new GroupService();
+const memberService = new MemberService();
 
 class GroupController {
     async getGroups(req, res, next) {
@@ -46,9 +48,22 @@ class GroupController {
     async deleteGroup(req, res, next) {
         try {
             const { groupId } = req.params;
-            await group.delete(groupId, req.user);
+            // await group.delete(groupId, req.user);
 
-            res.status(200).json("group deleted");
+            const members = await memberService.get(groupId);
+
+            io.fetchSockets().then((sockets) => {
+                sockets.forEach((socket) => {
+                    for (const member of members) {
+                        if (socket.handshake.query.id == member.userId) {
+                            if (member.userId === req.user.id) continue;
+                            io.to(socket.id).emit("group-deleted", groupId);
+                            break;
+                        }
+                    }
+                });
+            });
+            await res.status(200).json("group deleted");
         } catch (error) {
             console.log(error);
             next(error);

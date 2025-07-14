@@ -12,6 +12,7 @@ export function useSocket() {
             autoConnect: false,
             query: {
                 username: sessionStore.user?.name,
+                id: sessionStore.user?.id,
             },
         });
     }
@@ -20,6 +21,7 @@ export function useSocket() {
         if (socket && !socket.connected) {
             socket.io.opts.query = {
                 username: sessionStore.user?.name,
+                id: sessionStore.user?.id,
             };
             socket.connect();
         }
