@@ -10,6 +10,12 @@ const currentChatStore = useCurrentChatStore();
 socket.on("member-joined", (newMember) => {
     currentChatStore.members.push(newMember);
 });
+
+socket.on("member-left", (memberId) => {
+    currentChatStore.members = currentChatStore.members.filter(
+        (member) => member.userId !== Number(memberId)
+    );
+});
 </script>
 
 <template>

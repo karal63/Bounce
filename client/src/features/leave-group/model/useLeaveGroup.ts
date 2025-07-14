@@ -6,7 +6,6 @@ export const useLeaveGroup = () => {
 
     const leaveGroup = async (groupId: number) => {
         try {
-            console.log("leaving");
             await apiLeaveGroup(groupId);
             currentChatStore.groups = currentChatStore.groups.filter(
                 (group) => group.id !== groupId

@@ -48,10 +48,9 @@ class GroupController {
     async deleteGroup(req, res, next) {
         try {
             const { groupId } = req.params;
-            // await group.delete(groupId, req.user);
+            await group.delete(groupId, req.user);
 
             const members = await memberService.get(groupId);
-
             io.fetchSockets().then((sockets) => {
                 sockets.forEach((socket) => {
                     for (const member of members) {
@@ -74,6 +73,7 @@ class GroupController {
         try {
             const { groupId } = req.params;
             await group.leave(groupId, req.user);
+            io.to(Number(groupId)).emit("member-left", req.user.id);
             res.status(200).json("group left");
         } catch (error) {
             console.log(error);
