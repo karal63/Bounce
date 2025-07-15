@@ -4,9 +4,9 @@ import { useMemberStore } from "../model/memberStore";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import { onMounted, ref } from "vue";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getPermissions } from "@/shared/lib/helpers/getPermissions";
+import { useKickMember, useKickMemberStore } from "@/features/kick-member";
 
 defineProps<{
     memberContext: Context;
@@ -18,6 +18,7 @@ const emit = defineEmits<{
 const memberStore = useMemberStore();
 const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
+const kickMemberStore = useKickMemberStore();
 
 const contextRef = ref<HTMLElement | null>(null);
 const permissions = ref({
@@ -33,8 +34,11 @@ onMounted(() => {
         memberStore.selectedMember?.userId,
         currentChatStore.members
     );
-    console.log(permissions.value);
 });
+
+const kick = () => {
+    kickMemberStore.isConfirmModalOpen = true;
+};
 </script>
 
 <template>
@@ -53,6 +57,7 @@ onMounted(() => {
         </button>
         <button
             v-if="permissions.canDelete"
+            @click="kick"
             class="w-full text-left px-1 py-1 cursor-pointer text-red-500 hover:bg-mainHoverOnGray rounded-md"
         >
             Kick

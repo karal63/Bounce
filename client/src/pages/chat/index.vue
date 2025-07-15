@@ -7,6 +7,7 @@ import { ChatTopBar } from "@/widgets/chat-top-bar";
 import { GroupShareModal } from "@/features/group-share-link";
 import DeleteGroupModal from "@/features/delete-group/ui/DeleteGroupModal.vue";
 import { MembersBar } from "@/widgets/members-bar";
+import ConfirmKickModal from "@/features/kick-member/ui/ConfirmKickModal.vue";
 </script>
 
 <template>
@@ -27,6 +28,7 @@ import { MembersBar } from "@/widgets/members-bar";
         <CreateOrJoinModal />
         <GroupShareModal />
         <DeleteGroupModal />
+        <ConfirmKickModal />
     </div>
 </template>
 

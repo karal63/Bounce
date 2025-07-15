@@ -16,6 +16,18 @@ class MemberController {
             next();
         }
     }
+
+    async kickMember(req, res, next) {
+        try {
+            const { memberId } = req.params;
+            await member.kick(memberId);
+            // emit to members
+
+            res.sendStatus(200);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = MemberController;

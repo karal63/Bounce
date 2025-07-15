@@ -8,6 +8,13 @@ class MemberService {
         );
         return rows;
     }
+
+    async kick(memberId) {
+        const [rows] = await db.query("DELETE FROM members WHERE id = ?", [
+            memberId,
+        ]);
+        return rows;
+    }
 }
 
 module.exports = MemberService;
