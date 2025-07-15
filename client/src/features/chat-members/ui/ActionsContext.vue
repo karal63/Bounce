@@ -7,6 +7,7 @@ import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getPermissions } from "@/shared/lib/helpers/getPermissions";
 import { useKickMemberStore } from "@/features/kick-member";
+import { useBanMemberStore } from "@/features/ban-member";
 
 defineProps<{
     memberContext: Context;
@@ -19,6 +20,7 @@ const memberStore = useMemberStore();
 const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
 const kickMemberStore = useKickMemberStore();
+const banMemberStore = useBanMemberStore();
 
 const contextRef = ref<HTMLElement | null>(null);
 const permissions = ref({
@@ -38,6 +40,10 @@ onMounted(() => {
 
 const kick = () => {
     kickMemberStore.isConfirmModalOpen = true;
+};
+
+const ban = () => {
+    banMemberStore.isConfirmModalOpen = true;
 };
 </script>
 
@@ -64,6 +70,7 @@ const kick = () => {
         </button>
         <button
             v-if="permissions.canDelete"
+            @click="ban"
             class="w-full text-left px-1 py-1 cursor-pointer text-red-500 hover:bg-mainHoverOnGray rounded-md"
         >
             Ban
