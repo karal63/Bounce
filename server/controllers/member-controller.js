@@ -20,8 +20,18 @@ class MemberController {
     async kickMember(req, res, next) {
         try {
             const { memberId } = req.params;
-            await member.kick(memberId);
-            // emit to members
+            const deletedMember = await member.kick(memberId);
+
+            io.to(deletedMember.groupId).emit("member-kicked", memberId);
+            const sockets = await io.fetchSockets();
+            for (const socket of sockets) {
+                if (
+                    Number(socket.handshake.query.id) === deletedMember.userId
+                ) {
+                    io.to(socket.id).emit("deleted:leave-group", deletedMember);
+                }
+            }
+            // make this directly to kicked user
 
             res.sendStatus(200);
         } catch (error) {

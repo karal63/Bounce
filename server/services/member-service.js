@@ -10,10 +10,11 @@ class MemberService {
     }
 
     async kick(memberId) {
-        const [rows] = await db.query("DELETE FROM members WHERE id = ?", [
+        const [rows] = await db.query("SELECT * FROM members WHERE id = ?", [
             memberId,
         ]);
-        return rows;
+        // await db.query("DELETE FROM members WHERE id = ?", [memberId]);
+        return rows[0];
     }
 }
 

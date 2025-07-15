@@ -8,6 +8,7 @@ import GroupContext from "./GroupContext.vue";
 import type { ContextGroup } from "../model/types";
 import SingleGroup from "./SingleGroup.vue";
 import type { Group } from "@/shared/types/Group";
+import type { MemberWithName } from "@/shared/types/Member";
 
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
@@ -50,6 +51,13 @@ const handleClick = (e: MouseEvent) => {
 socket.on("group-deleted", (groupId) => {
     currentChatStore.groups = currentChatStore.groups.filter(
         (group) => group.id !== Number(groupId)
+    );
+});
+
+socket.on("deleted:leave-group", (deletedMember: MemberWithName) => {
+    currentChatStore.currentRoom = null;
+    currentChatStore.groups = currentChatStore.groups.filter(
+        (group) => group.id !== deletedMember.groupId
     );
 });
 </script>

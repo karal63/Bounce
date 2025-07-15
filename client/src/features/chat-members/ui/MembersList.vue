@@ -6,10 +6,12 @@ import { ref } from "vue";
 import type { Context } from "@/shared/types/Context";
 import ProfileContext from "./ProfileContext.vue";
 import ActionsContext from "./ActionsContext.vue";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const { socket } = useSocket();
 
 const currentChatStore = useCurrentChatStore();
+const sessionStore = useSessionStore();
 const membersListRef = ref<HTMLElement | null>(null);
 
 const memberContext = ref<Context & { type: "actions" | "profile" | null }>({
@@ -26,6 +28,12 @@ socket.on("member-joined", (newMember) => {
 socket.on("member-left", (memberId) => {
     currentChatStore.members = currentChatStore.members.filter(
         (member) => member.userId !== Number(memberId)
+    );
+});
+
+socket.on("member-kicked", (memberId) => {
+    currentChatStore.members = currentChatStore.members.filter(
+        (member) => member.id !== Number(memberId)
     );
 });
 </script>
