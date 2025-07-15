@@ -11,7 +11,6 @@ import { useSessionStore } from "@/shared/session/model/sessionStore";
 const { socket } = useSocket();
 
 const currentChatStore = useCurrentChatStore();
-const sessionStore = useSessionStore();
 const membersListRef = ref<HTMLElement | null>(null);
 
 const memberContext = ref<Context & { type: "actions" | "profile" | null }>({

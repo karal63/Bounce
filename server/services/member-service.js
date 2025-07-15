@@ -13,7 +13,7 @@ class MemberService {
         const [rows] = await db.query("SELECT * FROM members WHERE id = ?", [
             memberId,
         ]);
-        // await db.query("DELETE FROM members WHERE id = ?", [memberId]);
+        await db.query("DELETE FROM members WHERE id = ?", [memberId]);
         return rows[0];
     }
 }

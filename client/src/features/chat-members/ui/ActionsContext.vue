@@ -6,7 +6,7 @@ import { onMounted, ref } from "vue";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getPermissions } from "@/shared/lib/helpers/getPermissions";
-import { useKickMember, useKickMemberStore } from "@/features/kick-member";
+import { useKickMemberStore } from "@/features/kick-member";
 
 defineProps<{
     memberContext: Context;
