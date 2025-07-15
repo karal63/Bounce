@@ -38,6 +38,29 @@ class MemberController {
             next(error);
         }
     }
+
+    async banMember(req, res, next) {
+        try {
+            const { memberId, banReason } = req.body;
+            console.log(memberId);
+            const bannedMember = await member.ban(memberId, banReason);
+
+            // io.to(deletedMember.groupId).emit("member-kicked", memberId);
+            // const sockets = await io.fetchSockets();
+            // for (const socket of sockets) {
+            //     if (
+            //         Number(socket.handshake.query.id) === deletedMember.userId
+            //     ) {
+            //         io.to(socket.id).emit("deleted:leave-group", deletedMember);
+            //     }
+            // }
+            // make this directly to kicked user
+
+            res.sendStatus(200);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = MemberController;

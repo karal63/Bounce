@@ -80,4 +80,8 @@ router.delete("/kick-member/:memberId", verifyToken, (req, res, next) =>
     member.kickMember(req, res, next)
 );
 
+router.post("/ban-member", verifyToken, (req, res, next) =>
+    member.banMember(req, res, next)
+);
+
 module.exports = router;

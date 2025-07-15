@@ -5,9 +5,13 @@ import { useMemberStore } from "@/features/chat-members";
 import DeleteButton from "@/shared/ui/DeleteButton.vue";
 import { useBanMember } from "../model/useBanMember";
 import ModalInput from "@/shared/ui/ModalInput.vue";
+import { ref } from "vue";
+
 const badMemberStore = useBanMemberStore();
 const memberStore = useMemberStore();
 const { banMember } = useBanMember();
+
+const banReason = ref("");
 </script>
 
 <template>
@@ -33,7 +37,7 @@ const { banMember } = useBanMember();
                     <p class="ml-3 text-sm text-white/70">
                         Desctibe the reason:
                     </p>
-                    <ModalInput class="mt-1" />
+                    <ModalInput v-model="banReason" class="mt-1" />
                 </div>
             </div>
 
@@ -46,7 +50,9 @@ const { banMember } = useBanMember();
                 </button>
                 <DeleteButton
                     text="Ban"
-                    @callback="banMember(memberStore.selectedMember?.id)"
+                    @callback="
+                        banMember(memberStore.selectedMember?.id, banReason)
+                    "
                 />
             </div>
         </div>
