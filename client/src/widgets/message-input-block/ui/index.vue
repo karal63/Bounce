@@ -3,10 +3,12 @@ import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useSendMessage } from "@/features/send-messege";
-import type { ReadyMessage } from "@/entities/message";
+import type { ReadyMessage } from "@/shared/types/Message";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
+const currentChatStore = useCurrentChatStore();
 
 const message = ref<ReadyMessage>({
     groupId: null,
@@ -20,7 +22,10 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="absolute bottom-0 right-0 w-full">
+    <div
+        v-if="currentChatStore.currentRoom"
+        class="absolute bottom-0 right-0 w-full"
+    >
         <form class="flex items-center gap-2">
             <textarea
                 v-model="message.content"
