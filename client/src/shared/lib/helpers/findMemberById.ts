@@ -1,5 +1,8 @@
 import type { MemberWithName } from "@/shared/types/Member";
 
-export const findMemberById = (members: MemberWithName[], id: number) => {
+export const findMemberById = (
+    members: MemberWithName[],
+    id: number
+): MemberWithName | undefined => {
     return members.find((member) => member.userId === id);
 };
