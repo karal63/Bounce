@@ -9,6 +9,7 @@ import DeleteGroupModal from "@/features/delete-group/ui/DeleteGroupModal.vue";
 import { MembersBar } from "@/widgets/members-bar";
 import { ConfirmKickModal } from "@/features/kick-member";
 import { ConfirmBanModal } from "@/features/ban-member";
+import BanReasonModal from "@/features/show-ban-reason/ui/banReasonModal.vue";
 </script>
 
 <template>
@@ -31,6 +32,7 @@ import { ConfirmBanModal } from "@/features/ban-member";
         <DeleteGroupModal />
         <ConfirmKickModal />
         <ConfirmBanModal />
+        <BanReasonModal />
     </div>
 </template>
 
@@ -47,3 +49,4 @@ import { ConfirmBanModal } from "@/features/ban-member";
 <!-- i think i dont add MEMBERS locally in array -->
 
 <!-- when you delete somthing you delete it locally immediately but for other users it will be visible untill reload -->
+<!-- make Button component confurating by color in props -->

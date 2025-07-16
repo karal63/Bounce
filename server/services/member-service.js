@@ -18,12 +18,11 @@ class MemberService {
     }
 
     async ban(memberId, banReason) {
-        // const [rows] = await db.query(
-        //     "UPDATE members SET isBanned = true WHERE id = ?",
-        //     [memberId]
+        // await db.query(
+        //     "UPDATE members SET isBanned = true, banReason = ? WHERE id = ?",
+        //     [banReason, memberId]
         // );
 
-        // mocked
         const [rows] = await db.query("SELECT * FROM members WHERE id = ?", [
             memberId,
         ]);
