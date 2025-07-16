@@ -18,10 +18,10 @@ class MemberService {
     }
 
     async ban(memberId, banReason) {
-        // await db.query(
-        //     "UPDATE members SET isBanned = true, banReason = ? WHERE id = ?",
-        //     [banReason, memberId]
-        // );
+        await db.query(
+            "UPDATE members SET isBanned = true, banReason = ? WHERE id = ?",
+            [banReason, memberId]
+        );
 
         const [rows] = await db.query("SELECT * FROM members WHERE id = ?", [
             memberId,

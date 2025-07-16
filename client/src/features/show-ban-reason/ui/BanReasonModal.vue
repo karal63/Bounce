@@ -3,6 +3,7 @@ import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { useBanReasonStore } from "../model/badReasonStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import Button from "@/shared/ui/Button.vue";
 
 const banReasonStore = useBanReasonStore();
 const sessionStore = useSessionStore();
@@ -43,7 +44,17 @@ socket.on("to-banned:update-groups", (bannedMember) => {
             </div>
 
             <div class="flex justify-end items-center">
-                <button class="cursor-pointer">Close</button>
+                <Button
+                    text="Close"
+                    color="purple"
+                    @callback="
+                        banReasonStore.banReason = {
+                            isVisible: false,
+                            groupName: '',
+                            reason: '',
+                        }
+                    "
+                />
             </div>
         </div>
     </DefaultModal>

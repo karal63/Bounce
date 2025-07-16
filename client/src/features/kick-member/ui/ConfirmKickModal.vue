@@ -2,8 +2,8 @@
 import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { useKickMemberStore } from "../model/kickMemberStore";
 import { useMemberStore } from "@/features/chat-members";
-import DeleteButton from "@/shared/ui/DeleteButton.vue";
 import { useKickMember } from "../model/useKickMember";
+import Button from "@/shared/ui/Button.vue";
 const kickMemberStore = useKickMemberStore();
 const memberStore = useMemberStore();
 const { kickMember } = useKickMember();
@@ -39,8 +39,9 @@ const { kickMember } = useKickMember();
                 >
                     Cancel
                 </button>
-                <DeleteButton
+                <Button
                     text="Remove"
+                    color="red"
                     @callback="kickMember(memberStore.selectedMember?.id)"
                 />
             </div>

@@ -2,10 +2,10 @@
 import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { useBanMemberStore } from "../model/banMemberStore";
 import { useMemberStore } from "@/features/chat-members";
-import DeleteButton from "@/shared/ui/DeleteButton.vue";
 import { useBanMember } from "../model/useBanMember";
 import ModalInput from "@/shared/ui/ModalInput.vue";
 import { ref } from "vue";
+import Button from "@/shared/ui/Button.vue";
 
 const badMemberStore = useBanMemberStore();
 const memberStore = useMemberStore();
@@ -48,8 +48,9 @@ const banReason = ref("");
                 >
                     Cancel
                 </button>
-                <DeleteButton
+                <Button
                     text="Ban"
+                    color="red"
                     @callback="
                         banMember(memberStore.selectedMember?.id, banReason)
                     "

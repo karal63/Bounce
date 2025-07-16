@@ -3,9 +3,9 @@ import { ref } from "vue";
 
 export const useBanReasonStore = defineStore("banReasonStore", () => {
     const banReason = ref({
-        isVisible: true,
+        isVisible: false,
         groupName: "",
-        reason: " 1231 qaq qwdqd qwqw 21 d1w dqdq dqwdw",
+        reason: "",
     });
 
     return { banReason };
