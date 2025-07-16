@@ -8,7 +8,7 @@ import GroupContext from "./GroupContext.vue";
 import type { ContextGroup } from "../model/types";
 import SingleGroup from "./SingleGroup.vue";
 import type { Group } from "@/shared/types/Group";
-import type { MemberWithName } from "@/shared/types/Member";
+import type { Member, MemberWithName } from "@/shared/types/Member";
 
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
@@ -59,6 +59,14 @@ socket.on("deleted:leave-group", (deletedMember: MemberWithName) => {
     currentChatStore.groups = currentChatStore.groups.filter(
         (group) => group.id !== deletedMember.groupId
     );
+});
+
+socket.on("to-banned:update-groups", (bannedMember: Member) => {
+    currentChatStore.currentRoom = null;
+    currentChatStore.groups = currentChatStore.groups.filter(
+        (group) => group.id !== bannedMember.groupId
+    );
+    // show ban info modal
 });
 </script>
 

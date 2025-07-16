@@ -42,18 +42,18 @@ class MemberController {
     async banMember(req, res, next) {
         try {
             const { memberId, banReason } = req.body;
-            console.log(memberId);
             const bannedMember = await member.ban(memberId, banReason);
 
-            // io.to(deletedMember.groupId).emit("member-kicked", memberId);
-            // const sockets = await io.fetchSockets();
-            // for (const socket of sockets) {
-            //     if (
-            //         Number(socket.handshake.query.id) === deletedMember.userId
-            //     ) {
-            //         io.to(socket.id).emit("deleted:leave-group", deletedMember);
-            //     }
-            // }
+            io.to(bannedMember.groupId).emit("member-banned", memberId);
+            const sockets = await io.fetchSockets();
+            for (const socket of sockets) {
+                if (Number(socket.handshake.query.id) === bannedMember.userId) {
+                    io.to(socket.id).emit(
+                        "to-banned:update-groups",
+                        bannedMember
+                    );
+                }
+            }
             // send him command to delete group locally and show modal with ban message
 
             res.sendStatus(200);
