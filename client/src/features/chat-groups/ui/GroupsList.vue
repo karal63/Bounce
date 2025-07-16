@@ -61,6 +61,12 @@ socket.on("deleted:leave-group", (deletedMember: MemberWithName) => {
     );
 });
 
+socket.on("member-banned", (memberId) => {
+    currentChatStore.members = currentChatStore.members.filter(
+        (member) => member.id !== Number(memberId)
+    );
+});
+
 socket.on("to-banned:update-groups", (bannedMember: Member) => {
     currentChatStore.currentRoom = null;
     currentChatStore.groups = currentChatStore.groups.filter(
