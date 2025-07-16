@@ -52,12 +52,17 @@ class GroupService {
         const groupId = matchingGroupRows[0].id;
 
         const [membersRows] = await db.query(
-            "SELECT userId FROM members WHERE groupId = ? AND userId = ?",
+            "SELECT userId, isBanned FROM members WHERE groupId = ? AND userId = ?",
             [groupId, userId]
         );
 
-        if (membersRows.length !== 0)
-            throw ApiError.BadRequest("User already exists in this group.");
+        if (membersRows.length !== 0) {
+            if (membersRows[0].isBanned) {
+                throw ApiError.BadRequest("You are banned from this group.");
+            } else {
+                throw ApiError.BadRequest("User already exists in this group.");
+            }
+        }
 
         const newMember = await db.query(
             "INSERT INTO members (groupId, userId, role) VALUES (?, ?, ?)",

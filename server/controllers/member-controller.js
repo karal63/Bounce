@@ -54,7 +54,7 @@ class MemberController {
             //         io.to(socket.id).emit("deleted:leave-group", deletedMember);
             //     }
             // }
-            // make this directly to kicked user
+            // send him command to delete group locally and show modal with ban message
 
             res.sendStatus(200);
         } catch (error) {
