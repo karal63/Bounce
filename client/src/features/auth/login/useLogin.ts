@@ -27,7 +27,7 @@ export const useLogin = () => {
             authStore.isLoading = false;
             authStore.error = "";
             sessionStore.isAuthenticated = true;
-            router.push("/chat/2ap");
+            router.push("/chat");
         } catch (e) {
             authStore.isLoading = false;
             if (e instanceof AxiosError && e.response && e.message) {
