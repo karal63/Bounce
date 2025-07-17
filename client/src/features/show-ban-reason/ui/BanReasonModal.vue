@@ -4,19 +4,21 @@ import { useBanReasonStore } from "../model/badReasonStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import Button from "@/shared/ui/Button.vue";
+import { getGroupById } from "@/shared/lib/helpers/getGroupById";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const banReasonStore = useBanReasonStore();
 const sessionStore = useSessionStore();
+const currentChatStore = useCurrentChatStore();
 
 const { socket } = useSocket();
 
 socket.on("to-banned:update-groups", (bannedMember) => {
     banReasonStore.banReason = {
         isVisible: true,
-        groupName: bannedMember.groupId,
+        groupName: bannedMember.name,
         reason: bannedMember.banReason,
     };
-    console.log("You are banned");
 });
 </script>
 
@@ -26,15 +28,15 @@ socket.on("to-banned:update-groups", (bannedMember) => {
         :event="`Hey ${sessionStore.user?.name}!`"
         :storeState="banReasonStore.banReason.isVisible"
         sizeX="400"
-        sizeY="250"
+        sizeY="350"
         @closeModal="banReasonStore.banReason.isVisible = false"
     >
         <div class="flex-col justify-between h-full">
             <div class="flex-col items-center">
                 <p class="text-sm text-white/70 text-center max-w-[93%]">
-                    You have been banned from "{{
+                    You have been banned from the group “{{
                         banReasonStore.banReason.groupName
-                    }}" group.
+                    }}”. You can no longer view or participate in this group.
                 </p>
 
                 <p class="mt-4 pl-4 text-sm text-white/70 w-full">Reason:</p>

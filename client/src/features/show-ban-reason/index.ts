@@ -1,1 +1,1 @@
-export { default as banReasonModal } from "@/features/show-ban-reason/ui/banReasonModal.vue";
+export { default as BanReasonModal } from "@/features/show-ban-reason/ui/BanReasonModal.vue";

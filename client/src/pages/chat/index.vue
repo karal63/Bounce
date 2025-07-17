@@ -5,11 +5,11 @@ import { CreateOrJoinModal } from "@/widgets/group-modal";
 import { MessagesList } from "@/features/chat-messages";
 import { ChatTopBar } from "@/widgets/chat-top-bar";
 import { GroupShareModal } from "@/features/group-share-link";
-import DeleteGroupModal from "@/features/delete-group/ui/DeleteGroupModal.vue";
+import { DeleteGroupModal } from "@/features/delete-group";
 import { MembersBar } from "@/widgets/members-bar";
 import { ConfirmKickModal } from "@/features/kick-member";
 import { ConfirmBanModal } from "@/features/ban-member";
-import BanReasonModal from "@/features/show-ban-reason/ui/banReasonModal.vue";
+import { BanReasonModal } from "@/features/show-ban-reason";
 </script>
 
 <template>
@@ -40,13 +40,5 @@ import BanReasonModal from "@/features/show-ban-reason/ui/banReasonModal.vue";
 
 <!-- To complete -->
 <!-- Learn transitions in vue -->
-<!-- Emits to know for 100% -->
 
 <!-- set linter to block imports not from public api -->
-
-<!-- move types from entities and features back because you use it in shared -->
-<!-- add useClickOutside hook -->
-<!-- i think i dont add MEMBERS locally in array -->
-
-<!-- when you delete somthing you delete it locally immediately but for other users it will be visible untill reload -->
-<!-- make Button component confurating by color in props -->

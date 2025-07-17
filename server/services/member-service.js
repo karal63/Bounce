@@ -23,9 +23,10 @@ class MemberService {
             [banReason, memberId]
         );
 
-        const [rows] = await db.query("SELECT * FROM members WHERE id = ?", [
-            memberId,
-        ]);
+        const [rows] = await db.query(
+            "SELECT members.*, groups.name FROM members JOIN groups ON groups.id = members.groupId WHERE members.id = ?",
+            [memberId]
+        );
         return rows[0];
     }
 }

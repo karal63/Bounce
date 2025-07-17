@@ -4,8 +4,12 @@ import { useKickMemberStore } from "../model/kickMemberStore";
 import { useMemberStore } from "@/features/chat-members";
 import { useKickMember } from "../model/useKickMember";
 import Button from "@/shared/ui/Button.vue";
+import { getGroupById } from "@/shared/lib/helpers/getGroupById";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 const kickMemberStore = useKickMemberStore();
 const memberStore = useMemberStore();
+const currentChatStore = useCurrentChatStore();
+
 const { kickMember } = useKickMember();
 </script>
 
@@ -26,7 +30,10 @@ const { kickMember } = useKickMember();
                         memberStore.selectedMember?.name
                     }}</span>
                     from the group "<span class="text-white font-semibold">{{
-                        memberStore.selectedMember?.groupId
+                        getGroupById(
+                            currentChatStore.groups,
+                            memberStore.selectedMember?.groupId
+                        )?.name
                     }}</span
                     >"? This action cannot be undone.
                 </p>
