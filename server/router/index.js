@@ -84,4 +84,8 @@ router.post("/ban-member", verifyToken, (req, res, next) =>
     member.banMember(req, res, next)
 );
 
+router.post("/rename-group/:id", verifyToken, (req, res, next) =>
+    group.renameGroup(req, res, next)
+);
+
 module.exports = router;

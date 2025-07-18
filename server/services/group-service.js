@@ -105,6 +105,13 @@ class GroupService {
             user.id,
         ]);
     }
+
+    async rename(id, newGroupName) {
+        await db.query("UPDATE groups SET name = ? WHERE id = ?", [
+            newGroupName,
+            id,
+        ]);
+    }
 }
 
 module.exports = GroupService;

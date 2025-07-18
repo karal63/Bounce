@@ -4,20 +4,26 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import Button from "@/shared/ui/Button.vue";
 import Input from "@/shared/ui/Input.vue";
 import { ref } from "vue";
+import { useRenameGroup } from "../model/useRenameGroup";
 
 const currentChatStore = useCurrentChatStore();
+const { renameGroup } = useRenameGroup();
 
 const groupName = ref<string | undefined>(
     getGroupById(currentChatStore.groups, currentChatStore.currentRoom)?.name
 );
 
 const saveNewGroupName = () => {
-    console.log(groupName.value);
+    if (
+        !currentChatStore.currentRoom ||
+        !groupName.value ||
+        groupName.value ===
+            getGroupById(currentChatStore.groups, currentChatStore.currentRoom)
+                ?.name
+    )
+        return;
+    renameGroup(currentChatStore.currentRoom, groupName.value);
 };
-
-console.log(
-    getGroupById(currentChatStore.groups, currentChatStore.currentRoom)?.name
-);
 </script>
 
 <template>

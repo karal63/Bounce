@@ -80,6 +80,20 @@ class GroupController {
             next(error);
         }
     }
+
+    async renameGroup(req, res, next) {
+        try {
+            const { id } = req.params;
+            const { newGroupName } = req.body;
+            await group.rename(id, newGroupName);
+            // update this emit
+            // io.to(Number(groupId)).emit("member-left", req.user.id);
+            res.status(200).json("group renamed");
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
 }
 
 module.exports = GroupController;
