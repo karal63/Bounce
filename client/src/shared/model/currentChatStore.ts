@@ -10,6 +10,7 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
     const messages = ref<MessageWithName[]>([]);
     const members = ref<MemberWithName[]>([]);
     const groups = ref<Group[]>([]);
+    const hasPermissions = ref(false);
 
-    return { currentRoom, messages, members, groups };
+    return { currentRoom, messages, members, groups, hasPermissions };
 });

@@ -18,6 +18,7 @@ export function useSocket() {
     }
 
     const connectSocket = () => {
+        console.log("socket connected");
         if (socket && !socket.connected) {
             socket.io.opts.query = {
                 username: sessionStore.user?.name,

@@ -1,5 +1,5 @@
 import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
-import type { User } from "@/shared/types/user";
+import type { User } from "@/shared/types/User";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 

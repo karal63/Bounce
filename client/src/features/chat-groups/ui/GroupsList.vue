@@ -9,11 +9,15 @@ import type { ContextGroup } from "../model/types";
 import SingleGroup from "./SingleGroup.vue";
 import type { Group } from "@/shared/types/Group";
 import type { Member, MemberWithName } from "@/shared/types/Member";
+import { hasPermissions } from "@/shared/lib/helpers/hasPermissions";
+import { findMemberById } from "@/shared/lib/helpers/findMemberById";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
 const { getMembers } = useGetMembers();
 const currentChatStore = useCurrentChatStore();
+const sessionStore = useSessionStore();
 
 const emit = defineEmits<{
     (event: "openDeleteModal"): void;
@@ -34,6 +38,13 @@ const setGroup = async (room: number) => {
     currentChatStore.currentRoom = room;
     currentChatStore.messages = await getMessages();
     currentChatStore.members = await getMembers();
+
+    if (!sessionStore.user?.id) return;
+    const member = findMemberById(
+        currentChatStore.members,
+        sessionStore.user?.id
+    );
+    currentChatStore.hasPermissions = hasPermissions(member);
 };
 
 const handleClick = (e: MouseEvent) => {
