@@ -13,7 +13,7 @@ import { BanReasonModal } from "@/features/show-ban-reason";
 </script>
 
 <template>
-    <div class="text-white flex h-full py-5">
+    <div class="text-white flex h-full">
         <Sidebar />
         <div class="relative ml-10 w-full flex-col">
             <ChatTopBar />

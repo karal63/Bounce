@@ -3,6 +3,7 @@ import Landing from "@/pages/landing/index.vue";
 import Login from "@/pages/login/index.vue";
 import Signup from "@/pages/signup/index.vue";
 import ChatPage from "@/pages/chat/index.vue";
+import Settings from "@/pages/settings/index.vue";
 
 export const routes: RouteRecordRaw[] = [
     {
@@ -20,6 +21,11 @@ export const routes: RouteRecordRaw[] = [
     {
         path: "/chat",
         component: ChatPage,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/chat/settings",
+        component: Settings,
         meta: { requiresAuth: true },
     },
 ];
