@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
+import { onMounted } from "vue";
+import { RouterLink, useRouter } from "vue-router";
+const router = useRouter();
+
+onMounted(() => {
+    if (localStorage.getItem("accessToken")) {
+        router.push("/chat");
+    }
+});
 </script>
 
 <template>
