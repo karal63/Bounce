@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import type { Context } from "@/shared/types/Context";
 import type { MemberWithName } from "@/shared/types/Member";
-import { ref } from "vue";
 import { useUnbanUser } from "../model/useUnbanUser";
+import { ContextMenu } from "@/shared/ui";
 
 const props = defineProps<{
     context: Context<MemberWithName>;
@@ -14,23 +13,19 @@ const emit = defineEmits<{
 
 const { unbanUser } = useUnbanUser();
 
-const contextRef = ref<HTMLElement | null>(null);
-
-useClickOutside(contextRef, () => emit("closeContext"));
-
 const unban = async () => {
     await unbanUser(props.context.user?.id);
+    emit("closeContext");
 };
 </script>
 
 <template>
-    <div
-        ref="contextRef"
-        class="absolute w-[100px] bg-mainGray p-1 rounded-md border border-mainHoverOnGray flex-col gap-1"
-        :style="{
-            left: `${context.posX}px`,
-            top: `calc(${context.posY}px - 50px)`,
-        }"
+    <ContextMenu
+        v-if="context.isVisible"
+        width="100"
+        :left="context.posX"
+        :top="context.posY"
+        @closeContext="emit('closeContext')"
     >
         <button
             @click="unban"
@@ -38,5 +33,5 @@ const unban = async () => {
         >
             Unban
         </button>
-    </div>
+    </ContextMenu>
 </template>

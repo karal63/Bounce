@@ -65,9 +65,9 @@ onMounted(async () => {
             <table class="w-full">
                 <thead>
                     <tr class="border-b border-b-mainBorder text-secondary">
-                        <td class="w-[30%] pb-2">Profile</td>
-                        <td class="pb-2">Joined at</td>
-                        <td class="pb-2">Ban message</td>
+                        <td class="w-[25%] pb-2">Profile</td>
+                        <td class="w-[25%] pb-2">Joined at</td>
+                        <td class="w-[50%] pb-2">Ban message</td>
                     </tr>
                 </thead>
 
