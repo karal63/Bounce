@@ -10,6 +10,7 @@ import { MembersBar } from "@/widgets/members-bar";
 import { ConfirmKickModal } from "@/features/kick-member";
 import { ConfirmBanModal } from "@/features/ban-member";
 import { BanReasonModal } from "@/features/show-ban-reason";
+import NotificationWindow from "@/widgets/notification/ui/NotificationWindow.vue";
 </script>
 
 <template>
@@ -33,6 +34,9 @@ import { BanReasonModal } from "@/features/show-ban-reason";
         <ConfirmKickModal />
         <ConfirmBanModal />
         <BanReasonModal />
+
+        <!-- notification -->
+        <NotificationWindow />
     </div>
 </template>
 
