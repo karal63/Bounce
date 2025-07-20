@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
+import { ref } from "vue";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 
 defineProps<{

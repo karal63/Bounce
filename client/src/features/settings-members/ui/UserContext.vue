@@ -2,7 +2,7 @@
 import type { Context } from "@/shared/types/Context";
 import type { MemberWithName } from "@/shared/types/Member";
 import { useUnbanUser } from "../model/useUnbanUser";
-import { ContextMenu } from "@/shared/ui";
+import { ContextButton, ContextMenu } from "@/shared/ui";
 
 const props = defineProps<{
     context: Context<MemberWithName>;
@@ -27,11 +27,6 @@ const unban = async () => {
         :top="context.posY"
         @closeContext="emit('closeContext')"
     >
-        <button
-            @click="unban"
-            class="w-full text-left px-1 py-1 cursor-pointer text-red-500 hover:bg-mainHoverOnGray rounded-md"
-        >
-            Unban
-        </button>
+        <ContextButton @unban="unban" :important="true"> Unban </ContextButton>
     </ContextMenu>
 </template>
