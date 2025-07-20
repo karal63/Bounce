@@ -92,4 +92,8 @@ router.get("/banned-members/:groupId", verifyToken, (req, res, next) =>
     member.getBannedMembers(req, res, next)
 );
 
+router.post("/unban-member/:id", verifyToken, (req, res, next) =>
+    member.unbanMember(req, res, next)
+);
+
 module.exports = router;

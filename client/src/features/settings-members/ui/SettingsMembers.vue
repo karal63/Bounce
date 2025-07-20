@@ -1,33 +1,41 @@
 <script setup lang="ts">
 import type { MemberWithName } from "@/shared/types/Member";
-import Button from "@/shared/ui/Button.vue";
+import type { Context } from "@/shared/types/Context";
 import { onMounted, ref } from "vue";
 import { useGetBannedUsers } from "../model/useGetBannedUsers";
 import SingleUser from "./SingleUser.vue";
-import type { Context } from "@/shared/types/Context";
 import UserContext from "./UserContext.vue";
+import Button from "@/shared/ui/Button.vue";
+import { useSettingsMembersStore } from "../model/store";
 
 const { getBannedUsers } = useGetBannedUsers();
+const settingsMembersStore = useSettingsMembersStore();
 
-const bannedUsers = ref<MemberWithName[] | undefined>([]);
 const isBlockedList = ref(false);
-const bannedUserContext = ref<Context>({
+const bannedUserContext = ref<Context<MemberWithName>>({
+    user: null,
     isVisible: false,
     posX: 0,
     posY: 0,
 });
 
-const setContext = ({ event }: { event: MouseEvent }) => {
+const setContext = ({
+    user,
+    event,
+}: {
+    user: MemberWithName;
+    event: MouseEvent;
+}) => {
     bannedUserContext.value = {
+        user,
         isVisible: !bannedUserContext.value.isVisible,
         posX: event.clientX,
         posY: event.clientY,
     };
-    console.log(bannedUserContext.value);
 };
 
 onMounted(async () => {
-    bannedUsers.value = await getBannedUsers();
+    settingsMembersStore.bannedUsers = await getBannedUsers();
 });
 </script>
 
@@ -55,20 +63,27 @@ onMounted(async () => {
             <h2 class="text-3xl mb-4 mt-4">Blocked users</h2>
 
             <table class="w-full">
-                <tr class="border-b border-b-mainBorder text-secondary">
-                    <td class="w-[30%] pb-2">Profile</td>
-                    <td class="pb-2">Joined at</td>
-                    <td class="pb-2">Ban message</td>
-                </tr>
+                <thead>
+                    <tr class="border-b border-b-mainBorder text-secondary">
+                        <td class="w-[30%] pb-2">Profile</td>
+                        <td class="pb-2">Joined at</td>
+                        <td class="pb-2">Ban message</td>
+                    </tr>
+                </thead>
 
-                <SingleUser
-                    v-for="bannedUser of bannedUsers"
-                    @setContext="setContext"
-                    :bannedUser="bannedUser"
-                />
+                <tbody>
+                    <SingleUser
+                        v-for="bannedUser of settingsMembersStore.bannedUsers"
+                        @setContext="setContext"
+                        :bannedUser="bannedUser"
+                    />
+                </tbody>
             </table>
+
+            <UserContext
+                :context="bannedUserContext"
+                @closeContext="bannedUserContext.isVisible = false"
+            />
         </div>
     </div>
 </template>
-
-<!-- set proper position for context -->

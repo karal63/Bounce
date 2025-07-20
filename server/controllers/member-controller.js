@@ -74,6 +74,17 @@ class MemberController {
             next(error);
         }
     }
+
+    async unbanMember(req, res, next) {
+        try {
+            const { id } = req.params;
+            await member.unban(id);
+            res.sendStatus(200);
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
 }
 
 module.exports = MemberController;

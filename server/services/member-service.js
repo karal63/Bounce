@@ -37,6 +37,13 @@ class MemberService {
         );
         return rows;
     }
+
+    async unban(id) {
+        await db.query(
+            "UPDATE members SET isBanned = false, banReason = '' WHERE id = ?",
+            [id]
+        );
+    }
 }
 
 module.exports = MemberService;

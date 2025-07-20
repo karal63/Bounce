@@ -9,7 +9,10 @@ defineProps<{
     bannedUser: MemberWithName;
 }>();
 const emit = defineEmits<{
-    (e: "setContext", payload: { event: MouseEvent }): void;
+    (
+        e: "setContext",
+        payload: { user: MemberWithName; event: MouseEvent }
+    ): void;
 }>();
 
 const userRef = ref<HTMLElement | null>(null);
@@ -33,7 +36,7 @@ useHover(
 
         <button
             v-if="isHovering"
-            @click="(e) => emit('setContext', { event: e })"
+            @click="(e) => emit('setContext', { user: bannedUser, event: e })"
             class="absolute right-3 top-1/2 transform -translate-y-1/2 w-7 h-7 flex-center rounded-md bg-mainGray border border-mainBorder cursor-pointer hover:bg-mainHoverOnGray transition-all"
         >
             <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
