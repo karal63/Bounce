@@ -88,4 +88,8 @@ router.post("/rename-group/:id", verifyToken, (req, res, next) =>
     group.renameGroup(req, res, next)
 );
 
+router.get("/banned-members/:groupId", verifyToken, (req, res, next) =>
+    member.getBannedMembers(req, res, next)
+);
+
 module.exports = router;

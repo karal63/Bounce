@@ -29,6 +29,14 @@ class MemberService {
         );
         return rows[0];
     }
+
+    async getBanned(groupId) {
+        const [rows] = await db.query(
+            "SELECT members.*, users.name FROM members JOIN users ON users.id = members.userId WHERE members.groupId = ? AND members.isBanned = true",
+            [groupId]
+        );
+        return rows;
+    }
 }
 
 module.exports = MemberService;

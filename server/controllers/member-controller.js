@@ -63,6 +63,17 @@ class MemberController {
             next(error);
         }
     }
+
+    async getBannedMembers(req, res, next) {
+        try {
+            const { groupId } = req.params;
+            const bannedMembers = await member.getBanned(groupId);
+            res.status(200).json(bannedMembers);
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
 }
 
 module.exports = MemberController;

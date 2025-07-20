@@ -6,6 +6,7 @@ export type Member = {
     role: "member" | "moderator" | "admin";
     isMuted: boolean;
     isBanned: boolean;
+    banReason: string;
 };
 
 export type MemberWithName = Member & {

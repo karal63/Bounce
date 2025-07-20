@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { SettingsGeneral } from "@/features/settings-general";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { SettingsMembers } from "@/features/settings-members";
 import { ref } from "vue";
-
-const currentChatStore = useCurrentChatStore();
 
 const selected = ref("General");
 </script>
@@ -40,7 +38,9 @@ const selected = ref("General");
         </ul>
 
         <div class="mt-6">
-            <component :is="selected === 'General' && SettingsGeneral" />
+            <component
+                :is="selected === 'General' ? SettingsGeneral : SettingsMembers"
+            />
         </div>
     </div>
 </template>
