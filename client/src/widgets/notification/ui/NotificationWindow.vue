@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed, watch, watchEffect } from "vue";
+import { computed, watch } from "vue";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { Icon } from "@iconify/vue";
 import { useNotificationStore } from "../model/store";
 import { useSocket } from "@/shared/config/useSocketStore";
+import type { ReadyMessage } from "@/shared/types/Message";
+import { findMemberById } from "@/shared/lib/helpers/findMemberById";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const notificationStore = useNotificationStore();
+const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
 const getValidMessage = computed(() => {
@@ -26,9 +30,15 @@ watch(
     { immediate: true }
 );
 
-socket.on("mention:show-notification", () => {
-    console.log("someone mentioned you");
+socket.on("mention:show-notification", (message: ReadyMessage) => {
+    notificationStore.notification = {
+        isVisible: true,
+        senderId: message.senderId,
+        message: message.content,
+    };
 });
+
+// fix types and make things show up, then create actual mention functionality
 </script>
 
 <template>
@@ -42,7 +52,12 @@ socket.on("mention:show-notification", () => {
             </div>
             <div class="w-[78%]">
                 <p class="mb-1">
-                    {{ notificationStore.notification.senderId }}
+                    {{
+                        findMemberById(
+                            currentChatStore.members,
+                            notificationStore.notification.senderId
+                        )?.name
+                    }}
                 </p>
                 <p class="text-sm">{{ getValidMessage }}</p>
             </div>

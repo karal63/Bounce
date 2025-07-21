@@ -14,6 +14,7 @@ const message = ref<ReadyMessage>({
     groupId: null,
     senderId: sessionStore.user?.id,
     content: "",
+    mentionedUserId: 34,
 });
 
 const submit = () => {

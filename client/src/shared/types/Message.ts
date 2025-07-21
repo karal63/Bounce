@@ -1,7 +1,8 @@
 export type ReadyMessage = {
     groupId: number | null;
-    senderId?: number;
+    senderId: number;
     content: string;
+    mentionedUserId: number | null;
 };
 
 export type Message = {

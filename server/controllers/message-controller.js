@@ -1,5 +1,6 @@
 const { io } = require("../socket");
 const MessageService = require("../services/message-service");
+const { userSocketMap } = require("../socket");
 
 const messageService = new MessageService();
 
@@ -7,9 +8,25 @@ class MessageController {
     async sendMessage(req, res, next) {
         try {
             const { message, room } = req.body;
-            const messageWithName = await messageService.send(message);
-            io.to(room).emit("newMessage", messageWithName);
-            res.status(200).json(message);
+            const { newMessage, mentionedUserId } = await messageService.send(
+                message
+            );
+
+            io.to(room).emit("newMessage", newMessage);
+
+            if (mentionedUserId) {
+                const targetSocketId = userSocketMap.get(
+                    String(mentionedUserId)
+                );
+                if (targetSocketId) {
+                    io.to(targetSocketId).emit(
+                        "mention:show-notification",
+                        message
+                    );
+                }
+            }
+
+            res.sendStatus(200);
         } catch (error) {
             console.log(error);
             next(error);

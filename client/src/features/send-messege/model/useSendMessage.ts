@@ -11,11 +11,8 @@ export const useSendMessage = () => {
                 ...message,
                 groupId: currentChatStore.currentRoom,
             };
-            if (currentChatStore.currentRoom)
-                await apiSendMessage(
-                    readyMessage,
-                    currentChatStore.currentRoom
-                );
+            if (!currentChatStore.currentRoom) return;
+            await apiSendMessage(readyMessage, currentChatStore.currentRoom);
         } catch (error) {
             console.log(error);
         }

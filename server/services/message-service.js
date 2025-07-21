@@ -3,7 +3,7 @@ const ApiError = require("../exceptions/api-error");
 
 class MessageService {
     async send(message) {
-        const { groupId, senderId, content } = message;
+        const { groupId, senderId, content, mentionedUserId } = message;
         if (!content) throw ApiError.BadRequest("Message is blank.");
         const [result] = await db.query(
             "INSERT INTO messages (groupId, senderId, content) VALUES (?, ?, ?);",
@@ -16,7 +16,7 @@ class MessageService {
             [insertedMessageId]
         );
 
-        return messageRows[0];
+        return { newMessage: messageRows[0], mentionedUserId };
     }
 
     async getAll(groupId) {

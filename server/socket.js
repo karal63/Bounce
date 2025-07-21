@@ -29,9 +29,16 @@ const io = new Server(server, {
     },
 });
 
+// userId -> socketId
+const userSocketMap = new Map();
 io.on("connection", (socket) => {
     console.log("A user connected: ", socket.id);
-    // let prevRoom;
+    const userId = socket.handshake.query.id; // pass userId in query params
+
+    // // Save mapping
+    if (userId) {
+        userSocketMap.set(userId, socket.id);
+    }
 
     socket.on("set-group", ({ prevRoom, newRoom }) => {
         if (prevRoom) socket.leave(prevRoom);
@@ -40,6 +47,9 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("A user disconnected: ", socket.id);
+        if (userId) {
+            userSocketMap.delete(userId);
+        }
     });
 });
 
@@ -47,4 +57,4 @@ instrument(io, {
     auth: false,
 });
 
-module.exports = { io, app, server };
+module.exports = { io, app, server, userSocketMap };
