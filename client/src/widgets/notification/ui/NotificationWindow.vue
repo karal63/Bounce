@@ -7,6 +7,7 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import type { ReadyMessage } from "@/shared/types/Message";
 import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import ModalTransition from "@/shared/ui/ModalTransition.vue";
 
 const notificationStore = useNotificationStore();
 const currentChatStore = useCurrentChatStore();
@@ -42,34 +43,36 @@ socket.on("mention:show-notification", (message: ReadyMessage) => {
 </script>
 
 <template>
-    <div
-        v-if="notificationStore.notification.isVisible"
-        class="absolute bottom-5 right-5 bg-mainGray border border-mainHoverOnGray px-4 py-2 w-[300px] rounded-md"
-    >
-        <div class="flex">
-            <div class="w-[22%]">
-                <UserAvatar size="45" />
-            </div>
-            <div class="w-[78%]">
-                <p class="mb-1">
-                    {{
-                        findMemberById(
-                            currentChatStore.members,
-                            notificationStore.notification.senderId
-                        )?.name
-                    }}
-                </p>
-                <p class="text-sm">{{ getValidMessage }}</p>
-            </div>
+    <ModalTransition>
+        <div
+            v-show="notificationStore.notification.isVisible"
+            class="absolute bottom-5 right-5 bg-mainGray border border-mainHoverOnGray px-4 py-2 w-[300px] rounded-md"
+        >
+            <div class="flex">
+                <div class="w-[22%]">
+                    <UserAvatar size="45" />
+                </div>
+                <div class="w-[78%]">
+                    <p class="mb-1">
+                        {{
+                            findMemberById(
+                                currentChatStore.members,
+                                notificationStore.notification.senderId
+                            )?.name
+                        }}
+                    </p>
+                    <p class="text-sm">{{ getValidMessage }}</p>
+                </div>
 
-            <button
-                @click="notificationStore.notification.isVisible = false"
-                class="absolute top-1 right-1 w-7 h-7 flex-center cursor-pointer hover:bg-mainHoverOnGray transition-all rounded-full"
-            >
-                <Icon icon="gg:close" />
-            </button>
+                <button
+                    @click="notificationStore.notification.isVisible = false"
+                    class="absolute top-1 right-1 w-7 h-7 flex-center cursor-pointer hover:bg-mainHoverOnGray transition-all rounded-full"
+                >
+                    <Icon icon="gg:close" />
+                </button>
+            </div>
         </div>
-    </div>
+    </ModalTransition>
 </template>
 
 <style scoped></style>
