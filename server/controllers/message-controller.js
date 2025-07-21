@@ -8,21 +8,21 @@ class MessageController {
     async sendMessage(req, res, next) {
         try {
             const { message, room } = req.body;
-            const { newMessage, mentionedUserId } = await messageService.send(
+            const { newMessage, mentionedUsersId } = await messageService.send(
                 message
             );
 
             io.to(room).emit("newMessage", newMessage);
 
-            if (mentionedUserId) {
-                const targetSocketId = userSocketMap.get(
-                    String(mentionedUserId)
-                );
-                if (targetSocketId) {
-                    io.to(targetSocketId).emit(
-                        "mention:show-notification",
-                        message
-                    );
+            if (mentionedUsersId) {
+                for (const mentionId of mentionedUsersId) {
+                    const targetSocketId = userSocketMap.get(String(mentionId));
+                    if (targetSocketId) {
+                        io.to(targetSocketId).emit(
+                            "mention:show-notification",
+                            message
+                        );
+                    }
                 }
             }
 

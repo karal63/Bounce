@@ -38,7 +38,7 @@ socket.on("mention:show-notification", (message: ReadyMessage) => {
     };
 });
 
-// fix types and make things show up, then create actual mention functionality
+// create actual mention functionality
 </script>
 
 <template>
