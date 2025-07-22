@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import { ref, watch } from "vue";
+import { Icon } from "@iconify/vue";
+import type { ReadyMessage } from "@/shared/types/Message";
+
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { useSendMessage } from "@/features/send-messege";
-import type { ReadyMessage } from "@/shared/types/Message";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+
 import { findMemberByName } from "@/shared/lib/helpers/findMemberByName";
+import MentionList from "./MentionList.vue";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
@@ -18,6 +21,8 @@ const message = ref<ReadyMessage>({
     mentionedUsersId: [],
 });
 const isMentionListOpen = ref(false);
+const cursorPos = ref<number>(0);
+const inputRef = ref<HTMLElement | null>(null);
 
 const submit = () => {
     send(message.value);
@@ -28,11 +33,32 @@ const submit = () => {
     };
 };
 
+function handleInput(event: Event) {
+    const input = (event.target as HTMLTextAreaElement).value;
+    const cursorPos = (event.target as HTMLTextAreaElement).selectionStart;
+
+    const prevChar = input[cursorPos - 1];
+    isMentionListOpen.value = prevChar === "@";
+}
+
+const mention = (name: string) => {
+    const firstPart = message.value.content.slice(0, cursorPos.value);
+    const secondPart = message.value.content.slice(
+        cursorPos.value,
+        message.value.content.length - 1
+    );
+
+    message.value.content = firstPart + name + secondPart;
+};
+
 watch(
     () => message.value.content,
     (newContent) => {
         const mentionPattern = /@[\w\d_]+/g;
         const mentions = newContent.match(mentionPattern);
+        cursorPos.value = (
+            inputRef.value as HTMLTextAreaElement
+        ).selectionStart;
 
         if (mentions) {
             message.value.mentionedUsersId = mentions.map((mention) => {
@@ -58,7 +84,9 @@ watch(
     >
         <form class="flex items-center gap-2">
             <textarea
+                ref="inputRef"
                 v-model="message.content"
+                @input="handleInput"
                 rows="1"
                 placeholder="Type your message..."
                 class="flex-1 resize-none rounded-md bg-white/10 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
@@ -71,5 +99,7 @@ watch(
                 <Icon icon="material-symbols:send" />
             </button>
         </form>
+
+        <MentionList v-if="isMentionListOpen" @mention="mention" />
     </div>
 </template>
