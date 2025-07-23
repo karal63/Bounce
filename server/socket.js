@@ -44,6 +44,10 @@ io.on("connection", (socket) => {
         if (prevRoom) socket.leave(prevRoom);
         socket.join(newRoom);
     });
+    socket.on("leave-group", (room) => {
+        if (!room) return;
+        socket.leave(room);
+    });
 
     socket.on("disconnect", () => {
         console.log("A user disconnected: ", socket.id);

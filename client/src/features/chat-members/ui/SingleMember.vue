@@ -12,10 +12,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{
     (event: "openContext"): void;
-    (
-        e: "setContext",
-        value: Context & { type: "actions" | "profile" | null }
-    ): void;
+    (e: "setContext", value: Context<MemberWithName>): void;
 }>();
 
 const showProfile = (e: MouseEvent) => {
@@ -26,6 +23,7 @@ const showProfile = (e: MouseEvent) => {
         isVisible: true,
         posX: e.clientX - listRefRect.left,
         posY: e.clientY - listRefRect?.top,
+        user: props.member,
         type: "profile",
     });
     memberStore.selectedMember = props.member;
@@ -39,6 +37,7 @@ const showActions = (e: MouseEvent) => {
         isVisible: true,
         posX: e.clientX - listRefRect.left,
         posY: e.clientY - listRefRect?.top,
+        user: props.member,
         type: "actions",
     });
     memberStore.selectedMember = props.member;

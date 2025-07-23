@@ -8,9 +8,13 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getPermissions } from "@/shared/lib/helpers/getPermissions";
 import { useKickMemberStore } from "@/features/kick-member";
 import { useBanMemberStore } from "@/features/ban-member";
+import { useSocket } from "@/shared/config/useSocketStore";
+import { useGetMessages } from "@/features/chat-messages";
+import type { MemberWithName } from "@/shared/types/Member";
+import type { CurrentRoom } from "@/shared/types/CurrentRoom";
 
-defineProps<{
-    memberContext: Context;
+const props = defineProps<{
+    memberContext: Context<MemberWithName>;
 }>();
 const emit = defineEmits<{
     (event: "closeContext"): void;
@@ -21,6 +25,8 @@ const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
 const kickMemberStore = useKickMemberStore();
 const banMemberStore = useBanMemberStore();
+const { socket } = useSocket();
+const { getMessages } = useGetMessages();
 
 const contextRef = ref<HTMLElement | null>(null);
 const permissions = ref({
@@ -45,6 +51,23 @@ const kick = () => {
 const ban = () => {
     banMemberStore.isConfirmModalOpen = true;
 };
+
+const openConversation = async () => {
+    // socket.emit("leave-group", currentChatStore.currentRoom);
+    // if (!props.memberContext.user?.name) return;
+    // currentChatStore.currentRoom = {
+    //     id: props.memberContext.user.id,
+    //     private: true,
+    // };
+    // currentChatStore.messages = await getMessages();
+    // currentChatStore.members = [];
+    // props.memberContext.isVisible = false;
+    // delete functionalities i want to do with socket 💚
+    // i dont need to join a new room as it is setted as default user index 💚
+    // the b on the server create functionality where group id you will assume as receiverId
+    // separate chat view from conversation view
+    // use new git command for separating commits you learned yesterday
+};
 </script>
 
 <template>
@@ -57,6 +80,7 @@ const ban = () => {
         }"
     >
         <button
+            @click="openConversation"
             class="w-full text-left px-1 py-1 cursor-pointer hover:bg-mainHoverOnGray rounded-md"
         >
             Message
