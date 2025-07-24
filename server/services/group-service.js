@@ -2,6 +2,7 @@ const { nanoid } = require("nanoid");
 const db = require("../db");
 const ApiError = require("../exceptions/api-error");
 const UserService = require("./user-service");
+const { v4 } = require("uuid");
 
 const userService = new UserService();
 
@@ -19,24 +20,26 @@ class GroupService {
             "SELECT 1 FROM groups WHERE name = ? LIMIT 1",
             [name]
         );
+
         if (nameRows.length > 0) {
             throw ApiError.BadRequest("Name already exists.");
         }
 
         const invitationLink = nanoid(8);
+        const groupId = v4();
 
         const [rows] = await db.query(
-            "INSERT INTO groups (name, ownerId, description, invitationLink) VALUES (?, ?, ?, ?)",
-            [name, ownerId, description, invitationLink]
+            "INSERT INTO groups (id, name, ownerId, description, invitationLink) VALUES (?, ?, ?, ?, ?)",
+            [groupId, name, ownerId, description, invitationLink]
         );
 
         await db.query(
-            "INSERT INTO members (groupId, userId, role) VALUES (?, ?, ?)",
-            [rows.insertId, ownerId, "admin"]
+            "INSERT INTO members (id, groupId, userId, role) VALUES (UUID(), ?, ?, ?)",
+            [groupId, ownerId, "admin"]
         );
 
         const [newGroup] = await db.query("SELECT * FROM groups WHERE id = ?", [
-            rows.insertId,
+            groupId,
         ]);
         return newGroup[0];
     }

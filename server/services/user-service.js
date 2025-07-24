@@ -25,7 +25,7 @@ class UserService {
         const activationLink = uuid.v4();
 
         await db.query(
-            "INSERT INTO users (email, password, name, activationLink) VALUES (?, ?, ?, ?)",
+            "INSERT INTO users (id, email, password, name, activationLink) VALUES (UUID(), ?, ?, ?, ?)",
             [email, hashPassword, name, activationLink]
         );
         await mail.sendActivationMail(

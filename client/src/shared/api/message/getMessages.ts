@@ -7,7 +7,6 @@ export const apiGetMessages = async (
     currentRoom: CurrentRoom,
     userId: number
 ): Promise<AxiosResponse<MessageWithName[]>> => {
-    console.log(currentRoom, userId);
     const messages = await axiosInstance.get(
         `${API_URL}/messages/${userId}/${currentRoom.type}/${currentRoom.id}`
     );

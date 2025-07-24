@@ -17,6 +17,7 @@ export const useCreateGroup = () => {
                 sessionStore.user?.id,
                 ""
             );
+
             modalStore.isModalOpen = false;
             modalStore.mode = "";
 
