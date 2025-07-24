@@ -9,7 +9,7 @@ const uiStore = useUiStore();
 
 <template>
     <div
-        v-if="uiStore.isMembersBarOpen && currentChatStore.currentRoom"
+        v-if="uiStore.isMembersBarOpen && currentChatStore.currentRoom.id"
         class="w-[300px] mt-5 ml-2 pl-3 border-l border-mainBorder"
     >
         <MembersList />

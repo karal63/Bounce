@@ -9,10 +9,10 @@ export const useSendMessage = () => {
         try {
             const readyMessage: ReadyMessage = {
                 ...message,
-                groupId: currentChatStore.currentRoom,
+                groupId: currentChatStore.currentRoom.id,
             };
-            if (!currentChatStore.currentRoom) return;
-            await apiSendMessage(readyMessage, currentChatStore.currentRoom);
+            if (!currentChatStore.currentRoom.id) return;
+            await apiSendMessage(readyMessage, currentChatStore.currentRoom.id);
         } catch (error) {
             console.log(error);
         }

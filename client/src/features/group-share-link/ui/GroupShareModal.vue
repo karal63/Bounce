@@ -39,7 +39,7 @@ watch(
 );
 
 watch(
-    () => currentChatStore.currentRoom,
+    () => currentChatStore.currentRoom.id,
     () => {
         currentGroup.value = getCurrentGroup() ?? null;
     }

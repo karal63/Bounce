@@ -22,7 +22,7 @@ socket.on("message-deleted", (messageId: number) => {
 });
 
 watch(
-    () => currentChatStore.currentRoom,
+    () => currentChatStore.currentRoom.id,
     () => {
         isLoading.value = true;
         setTimeout(() => {
@@ -37,7 +37,10 @@ watch(
 
 <template>
     <div ref="listRef" class="pt-10 pr-4 max-h-[91%] overflow-y-auto">
-        <div v-if="currentChatStore.currentRoom" class="flex-col gap-4 h-full">
+        <div
+            v-if="currentChatStore.currentRoom.id"
+            class="flex-col gap-4 h-full"
+        >
             <SingleMessage
                 :posLeft="listRef?.getBoundingClientRect().left"
                 v-for="message of currentChatStore.messages"

@@ -6,9 +6,9 @@ export const useGetBannedUsers = () => {
 
     const getBannedUsers = async () => {
         try {
-            if (!currentChatStore.currentRoom) return;
+            if (!currentChatStore.currentRoom.id) return;
             const bannedMembers = await apiGetBannedUsers(
-                currentChatStore.currentRoom
+                currentChatStore.currentRoom.id
             );
             return bannedMembers.data;
         } catch (error) {

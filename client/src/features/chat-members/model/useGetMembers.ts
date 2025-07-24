@@ -9,10 +9,10 @@ export const useGetMembers = () => {
 
     const getMembers = async (): Promise<MemberWithName[]> => {
         try {
-            if (!socket.id || !currentChatStore.currentRoom) return [];
+            if (!socket.id || !currentChatStore.currentRoom.id) return [];
             const members = await getAllMembers(
                 socket.id,
-                currentChatStore.currentRoom
+                currentChatStore.currentRoom.id
             );
             return members.data;
         } catch (error) {

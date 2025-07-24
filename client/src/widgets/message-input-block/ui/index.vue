@@ -79,7 +79,7 @@ watch(
 
 <template>
     <div
-        v-if="currentChatStore.currentRoom"
+        v-if="currentChatStore.currentRoom.id"
         class="absolute bottom-0 right-0 w-full"
     >
         <form class="flex items-center gap-2">

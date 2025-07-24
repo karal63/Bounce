@@ -24,7 +24,7 @@ const emit = defineEmits<{
             icon="lets-icons:chat-light"
             class="text-3xl"
             :class="
-                currentChatStore.currentRoom === group.id
+                currentChatStore.currentRoom.id === group.id
                     ? 'text-purple-500'
                     : 'text-grayDull'
             "

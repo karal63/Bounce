@@ -32,10 +32,13 @@ const context = ref<ContextGroup>({
 
 const setGroup = async (room: number) => {
     socket.emit("set-group", {
-        prevRoom: currentChatStore.currentRoom,
+        prevRoom: currentChatStore.currentRoom.id,
         newRoom: room,
     });
-    currentChatStore.currentRoom = room;
+    currentChatStore.currentRoom = {
+        id: room,
+        type: "group",
+    };
     currentChatStore.messages = await getMessages();
     currentChatStore.members = await getMembers();
 
@@ -66,7 +69,10 @@ socket.on("group-deleted", (groupId) => {
 });
 
 socket.on("deleted:leave-group", (deletedMember: MemberWithName) => {
-    currentChatStore.currentRoom = null;
+    currentChatStore.currentRoom = {
+        id: null,
+        type: null,
+    };
     currentChatStore.groups = currentChatStore.groups.filter(
         (group) => group.id !== deletedMember.groupId
     );
@@ -79,11 +85,13 @@ socket.on("member-banned", (memberId) => {
 });
 
 socket.on("to-banned:update-groups", (bannedMember: Member) => {
-    currentChatStore.currentRoom = null;
+    currentChatStore.currentRoom = {
+        id: null,
+        type: null,
+    };
     currentChatStore.groups = currentChatStore.groups.filter(
         (group) => group.id !== bannedMember.groupId
     );
-    // show ban info modal
 });
 </script>
 

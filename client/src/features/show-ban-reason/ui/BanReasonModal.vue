@@ -4,12 +4,9 @@ import { useBanReasonStore } from "../model/badReasonStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import Button from "@/shared/ui/Button.vue";
-import { getGroupById } from "@/shared/lib/helpers/getGroupById";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const banReasonStore = useBanReasonStore();
 const sessionStore = useSessionStore();
-const currentChatStore = useCurrentChatStore();
 
 const { socket } = useSocket();
 

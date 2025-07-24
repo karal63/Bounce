@@ -4,9 +4,13 @@ import { defineStore } from "pinia";
 import type { MemberWithName } from "@/shared/types/Member";
 import type { MessageWithName } from "@/shared/types/Message";
 import type { Group } from "@/shared/types/Group";
+import type { CurrentRoom } from "../types/CurrentRoom";
 
 export const useCurrentChatStore = defineStore("currentChat", () => {
-    const currentRoom = ref<number | null>(null);
+    const currentRoom = ref<CurrentRoom>({
+        id: null,
+        type: null,
+    });
     const messages = ref<MessageWithName[]>([]);
     const members = ref<MemberWithName[]>([]);
     const groups = ref<Group[]>([]);

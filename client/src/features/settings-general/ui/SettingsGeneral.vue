@@ -10,19 +10,21 @@ const currentChatStore = useCurrentChatStore();
 const { renameGroup } = useRenameGroup();
 
 const groupName = ref<string | undefined>(
-    getGroupById(currentChatStore.groups, currentChatStore.currentRoom)?.name
+    getGroupById(currentChatStore.groups, currentChatStore.currentRoom.id)?.name
 );
 
 const saveNewGroupName = () => {
     if (
-        !currentChatStore.currentRoom ||
+        !currentChatStore.currentRoom.id ||
         !groupName.value ||
         groupName.value ===
-            getGroupById(currentChatStore.groups, currentChatStore.currentRoom)
-                ?.name
+            getGroupById(
+                currentChatStore.groups,
+                currentChatStore.currentRoom.id
+            )?.name
     )
         return;
-    renameGroup(currentChatStore.currentRoom, groupName.value);
+    renameGroup(currentChatStore.currentRoom.id, groupName.value);
 };
 </script>
 

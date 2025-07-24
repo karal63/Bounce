@@ -6,8 +6,8 @@ export const useGetMessages = () => {
     const currentChatStore = useCurrentChatStore();
 
     const getMessages = async (): Promise<MessageWithName[]> => {
-        if (!currentChatStore.currentRoom) return [];
-        const messages = await apiGetMessages(currentChatStore.currentRoom);
+        if (!currentChatStore.currentRoom.id) return [];
+        const messages = await apiGetMessages(currentChatStore.currentRoom.id);
         return messages.data;
     };
 

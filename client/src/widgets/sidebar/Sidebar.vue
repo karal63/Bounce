@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted } from "vue";
 import { Icon } from "@iconify/vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import ProfileBar from "./ui/ProfileBar.vue";
@@ -27,7 +27,12 @@ onMounted(async () => {
         <div>
             <!-- logo -->
             <button
-                @click="currentChatStore.currentRoom = null"
+                @click="
+                    currentChatStore.currentRoom = {
+                        id: null,
+                        type: null,
+                    }
+                "
                 class="flex-col gap-1 cursor-pointer"
             >
                 <div class="bg-purple-500 w-6 h-2 rounded-xl -ml-1"></div>

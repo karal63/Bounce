@@ -14,7 +14,7 @@ const currentChatStore = useCurrentChatStore();
 
 const getGroupName = computed(() => {
     const group = currentChatStore.groups.find(
-        (gr) => gr.id === currentChatStore.currentRoom
+        (gr) => gr.id === currentChatStore.currentRoom.id
     );
     return group ? group?.name : "";
 });
@@ -30,7 +30,7 @@ const showShareLinkModal = () => {
     >
         <h1 class="text-2xl">{{ getGroupName }}</h1>
         <div
-            v-if="currentChatStore.currentRoom"
+            v-if="currentChatStore.currentRoom.id"
             class="flex items-center gap-2"
         >
             <button
