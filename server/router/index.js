@@ -37,12 +37,18 @@ router.get("/activate/:link", (req, res, next) =>
     auth.activate(req, res, next)
 );
 
-router.post("/send-message", verifyToken, (req, res, next) =>
-    message.sendMessage(req, res, next)
+router.post("/send-group-message", verifyToken, (req, res, next) =>
+    message.sendGroupMessage(req, res, next)
 );
 
-router.get("/messages/:groupId", verifyToken, (req, res, next) =>
-    message.getMessages(req, res, next)
+router.post("/send-direct-message", verifyToken, (req, res, next) =>
+    message.sendDirectMessage(req, res, next)
+);
+
+router.get(
+    "/messages/:userId/:type/:recipientId",
+    verifyToken,
+    (req, res, next) => message.getMessages(req, res, next)
 );
 
 router.post("/members/:groupId", verifyToken, (req, res, next) =>

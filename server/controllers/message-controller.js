@@ -5,7 +5,7 @@ const { userSocketMap } = require("../socket");
 const messageService = new MessageService();
 
 class MessageController {
-    async sendMessage(req, res, next) {
+    async sendGroupMessage(req, res, next) {
         try {
             const { message, room } = req.body;
             const { newMessage, mentionedUsersId } = await messageService.send(
@@ -33,10 +33,31 @@ class MessageController {
         }
     }
 
+    async sendDirectMessage(req, res, next) {
+        try {
+            const { message, room } = req.body;
+            const { newMessage, mentionedUsersId } = await messageService.send(
+                message
+            );
+
+            io.to(room).emit("newMessage", newMessage);
+            console.log(newMessage);
+
+            res.sendStatus(200);
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
+
     async getMessages(req, res, next) {
         try {
-            const { groupId } = req.params;
-            const messages = await messageService.getAll(groupId);
+            const { userId, type, recipientId } = req.params;
+            const messages = await messageService.getAll(
+                userId,
+                type,
+                recipientId
+            );
             res.status(200).json(messages);
         } catch (error) {
             next(error);

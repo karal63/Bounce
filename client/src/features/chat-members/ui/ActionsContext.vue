@@ -53,15 +53,17 @@ const ban = () => {
 };
 
 const openConversation = async () => {
-    // socket.emit("leave-group", currentChatStore.currentRoom);
-    // if (!props.memberContext.user?.name) return;
-    // currentChatStore.currentRoom = {
-    //     id: props.memberContext.user.id,
-    //     private: true,
-    // };
-    // currentChatStore.messages = await getMessages();
-    // currentChatStore.members = [];
-    // props.memberContext.isVisible = false;
+    socket.emit("leave-group", currentChatStore.currentRoom.id);
+    if (!props.memberContext.user?.name) return;
+
+    currentChatStore.currentRoom = {
+        id: props.memberContext.user.userId,
+        type: "direct",
+    };
+
+    currentChatStore.messages = await getMessages();
+    currentChatStore.members = [];
+    props.memberContext.isVisible = false;
     // delete functionalities i want to do with socket 💚
     // i dont need to join a new room as it is setted as default user index 💚
     // the b on the server create functionality where group id you will assume as receiverId
