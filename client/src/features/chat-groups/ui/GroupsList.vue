@@ -12,12 +12,14 @@ import type { Member, MemberWithName } from "@/shared/types/Member";
 import { hasPermissions } from "@/shared/lib/helpers/hasPermissions";
 import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { useRouter } from "vue-router";
 
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
 const { getMembers } = useGetMembers();
 const currentChatStore = useCurrentChatStore();
 const sessionStore = useSessionStore();
+const router = useRouter();
 
 const emit = defineEmits<{
     (event: "openDeleteModal"): void;
@@ -48,6 +50,7 @@ const setGroup = async (room: number) => {
         sessionStore.user?.id
     );
     currentChatStore.hasPermissions = hasPermissions(member);
+    router.push(`/chat/${currentChatStore.currentRoom.id}`);
 };
 
 const handleClick = (e: MouseEvent) => {

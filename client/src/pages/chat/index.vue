@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Sidebar } from "@/widgets/sidebar";
 import { MessageInputBlock } from "@/widgets/message-input-block";
 import { CreateOrJoinModal } from "@/widgets/group-modal";
 import { MessagesList } from "@/features/chat-messages";
@@ -14,8 +13,7 @@ import NotificationWindow from "@/widgets/notification/ui/NotificationWindow.vue
 </script>
 
 <template>
-    <div class="text-white flex h-full">
-        <Sidebar />
+    <div class="text-white flex h-full w-full">
         <div class="relative ml-10 w-full flex-col">
             <ChatTopBar />
             <div class="flex h-full">

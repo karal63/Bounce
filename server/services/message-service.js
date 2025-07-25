@@ -10,8 +10,6 @@ class MessageService {
 
         const messageId = v4();
 
-        // recipientId references already to user id so think to make it reference to member id
-
         if (groupId) {
             await db.query(
                 "INSERT INTO messages (id, groupId, senderId, content) VALUES (?, ?, ?, ?);",

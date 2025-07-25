@@ -26,7 +26,8 @@ onMounted(async () => {
     <div class="min-w-[200px] max-w-[250px] h-full flex-col justify-between">
         <div>
             <!-- logo -->
-            <button
+            <RouterLink
+                to="/chat"
                 @click="
                     currentChatStore.currentRoom = {
                         id: null,
@@ -38,7 +39,7 @@ onMounted(async () => {
                 <div class="bg-purple-500 w-6 h-2 rounded-xl -ml-1"></div>
                 <div class="bg-purple-500 w-6 h-2 rounded-xl"></div>
                 <div class="bg-purple-500 w-6 h-2 rounded-xl ml-1"></div>
-            </button>
+            </RouterLink>
 
             <h1 class="text-xl font-light mt-10 mb-2 text-grayDull">Chats</h1>
 

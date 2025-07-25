@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DefaultLayout from "@/app/layout/DefaultLayout.vue";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 
@@ -12,7 +11,5 @@ if (sessionStore.isAuthenticated) {
 </script>
 
 <template>
-    <DefaultLayout>
-        <router-view />
-    </DefaultLayout>
+    <router-view />
 </template>
