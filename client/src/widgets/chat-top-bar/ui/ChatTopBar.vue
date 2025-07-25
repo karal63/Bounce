@@ -13,10 +13,16 @@ const route = useRoute();
 const currentChatStore = useCurrentChatStore();
 
 const getGroupName = computed(() => {
-    const group = currentChatStore.groups.find(
-        (gr) => gr.id === currentChatStore.currentRoom.id
-    );
-    return group ? group?.name : "";
+    const room = currentChatStore.currentRoom;
+    let group;
+
+    if (room.type === "group") {
+        group = currentChatStore.groups.find((gr) => gr.id === room.id)?.name;
+    } else if (room.type === "direct") {
+        group = room.id;
+    }
+
+    return group ?? "";
 });
 
 const showShareLinkModal = () => {
