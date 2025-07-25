@@ -47,14 +47,17 @@ const showShareLinkModal = () => {
                 <Icon icon="solar:share-line-duotone" />
             </button>
             <button
-                v-if="route.path === '/chat'"
+                v-if="route.path.startsWith('/chat')"
                 @click="uiStore.toggleMembersBar()"
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >
                 <Icon icon="fluent:person-32-filled" />
             </button>
             <RouterLink
-                v-if="route.path === '/chat' && currentChatStore.hasPermissions"
+                v-if="
+                    route.path.startsWith('/chat') &&
+                    currentChatStore.hasPermissions
+                "
                 to="/chat/settings"
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >
