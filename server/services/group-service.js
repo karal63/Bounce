@@ -67,14 +67,15 @@ class GroupService {
             }
         }
 
-        const newMember = await db.query(
-            "INSERT INTO members (groupId, userId, role) VALUES (?, ?, ?)",
-            [groupId, userId, "member"]
+        const memberId = v4();
+        await db.query(
+            "INSERT INTO members (id, groupId, userId, role) VALUES (?, ?, ?, ?)",
+            [memberId, groupId, userId, "member"]
         );
 
         const [newMemberRows] = await db.query(
             "SELECT members.*, users.name FROM members JOIN users ON members.userId = users.id WHERE members.id = ?",
-            [newMember[0].insertId]
+            [memberId]
         );
         return { newGroup: matchingGroupRows[0], newMember: newMemberRows[0] };
     }
