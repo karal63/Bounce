@@ -14,13 +14,13 @@ export const useSendMessage = () => {
             if (room.type === "group") {
                 const readyMessage: ReadyMessage = {
                     ...message,
-                    groupId: currentChatStore.currentRoom.id,
+                    groupId: room.id,
                 };
                 await apiSendGroupMessage(readyMessage, room.id);
             } else if (room.type === "direct") {
                 const readyMessage: ReadyMessage = {
                     ...message,
-                    recipientId: currentChatStore.currentRoom.id,
+                    recipientId: room.id,
                 };
                 await apiSendDirectMessage(readyMessage, room.id);
             } else {

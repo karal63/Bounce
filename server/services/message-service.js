@@ -10,7 +10,7 @@ class MessageService {
 
         const messageId = v4();
 
-        // db error because i reference senderId to member but my app to user
+        // recipientId references already to user id so think to make it reference to member id
 
         if (groupId) {
             await db.query(
