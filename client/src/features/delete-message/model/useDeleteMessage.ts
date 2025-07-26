@@ -4,7 +4,7 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 export const useDeleteMessage = () => {
     const currentChatStore = useCurrentChatStore();
 
-    const deleteMessage = async (messageId: number) => {
+    const deleteMessage = async (messageId: string) => {
         try {
             await apiDeleteMessage(messageId);
             currentChatStore.messages = currentChatStore.messages.filter(

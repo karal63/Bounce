@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDeleteMessage } from "@/features/delete-message";
 import { findMemberById } from "@/shared/lib/helpers/findMemberById";
+import { hasPermissions } from "@/shared/lib/helpers/hasPermissions";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
@@ -34,21 +35,26 @@ const handleDelete = async () => {
 
 onMounted(() => {
     if (!props.message.senderId || !sessionStore.user?.id) return;
-    const sender = findMemberById(
-        currentChatStore.members,
-        props.message.senderId
-    );
-    const receiver = findMemberById(
-        currentChatStore.members,
-        sessionStore.user?.id
-    );
 
-    if (
-        sessionStore.user?.id === sender?.userId ||
-        receiver?.role === "admin" ||
-        receiver?.role === "moderator"
-    ) {
-        accessabilities.value.delete = true;
+    if (currentChatStore.currentRoom.type === "group") {
+        const message = props.message;
+
+        const receiver = findMemberById(
+            currentChatStore.members,
+            sessionStore.user?.id
+        );
+
+        if (
+            sessionStore.user?.id === message.senderId ||
+            hasPermissions(receiver)
+        ) {
+            accessabilities.value.delete = true;
+        }
+    } else if (currentChatStore.currentRoom.type === "direct") {
+        const message = props.message;
+        if (sessionStore.user?.id === message.senderId) {
+            accessabilities.value.delete = true;
+        }
     }
 });
 </script>
