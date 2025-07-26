@@ -18,7 +18,7 @@ onMounted(async () => {
 
 <template>
     <ul
-        class="bg-mainHoverDarkBg rounded-md w-[20%] max-h-max flex-col gap-2 p-2"
+        class="bg-mainHoverDarkBg rounded-md w-full max-h-max flex-col gap-2 p-2"
     >
         <li
             v-for="user of currentChatStore.messagedUsers"
@@ -27,7 +27,7 @@ onMounted(async () => {
             <div class="flex items-center gap-2">
                 <UserAvatar size="40" />
                 <div>
-                    <h3 class="text-lg">{{ user.userId }}</h3>
+                    <h3 class="text-lg">{{ user.name }}</h3>
                 </div>
             </div>
         </li>

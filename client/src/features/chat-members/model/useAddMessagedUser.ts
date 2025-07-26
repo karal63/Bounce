@@ -7,7 +7,9 @@ export const useAddMessagedUsers = () => {
     const addMessagedUser = async (userId: string, targetUserId: string) => {
         const exists = currentChatStore.messagedUsers.find(
             (user) =>
-                user.userId === userId && user.targetUserId === targetUserId
+                (user.userId === userId &&
+                    user.targetUserId === targetUserId) ||
+                (user.userId === userId && user.targetUserId === targetUserId)
         );
 
         if (exists) return;

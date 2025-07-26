@@ -3,7 +3,7 @@ import { MessagedUsersList } from "@/features/chat-messaged-users";
 </script>
 
 <template>
-    <div>
+    <div class="w-[20%]">
         <!-- some search panel, etc -->
         <MessagedUsersList />
     </div>
