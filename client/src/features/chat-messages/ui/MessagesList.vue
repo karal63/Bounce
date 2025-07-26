@@ -2,12 +2,15 @@
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import type { MessageWithName } from "@/shared/types/Message";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import SingleMessage from "./SingleMessage.vue";
+import { useRouter } from "vue-router";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
+const router = useRouter();
+
 const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 
@@ -15,7 +18,7 @@ socket.on("newMessage", (msg: MessageWithName) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
 });
 
-socket.on("message-deleted", (messageId: number) => {
+socket.on("message-deleted", (messageId: string) => {
     currentChatStore.messages = currentChatStore.messages.filter(
         (msg) => msg.id !== messageId
     );
@@ -33,6 +36,10 @@ watch(
         }, 20);
     }
 );
+
+onMounted(() => {
+    if (!currentChatStore.currentRoom.id) router.push("/chat");
+});
 </script>
 
 <template>
