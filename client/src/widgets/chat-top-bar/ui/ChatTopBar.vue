@@ -19,7 +19,9 @@ const getGroupName = computed(() => {
     if (room.type === "group") {
         group = currentChatStore.groups.find((gr) => gr.id === room.id)?.name;
     } else if (room.type === "direct") {
-        group = room.id;
+        group = currentChatStore.messagedUsers.find(
+            (user) => user.userId === room.id
+        )?.otherUserName;
     }
 
     return group ?? "";
