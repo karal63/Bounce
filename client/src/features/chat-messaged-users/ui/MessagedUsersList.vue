@@ -27,7 +27,9 @@ onMounted(async () => {
             <div class="flex items-center gap-2">
                 <UserAvatar size="40" />
                 <div>
-                    <h3 class="text-lg">{{ user.name }}</h3>
+                    <h3 class="text-lg">
+                        {{ user.otherUserName }}
+                    </h3>
                 </div>
             </div>
         </li>

@@ -9,7 +9,7 @@ export const useAddMessagedUsers = () => {
             (user) =>
                 (user.userId === userId &&
                     user.targetUserId === targetUserId) ||
-                (user.userId === userId && user.targetUserId === targetUserId)
+                (user.userId === targetUserId && user.targetUserId === userId)
         );
 
         if (exists) return;

@@ -3,5 +3,5 @@ export type MessagedUser = {
     userId: string;
     targetUserId: string;
     created_at: string;
-    name: string;
+    otherUserName: string;
 };

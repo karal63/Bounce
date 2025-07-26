@@ -121,7 +121,33 @@ class UserService {
 
     async getMessagedUsers(userId) {
         const [rows] = await db.query(
-            "SELECT messaged_users.*, users.name FROM messaged_users JOIN users ON users.id = messaged_users.userId WHERE messaged_users.userId = ? || targetUserId = ?",
+            `
+            (
+    SELECT 
+        m.*, 
+        u.name AS otherUserName,
+        u.id AS otherUserId
+    FROM 
+        messaged_users m
+    JOIN 
+        users u ON u.id = m.targetUserId
+    WHERE 
+        m.userId = ?
+)
+UNION
+(
+    SELECT 
+        m.*, 
+        u.name AS otherUserName,
+        u.id AS otherUserId
+    FROM 
+        messaged_users m
+    JOIN 
+        users u ON u.id = m.userId
+    WHERE 
+        m.targetUserId = ?
+)
+        `,
             [userId, userId]
         );
         return rows;

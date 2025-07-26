@@ -7,7 +7,6 @@ class UserController {
         try {
             const { userId } = req.params;
             const users = await user.getMessagedUsers(userId);
-            console.log(users);
             res.status(200).json(users);
         } catch (error) {
             next(error);
