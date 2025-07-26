@@ -32,7 +32,7 @@ const context = ref<ContextGroup>({
     posY: 0,
 });
 
-const setGroup = async (room: number) => {
+const setGroup = async (room: string) => {
     socket.emit("set-group", {
         prevRoom: currentChatStore.currentRoom.id,
         newRoom: room,
@@ -67,7 +67,7 @@ const handleClick = (e: MouseEvent) => {
 
 socket.on("group-deleted", (groupId) => {
     currentChatStore.groups = currentChatStore.groups.filter(
-        (group) => group.id !== Number(groupId)
+        (group) => group.id !== groupId
     );
 });
 
@@ -83,7 +83,7 @@ socket.on("deleted:leave-group", (deletedMember: MemberWithName) => {
 
 socket.on("member-banned", (memberId) => {
     currentChatStore.members = currentChatStore.members.filter(
-        (member) => member.id !== Number(memberId)
+        (member) => member.id !== memberId
     );
 });
 

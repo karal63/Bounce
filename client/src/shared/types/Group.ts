@@ -1,7 +1,7 @@
 export type Group = {
-    id: number;
+    id: string;
     name: string;
-    ownerId: number;
+    ownerId: string;
     createdAt: Date;
     isPrivate: boolean;
     description: string;
