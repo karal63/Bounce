@@ -40,14 +40,20 @@ const showShareLinkModal = () => {
             class="flex items-center gap-2"
         >
             <button
-                v-if="route.path === '/chat'"
+                v-if="
+                    route.path.startsWith('/chat') &&
+                    currentChatStore.currentRoom.type === 'group'
+                "
                 @click="showShareLinkModal"
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >
                 <Icon icon="solar:share-line-duotone" />
             </button>
             <button
-                v-if="route.path.startsWith('/chat')"
+                v-if="
+                    route.path.startsWith('/chat') &&
+                    currentChatStore.currentRoom.type === 'group'
+                "
                 @click="uiStore.toggleMembersBar()"
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >
@@ -56,7 +62,8 @@ const showShareLinkModal = () => {
             <RouterLink
                 v-if="
                     route.path.startsWith('/chat') &&
-                    currentChatStore.hasPermissions
+                    currentChatStore.hasPermissions &&
+                    currentChatStore.currentRoom.type === 'group'
                 "
                 to="/chat/settings"
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
