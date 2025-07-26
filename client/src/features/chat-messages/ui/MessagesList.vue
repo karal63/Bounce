@@ -2,7 +2,7 @@
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import type { MessageWithName } from "@/shared/types/Message";
-import { onMounted, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import SingleMessage from "./SingleMessage.vue";
 import { useRouter } from "vue-router";
@@ -14,8 +14,16 @@ const router = useRouter();
 const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 
-socket.on("newMessage", (msg: MessageWithName) => {
+const handleNewMessage = (msg: MessageWithName) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
+};
+
+onMounted(() => {
+    socket.on("newMessage", handleNewMessage);
+});
+
+onBeforeUnmount(() => {
+    socket.off("newMessage", handleNewMessage);
 });
 
 socket.on("message-deleted", (messageId: string) => {
