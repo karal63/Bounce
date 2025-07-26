@@ -1,15 +1,15 @@
 export type ReadyMessage = {
-    groupId?: number | null;
-    recipientId?: number | null;
-    senderId?: number;
+    groupId?: string | null;
+    recipientId?: string | null;
+    senderId?: string;
     content: string;
     mentionedUsersId: (number | null)[];
 };
 
 export type Message = {
-    id: number;
-    groupId: number | null;
-    senderId?: number;
+    id: string;
+    groupId: string | null;
+    senderId?: string;
     content: string;
     sentAt: Date;
     editedAt: Date | null;
