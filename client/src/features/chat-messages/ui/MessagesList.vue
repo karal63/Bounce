@@ -18,18 +18,21 @@ const handleNewMessage = (msg: MessageWithName) => {
     currentChatStore.messages = [...currentChatStore.messages, msg];
 };
 
+const handleDeleteMessage = (messageId: string) => {
+    currentChatStore.messages = currentChatStore.messages.filter(
+        (msg) => msg.id !== messageId
+    );
+};
+
 onMounted(() => {
+    if (!currentChatStore.currentRoom.id) router.push("/chat");
     socket.on("newMessage", handleNewMessage);
+    socket.on("message-deleted", handleDeleteMessage);
 });
 
 onBeforeUnmount(() => {
     socket.off("newMessage", handleNewMessage);
-});
-
-socket.on("message-deleted", (messageId: string) => {
-    currentChatStore.messages = currentChatStore.messages.filter(
-        (msg) => msg.id !== messageId
-    );
+    socket.off("message-deleted", handleDeleteMessage);
 });
 
 watch(
@@ -44,10 +47,6 @@ watch(
         }, 20);
     }
 );
-
-onMounted(() => {
-    if (!currentChatStore.currentRoom.id) router.push("/chat");
-});
 </script>
 
 <template>
