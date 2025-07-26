@@ -11,7 +11,6 @@ import { useBanMemberStore } from "@/features/ban-member";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useGetMessages } from "@/features/chat-messages";
 import type { MemberWithName } from "@/shared/types/Member";
-import type { CurrentRoom } from "@/shared/types/CurrentRoom";
 import { useAddMessagedUsers } from "../model/useAddMessagedUser";
 
 const props = defineProps<{

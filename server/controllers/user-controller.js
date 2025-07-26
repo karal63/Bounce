@@ -3,6 +3,17 @@ const UserService = require("../services/user-service");
 const user = new UserService();
 
 class UserController {
+    async getMessagedUsers(req, res, next) {
+        try {
+            const { userId } = req.params;
+            const users = await user.getMessagedUsers(userId);
+            console.log(users);
+            res.status(200).json(users);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     async addMessagedUser(req, res, next) {
         try {
             const { targetId } = req.params;

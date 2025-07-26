@@ -104,6 +104,10 @@ router.post("/unban-member/:id", verifyToken, (req, res, next) =>
     member.unbanMember(req, res, next)
 );
 
+router.get("/get-messaged-users/:userId", verifyToken, (req, res, next) =>
+    user.getMessagedUsers(req, res, next)
+);
+
 router.post("/add-messaged-user/:targetId", verifyToken, (req, res, next) =>
     user.addMessagedUser(req, res, next)
 );

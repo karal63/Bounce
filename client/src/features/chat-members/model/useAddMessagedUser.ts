@@ -13,7 +13,6 @@ export const useAddMessagedUsers = () => {
         if (exists) return;
 
         await apiAddMessagedUser(userId, targetUserId);
-        // next step, create server route
     };
 
     return { addMessagedUser };

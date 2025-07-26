@@ -119,6 +119,14 @@ class UserService {
         return userRows[0];
     }
 
+    async getMessagedUsers(userId) {
+        const [rows] = await db.query(
+            "SELECT messaged_users.*, users.name FROM messaged_users JOIN users ON users.id = messaged_users.userId WHERE messaged_users.userId = ? || targetUserId = ?",
+            [userId, userId]
+        );
+        return rows;
+    }
+
     async addMessagedUser(userId, targetUserId) {
         await db.query(
             "INSERT INTO messaged_users (id, userId, targetUserId) VALUES (UUID(), ?, ?)",
