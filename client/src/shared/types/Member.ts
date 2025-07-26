@@ -1,7 +1,7 @@
 export type Member = {
-    id: number;
-    groupId: number;
-    userId: number;
+    id: string;
+    groupId: string;
+    userId: string;
     joinedAt: Date;
     role: "member" | "moderator" | "admin";
     isMuted: boolean;

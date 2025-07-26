@@ -118,6 +118,13 @@ class UserService {
         );
         return userRows[0];
     }
+
+    async addMessagedUser(userId, targetUserId) {
+        await db.query(
+            "INSERT INTO messaged_users (id, userId, targetUserId) VALUES (UUID(), ?, ?)",
+            [userId, targetUserId]
+        );
+    }
 }
 
 module.exports = UserService;

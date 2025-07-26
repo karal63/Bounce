@@ -6,11 +6,13 @@ const { body } = require("express-validator");
 const MessageController = require("../controllers/message-controller");
 const MemberController = require("../controllers/member-controller");
 const GroupController = require("../controllers/group-controller");
+const UserController = require("../controllers/user-controller");
 
 const auth = new AuthController();
 const message = new MessageController();
 const member = new MemberController();
 const group = new GroupController();
+const user = new UserController();
 
 router.post(
     "/signup",
@@ -100,6 +102,10 @@ router.get("/banned-members/:groupId", verifyToken, (req, res, next) =>
 
 router.post("/unban-member/:id", verifyToken, (req, res, next) =>
     member.unbanMember(req, res, next)
+);
+
+router.post("/add-messaged-user/:targetId", verifyToken, (req, res, next) =>
+    user.addMessagedUser(req, res, next)
 );
 
 module.exports = router;

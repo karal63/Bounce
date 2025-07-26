@@ -12,6 +12,7 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import { useGetMessages } from "@/features/chat-messages";
 import type { MemberWithName } from "@/shared/types/Member";
 import type { CurrentRoom } from "@/shared/types/CurrentRoom";
+import { useAddMessagedUsers } from "../model/useAddMessagedUser";
 
 const props = defineProps<{
     memberContext: Context<MemberWithName>;
@@ -27,6 +28,7 @@ const kickMemberStore = useKickMemberStore();
 const banMemberStore = useBanMemberStore();
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
+const { addMessagedUser } = useAddMessagedUsers();
 
 const contextRef = ref<HTMLElement | null>(null);
 const permissions = ref({
@@ -53,22 +55,21 @@ const ban = () => {
 };
 
 const openConversation = async () => {
-    socket.emit("leave-group", currentChatStore.currentRoom.id);
-    if (!props.memberContext.user?.name) return;
+    if (!props.memberContext.user?.name || !sessionStore.user?.id) return;
 
+    socket.emit("leave-group", currentChatStore.currentRoom.id);
     currentChatStore.currentRoom = {
         id: props.memberContext.user.userId,
         type: "direct",
     };
 
+    await addMessagedUser(
+        sessionStore.user?.id,
+        props.memberContext.user.userId
+    );
     currentChatStore.messages = await getMessages();
     currentChatStore.members = [];
     props.memberContext.isVisible = false;
-    // delete functionalities i want to do with socket 💚
-    // i dont need to join a new room as it is setted as default user index 💚
-    // the b on the server create functionality where group id you will assume as receiverId
-    // separate chat view from conversation view
-    // use new git command for separating commits you learned yesterday
 };
 </script>
 

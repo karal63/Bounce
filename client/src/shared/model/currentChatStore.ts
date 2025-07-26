@@ -5,6 +5,7 @@ import type { MemberWithName } from "@/shared/types/Member";
 import type { MessageWithName } from "@/shared/types/Message";
 import type { Group } from "@/shared/types/Group";
 import type { CurrentRoom } from "../types/CurrentRoom";
+import type { MessagedUser } from "../types/MessagedUser";
 
 export const useCurrentChatStore = defineStore("currentChat", () => {
     const currentRoom = ref<CurrentRoom>({
@@ -15,6 +16,14 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
     const members = ref<MemberWithName[]>([]);
     const groups = ref<Group[]>([]);
     const hasPermissions = ref(false);
+    const messagedUsers = ref<MessagedUser[]>([]);
 
-    return { currentRoom, messages, members, groups, hasPermissions };
+    return {
+        currentRoom,
+        messages,
+        members,
+        groups,
+        hasPermissions,
+        messagedUsers,
+    };
 });

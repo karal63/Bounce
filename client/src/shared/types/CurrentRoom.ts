@@ -1,4 +1,4 @@
 export type CurrentRoom = {
-    id: number | null;
+    id: string | null;
     type: "group" | "direct" | null;
 };
