@@ -38,8 +38,9 @@ class MessageService {
             );
             return rows;
         } else if (type === "direct") {
+            console.log(userId, recipientId);
             const [rows] = await db.query(
-                "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE (messages.recipientId = ? OR messages.recipientId = ?) AND (messages.recipientId = ? OR messages.recipientId = ?) AND messages.isDeleted = false AND groupId IS NULL ORDER BY messages.sentAt ASC;",
+                "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE (messages.recipientId = ? AND messages.senderId = ?) || (messages.senderId = ? AND messages.recipientId = ?) AND messages.isDeleted = false AND groupId IS NULL ORDER BY messages.sentAt ASC;",
                 [recipientId, userId, recipientId, userId]
             );
             return rows;
