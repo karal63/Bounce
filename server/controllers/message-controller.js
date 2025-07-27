@@ -39,6 +39,7 @@ class MessageController {
             const { newMessage, mentionedUsersId } = await messageService.send(
                 message
             );
+
             io.to(room).emit("newMessage", newMessage);
 
             res.sendStatus(200);

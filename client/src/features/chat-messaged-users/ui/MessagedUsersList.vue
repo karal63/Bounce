@@ -38,7 +38,7 @@ const goToConversation = async (user: MessagedUser) => {
     });
 
     currentChatStore.currentRoom = {
-        id: user.userId,
+        id: user.otherUserId,
         type: "direct",
     };
 

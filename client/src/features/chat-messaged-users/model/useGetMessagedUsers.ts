@@ -7,7 +7,6 @@ export const useGetMessagedUsers = () => {
     const getMessagedUsers = async (userId: string) => {
         try {
             const users = await apiGetMessagedUsers(userId);
-            console.log(users);
             currentChatStore.messagedUsers = users.data;
         } catch (error) {
             console.log(error);

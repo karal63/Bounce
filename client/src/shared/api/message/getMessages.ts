@@ -5,7 +5,7 @@ import type { CurrentRoom } from "@/shared/types/CurrentRoom";
 
 export const apiGetMessages = async (
     currentRoom: CurrentRoom,
-    userId: number
+    userId: string
 ): Promise<AxiosResponse<MessageWithName[]>> => {
     const messages = await axiosInstance.get(
         `${API_URL}/messages/${userId}/${currentRoom.type}/${currentRoom.id}`
