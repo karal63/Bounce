@@ -20,11 +20,11 @@ const getGroupName = computed(() => {
         group = currentChatStore.groups.find((gr) => gr.id === room.id)?.name;
     } else if (room.type === "direct") {
         group = currentChatStore.messagedUsers.find(
-            (user) => user.userId === room.id
+            (user) => user.otherUserId === room.id
         )?.otherUserName;
     }
 
-    return group ?? "";
+    return group ?? "error: Group not found";
 });
 
 const showShareLinkModal = () => {
