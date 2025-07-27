@@ -4,4 +4,5 @@ export type MessagedUser = {
     targetUserId: string;
     created_at: string;
     otherUserName: string;
+    otherUserId: string;
 };

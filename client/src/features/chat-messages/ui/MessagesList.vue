@@ -15,6 +15,7 @@ const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 
 const handleNewMessage = (msg: MessageWithName) => {
+    console.log("getting new message");
     currentChatStore.messages = [...currentChatStore.messages, msg];
 };
 
@@ -25,7 +26,7 @@ const handleDeleteMessage = (messageId: string) => {
 };
 
 onMounted(() => {
-    if (!currentChatStore.currentRoom.id) router.push("/chat");
+    if (!currentChatStore.currentRoom.id) return router.push("/chat");
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
 });

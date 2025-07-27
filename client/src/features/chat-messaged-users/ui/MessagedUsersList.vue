@@ -34,7 +34,7 @@ const goToConversation = async (user: MessagedUser) => {
 
     socket.emit("set-group", {
         prevRoom: currentChatStore.currentRoom.id,
-        newRoom: user.userId,
+        newRoom: user.otherUserId,
     });
 
     currentChatStore.currentRoom = {

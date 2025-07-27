@@ -40,7 +40,11 @@ class MessageController {
                 message
             );
 
-            io.to(room).emit("newMessage", newMessage);
+            const senderSocketId = userSocketMap.get(message.senderId);
+            const receiverSocketId = userSocketMap.get(room);
+
+            io.to(senderSocketId).emit("newMessage", newMessage);
+            io.to(receiverSocketId).emit("newMessage", newMessage);
 
             res.sendStatus(200);
         } catch (error) {
