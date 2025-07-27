@@ -15,8 +15,15 @@ const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 
 const handleNewMessage = (msg: MessageWithName) => {
-    console.log("getting new message");
-    currentChatStore.messages = [...currentChatStore.messages, msg];
+    const room = currentChatStore.currentRoom;
+
+    if (room.type === "group") {
+        currentChatStore.messages = [...currentChatStore.messages, msg];
+    } else if (room.type === "direct") {
+        if (currentChatStore.currentRoom.id === msg.recipientId) {
+            currentChatStore.messages = [...currentChatStore.messages, msg];
+        }
+    }
 };
 
 const handleDeleteMessage = (messageId: string) => {

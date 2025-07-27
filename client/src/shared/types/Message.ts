@@ -9,6 +9,7 @@ export type ReadyMessage = {
 export type Message = {
     id: string;
     groupId: string | null;
+    recipientId: string | null;
     senderId?: string;
     content: string;
     sentAt: Date;

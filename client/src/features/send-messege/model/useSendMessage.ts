@@ -10,7 +10,6 @@ export const useSendMessage = () => {
         try {
             const room = currentChatStore.currentRoom;
             if (!room.id || !room.type) return;
-            console.log(message);
 
             if (room.type === "group") {
                 const readyMessage: ReadyMessage = {

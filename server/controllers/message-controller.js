@@ -46,6 +46,8 @@ class MessageController {
             io.to(senderSocketId).emit("newMessage", newMessage);
             io.to(receiverSocketId).emit("newMessage", newMessage);
 
+            io.to(receiverSocketId).emit("mention:show-notification", message);
+
             res.sendStatus(200);
         } catch (error) {
             console.log(error);
