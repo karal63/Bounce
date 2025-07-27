@@ -31,11 +31,14 @@ onMounted(async () => {
 
 const goToConversation = async (user: MessagedUser) => {
     if (!sessionStore.user?.id) return;
+    console.log(user);
 
     socket.emit("set-group", {
         prevRoom: currentChatStore.currentRoom.id,
         newRoom: user.otherUserId,
     });
+    console.log(user.userId);
+    console.log(user.otherUserId);
 
     currentChatStore.currentRoom = {
         id: user.otherUserId,

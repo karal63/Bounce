@@ -45,8 +45,9 @@ watch(
                 top: listRef.value.scrollHeight,
             });
             isLoading.value = false;
-        }, 20);
-    }
+        }, 100);
+    },
+    { immediate: true }
 );
 </script>
 
