@@ -112,4 +112,8 @@ router.post("/add-messaged-user/:targetId", verifyToken, (req, res, next) =>
     user.addMessagedUser(req, res, next)
 );
 
+router.delete("/delete-messaged-user/:id", verifyToken, (req, res, next) =>
+    user.deleteMessagedUser(req, res, next)
+);
+
 module.exports = router;

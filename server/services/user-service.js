@@ -159,6 +159,10 @@ UNION
             [userId, targetUserId]
         );
     }
+
+    async deleteMessagedUser(id) {
+        await db.query("DELETE FROM messaged_users WHERE id = ?", [id]);
+    }
 }
 
 module.exports = UserService;

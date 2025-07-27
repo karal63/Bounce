@@ -23,6 +23,16 @@ class UserController {
             next(error);
         }
     }
+
+    async deleteMessagedUser(req, res, next) {
+        try {
+            const { id } = req.params;
+            await user.deleteMessagedUser(id);
+            res.sendStatus(200);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = UserController;
