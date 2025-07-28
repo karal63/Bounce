@@ -82,58 +82,59 @@ watch(
 </script>
 
 <template>
-    <div
-        v-if="currentChatStore.currentRoom.id"
-        class="absolute bottom-0 right-0 w-full"
-    >
-        <!-- reply menu -->
-        <div
-            v-if="replyToMessageStore.isReplyig"
-            class="flex items-center py-2 border border-b-0 rounded-md border-mainBorder bg-mainDarkBg"
-        >
-            <div class="pl-3 pr-5">
-                <Icon icon="ic:baseline-reply" class="text-3xl" />
-            </div>
-
-            <div class="flex-col w-full">
-                <p class="text-purple-500 font-semibold">
-                    Reply to
-                    <span>{{ replyToMessageStore.replyMessage?.name }}</span>
-                </p>
-                <p>
-                    {{ replyToMessageStore.replyMessage?.content }}
-                </p>
-            </div>
-
-            <div class="pr-3 pl-5">
-                <!-- close icon -->
-                <button @click="replyToMessageStore.clearReplyMessage()">
-                    <Icon
-                        icon="pajamas:close"
-                        class="text-2xl text-purple-500 cursor-pointer"
-                    />
-                </button>
-            </div>
-        </div>
-
-        <form class="flex items-center gap-2">
-            <textarea
-                ref="inputRef"
-                v-model="message.content"
-                @input="handleInput"
-                rows="1"
-                placeholder="Type your message..."
-                class="flex-1 resize-none rounded-md bg-white/10 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-            ></textarea>
-            <button
-                @click.prevent="submit"
-                type="submit"
-                class="bg-purple-500 text-white px-4 text-2xl h-[48px] rounded-md hover:bg-mainAccentHover transition cursor-pointer"
+    <div v-if="currentChatStore.currentRoom.id" class="flex justify-center">
+        <div class="w-[60%]">
+            <!-- reply menu -->
+            <div
+                v-if="replyToMessageStore.isReplyig"
+                class="flex items-center py-2 border border-b-0 rounded-md border-mainBorder bg-mainDarkBg"
             >
-                <Icon icon="material-symbols:send" />
-            </button>
-        </form>
+                <div class="pl-3 pr-5">
+                    <Icon icon="ic:baseline-reply" class="text-3xl" />
+                </div>
 
-        <MentionList v-if="isMentionListOpen" @mention="mention" />
+                <div class="flex-col w-full">
+                    <p class="text-purple-500 font-semibold">
+                        Reply to
+                        <span>{{
+                            replyToMessageStore.replyMessage?.name
+                        }}</span>
+                    </p>
+                    <p>
+                        {{ replyToMessageStore.replyMessage?.content }}
+                    </p>
+                </div>
+
+                <div class="pr-3 pl-5">
+                    <!-- close icon -->
+                    <button @click="replyToMessageStore.clearReplyMessage()">
+                        <Icon
+                            icon="pajamas:close"
+                            class="text-2xl text-purple-500 cursor-pointer"
+                        />
+                    </button>
+                </div>
+            </div>
+
+            <form class="flex items-center gap-2">
+                <textarea
+                    ref="inputRef"
+                    v-model="message.content"
+                    @input="handleInput"
+                    rows="1"
+                    placeholder="Type your message..."
+                    class="flex-1 resize-none rounded-md bg-white/10 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                ></textarea>
+                <button
+                    @click.prevent="submit"
+                    type="submit"
+                    class="bg-purple-500 text-white px-4 text-2xl h-[48px] rounded-md hover:bg-mainAccentHover transition cursor-pointer"
+                >
+                    <Icon icon="material-symbols:send" />
+                </button>
+            </form>
+
+            <MentionList v-if="isMentionListOpen" @mention="mention" />
+        </div>
     </div>
 </template>

@@ -76,6 +76,7 @@ const replyToMessage = (message: MessageWithName) => {
                 >
                     {{ message.name[0] }}
                 </div>
+
                 <div
                     class="max-w-max px-2 py-1 rounded-xl"
                     :class="
@@ -87,11 +88,11 @@ const replyToMessage = (message: MessageWithName) => {
                     <!-- reply menu -->
                     <div
                         v-if="message.replyToMessageId"
-                        class="bg-green-600/40 py-1 px-3 rounded-md flex items-center gap-2"
+                        class="py-1 px-3 rounded-md flex items-center gap-2"
                         :class="
                             checkPerson(message)
                                 ? 'bg-purple-400'
-                                : 'flex-row-reverse'
+                                : 'bg-purple-500/50 flex-row-reverse'
                         "
                     >
                         <div class="flex-col">
@@ -120,7 +121,7 @@ const replyToMessage = (message: MessageWithName) => {
                         </p>
 
                         <div>
-                            <span class="text-[.7rem] text-gray-300">{{
+                            <span class="text-[.7rem] text-gray-3 00">{{
                                 getTime(message.sentAt)
                             }}</span>
                         </div>
@@ -139,7 +140,6 @@ const replyToMessage = (message: MessageWithName) => {
 
                     <button
                         v-show="isHovering"
-                        ref="buttonRef"
                         @click="showContext"
                         class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
                     >
