@@ -7,6 +7,7 @@ import { Icon } from "@iconify/vue";
 import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
 import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
+import { findMessageById } from "@/shared/lib/helpers/findMessageById";
 const replyToMessageStore = useReplyToMessageStore();
 
 const props = defineProps<{
@@ -57,9 +58,12 @@ const replyToMessage = (message: MessageWithName) => {
         <div
             ref="messageRef"
             class="flex items-center gap-3"
-            :class="checkPerson(message) && 'flex-row-reverse'"
+            :class="checkPerson(message) ? 'items-end' : 'items-start'"
         >
-            <div class="flex items-center gap-3">
+            <div
+                class="flex items-center gap-3"
+                :class="checkPerson(message) && 'flex-row-reverse'"
+            >
                 <div
                     v-if="message.senderId"
                     class="w-8 h-8 bg-purple-700 flex-center rounded-full"
@@ -67,35 +71,67 @@ const replyToMessage = (message: MessageWithName) => {
                     {{ message.name[0] }}
                 </div>
                 <div
-                    class="max-w-max px-3 py-2 rounded-2xl"
+                    class="max-w-max px-2 py-1 rounded-xl"
                     :class="
                         checkPerson(message)
                             ? 'bg-purple-500 rounded-br-none'
                             : 'bg-white/20 rounded-bl-none'
                     "
                 >
-                    {{ message.content }}
+                    <!-- reply menu -->
+                    <div
+                        v-if="message.replyToMessageId"
+                        class="bg-green-600/40 py-1 px-3 rounded-md flex items-center gap-2"
+                        :class="
+                            checkPerson(message)
+                                ? 'bg-purple-400'
+                                : 'flex-row-reverse'
+                        "
+                    >
+                        <div class="flex-col">
+                            <span class="font-semibold">{{
+                                findMessageById(message.replyToMessageId)?.name
+                            }}</span>
+                            <span class="text-sm">
+                                {{
+                                    findMessageById(message.replyToMessageId)
+                                        ?.content
+                                }}
+                            </span>
+                        </div>
+                        <span
+                            ><Icon icon="ic:baseline-reply" class="text-lg"
+                        /></span>
+                    </div>
+
+                    <p
+                        :class="
+                            checkPerson(message) ? 'text-end' : 'text-start'
+                        "
+                    >
+                        {{ message.content }}
+                    </p>
                 </div>
-            </div>
 
-            <div class="flex items-center">
-                <button
-                    v-show="isHovering"
-                    ref="buttonRef"
-                    @click="replyToMessage(message)"
-                    class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
-                >
-                    <Icon icon="ic:baseline-reply" class="text-lg" />
-                </button>
+                <div class="flex items-center">
+                    <button
+                        v-show="isHovering"
+                        ref="buttonRef"
+                        @click="replyToMessage(message)"
+                        class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
+                    >
+                        <Icon icon="ic:baseline-reply" class="text-lg" />
+                    </button>
 
-                <button
-                    v-show="isHovering"
-                    ref="buttonRef"
-                    @click="showContext"
-                    class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
-                >
-                    <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
-                </button>
+                    <button
+                        v-show="isHovering"
+                        ref="buttonRef"
+                        @click="showContext"
+                        class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
+                    >
+                        <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
+                    </button>
+                </div>
             </div>
         </div>
 
