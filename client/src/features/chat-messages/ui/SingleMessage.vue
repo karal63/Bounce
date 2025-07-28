@@ -91,8 +91,8 @@ const replyToMessage = (message: MessageWithName) => {
                         class="py-1 px-3 rounded-md flex items-center gap-2"
                         :class="
                             checkPerson(message)
-                                ? 'bg-purple-400'
-                                : 'bg-purple-500/50 flex-row-reverse'
+                                ? 'bg-purple-400 flex-row-reverse border-r-3 border-white'
+                                : 'bg-purple-500/40 border-l-3 border-purple-400'
                         "
                     >
                         <div class="flex-col">

@@ -60,7 +60,10 @@ watch(
 
 <template>
     <div class="flex justify-center items-end h-[91%]">
-        <div ref="listRef" class="pb-4 w-[60%] overflow-y-auto">
+        <div
+            ref="listRef"
+            class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full overflow-y-auto"
+        >
             <div
                 v-if="currentChatStore.currentRoom.id"
                 class="flex-col gap-2 h-full"
