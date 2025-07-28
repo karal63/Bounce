@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import { Icon } from "@iconify/vue";
 import type { ReadyMessage } from "@/shared/types/Message";
 
@@ -9,16 +9,19 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 import { findMemberByName } from "@/shared/lib/helpers/findMemberByName";
 import MentionList from "./MentionList.vue";
+import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
+const replyToMessageStore = useReplyToMessageStore();
 
 const message = ref<ReadyMessage>({
     groupId: null,
     senderId: sessionStore.user?.id,
     content: "",
     mentionedUsersId: [],
+    replyToMessageId: "",
 });
 const isMentionListOpen = ref(false);
 const cursorPos = ref<number>(0);
@@ -30,6 +33,7 @@ const submit = () => {
         ...message.value,
         content: "",
         mentionedUsersId: [],
+        replyToMessageId: "",
     };
 };
 
@@ -82,6 +86,34 @@ watch(
         v-if="currentChatStore.currentRoom.id"
         class="absolute bottom-0 right-0 w-full"
     >
+        <!-- reply menu -->
+        <div
+            v-if="replyToMessageStore.isReplyig"
+            class="flex items-center py-2 border border-b-0 rounded-md border-mainBorder bg-mainDarkBg"
+        >
+            <div class="pl-3 pr-5">
+                <Icon icon="ic:baseline-reply" class="text-3xl" />
+            </div>
+
+            <div class="flex-col w-full">
+                <p class="text-purple-500 font-semibold">
+                    Reply to
+                    <span>{{ replyToMessageStore.replyMessage?.name }}</span>
+                </p>
+                <p>{{ replyToMessageStore.replyMessage?.content }}</p>
+            </div>
+
+            <div class="pr-3 pl-5">
+                <!-- close icon -->
+                <button @click="replyToMessageStore.clearReplyMessage()">
+                    <Icon
+                        icon="pajamas:close"
+                        class="text-2xl text-purple-500 cursor-pointer"
+                    />
+                </button>
+            </div>
+        </div>
+
         <form class="flex items-center gap-2">
             <textarea
                 ref="inputRef"

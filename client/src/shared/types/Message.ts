@@ -4,6 +4,7 @@ export type ReadyMessage = {
     senderId?: string;
     content: string;
     mentionedUsersId: (number | null)[];
+    replyToMessageId: string | undefined;
 };
 
 export type Message = {
@@ -15,6 +16,7 @@ export type Message = {
     sentAt: Date;
     editedAt: Date | null;
     isDeleted: boolean;
+    replyToMessageId: string | undefined;
 };
 
 export type MessageWithName = Message & {

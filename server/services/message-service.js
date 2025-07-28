@@ -4,21 +4,27 @@ const { v4 } = require("uuid");
 
 class MessageService {
     async send(message) {
-        const { groupId, recipientId, senderId, content, mentionedUsersId } =
-            message;
+        const {
+            groupId,
+            recipientId,
+            senderId,
+            content,
+            replyToMessageId,
+            mentionedUsersId,
+        } = message;
         if (!content) throw ApiError.BadRequest("Message is blank.");
 
         const messageId = v4();
 
         if (groupId) {
             await db.query(
-                "INSERT INTO messages (id, groupId, senderId, content) VALUES (?, ?, ?, ?);",
-                [messageId, groupId, senderId, content]
+                "INSERT INTO messages (id, groupId, senderId, content, replyToMessageId) VALUES (?, ?, ?, ?, ?);",
+                [messageId, groupId, senderId, content, replyToMessageId]
             );
         } else if (recipientId) {
             await db.query(
-                "INSERT INTO messages (id, recipientId, senderId, content) VALUES (?, ?, ?, ?);",
-                [messageId, recipientId, senderId, content]
+                "INSERT INTO messages (id, recipientId, senderId, content, replyToMessageId) VALUES (?, ?, ?, ?, ?);",
+                [messageId, recipientId, senderId, content, replyToMessageId]
             );
         }
 

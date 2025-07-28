@@ -6,6 +6,8 @@ import { useHover } from "@/shared/lib/hooks/useHover";
 import { Icon } from "@iconify/vue";
 import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
+import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
+const replyToMessageStore = useReplyToMessageStore();
 
 const props = defineProps<{
     message: MessageWithName;
@@ -41,6 +43,10 @@ const showContext = () => {
         posX: props.posLeft ? rect.left - props.posLeft : 0,
     };
 };
+
+const replyToMessage = (message: MessageWithName) => {
+    replyToMessageStore.setReplyMessage(message);
+};
 </script>
 
 <template>
@@ -53,31 +59,44 @@ const showContext = () => {
             class="flex items-center gap-3"
             :class="checkPerson(message) && 'flex-row-reverse'"
         >
-            <div
-                v-if="message.senderId"
-                class="w-8 h-8 bg-purple-700 flex-center rounded-full"
-            >
-                {{ message.name[0] }}
-            </div>
-            <div
-                class="max-w-max px-3 py-2 rounded-2xl"
-                :class="
-                    checkPerson(message)
-                        ? 'bg-purple-500 rounded-br-none'
-                        : 'bg-white/20 rounded-bl-none'
-                "
-            >
-                {{ message.content }}
+            <div class="flex items-center gap-3">
+                <div
+                    v-if="message.senderId"
+                    class="w-8 h-8 bg-purple-700 flex-center rounded-full"
+                >
+                    {{ message.name[0] }}
+                </div>
+                <div
+                    class="max-w-max px-3 py-2 rounded-2xl"
+                    :class="
+                        checkPerson(message)
+                            ? 'bg-purple-500 rounded-br-none'
+                            : 'bg-white/20 rounded-bl-none'
+                    "
+                >
+                    {{ message.content }}
+                </div>
             </div>
 
-            <button
-                v-show="isHovering"
-                ref="buttonRef"
-                @click="showContext"
-                class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
-            >
-                <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
-            </button>
+            <div class="flex items-center">
+                <button
+                    v-show="isHovering"
+                    ref="buttonRef"
+                    @click="replyToMessage(message)"
+                    class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
+                >
+                    <Icon icon="ic:baseline-reply" class="text-lg" />
+                </button>
+
+                <button
+                    v-show="isHovering"
+                    ref="buttonRef"
+                    @click="showContext"
+                    class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
+                >
+                    <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
+                </button>
+            </div>
         </div>
 
         <MessageContext
