@@ -84,9 +84,11 @@ watch(
 <template>
     <div
         v-if="currentChatStore.currentRoom.id"
-        class="absolute bottom-0 right-0 flex justify-center w-full"
+        class="flex justify-center w-full h-[10%]"
     >
-        <div class="max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
+        <div
+            class="max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full pt-4 border-t border-mainBorder"
+        >
             <!-- reply menu -->
             <div
                 v-if="replyToMessageStore.isReplyig"

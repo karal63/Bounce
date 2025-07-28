@@ -59,10 +59,10 @@ watch(
 </script>
 
 <template>
-    <div class="flex justify-center items-end h-[91%]">
+    <div class="flex justify-center overflow-y-auto h-[82%]">
         <div
             ref="listRef"
-            class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full overflow-y-auto"
+            class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full"
         >
             <div
                 v-if="currentChatStore.currentRoom.id"

@@ -13,7 +13,7 @@ import NotificationWindow from "@/widgets/notification/ui/NotificationWindow.vue
 </script>
 
 <template>
-    <div class="text-white flex h-full w-full">
+    <div class="text-white flex h-full w-full overflow-hidden">
         <div class="relative ml-10 w-full flex-col">
             <ChatTopBar />
             <div class="flex h-full">
