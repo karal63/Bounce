@@ -8,7 +8,9 @@ import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
 import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
 import { findMessageById } from "@/shared/lib/helpers/findMessageById";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 const replyToMessageStore = useReplyToMessageStore();
+const currendChatStore = useCurrentChatStore();
 
 const props = defineProps<{
     message: MessageWithName;
@@ -65,7 +67,10 @@ const replyToMessage = (message: MessageWithName) => {
                 :class="checkPerson(message) && 'flex-row-reverse'"
             >
                 <div
-                    v-if="message.senderId"
+                    v-if="
+                        message.senderId &&
+                        currendChatStore.currentRoom.type === 'group'
+                    "
                     class="w-8 h-8 bg-purple-700 flex-center rounded-full"
                 >
                     {{ message.name[0] }}
