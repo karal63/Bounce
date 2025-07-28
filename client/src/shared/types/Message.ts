@@ -3,7 +3,7 @@ export type ReadyMessage = {
     recipientId?: string | null;
     senderId?: string;
     content: string;
-    mentionedUsersId: (number | null)[];
+    mentionedUsersId: (string | null)[];
     replyToMessageId: string | undefined;
 };
 

@@ -59,24 +59,26 @@ watch(
 </script>
 
 <template>
-    <div ref="listRef" class="pt-10 pr-4 max-h-[91%] overflow-y-auto">
-        <div
-            v-if="currentChatStore.currentRoom.id"
-            class="flex-col gap-2 h-full"
-        >
-            <SingleMessage
-                :posLeft="listRef?.getBoundingClientRect().left"
-                v-for="message of currentChatStore.messages"
-                :message="message"
-            />
-        </div>
+    <div class="flex justify-center items-end h-[91%]">
+        <div ref="listRef" class="pb-4 w-[60%] overflow-y-auto">
+            <div
+                v-if="currentChatStore.currentRoom.id"
+                class="flex-col gap-2 h-full"
+            >
+                <SingleMessage
+                    :posLeft="listRef?.getBoundingClientRect().left"
+                    v-for="message of currentChatStore.messages"
+                    :message="message"
+                />
+            </div>
 
-        <!-- loading -->
-        <div
-            v-if="isLoading"
-            class="absolute top-0 left-0 w-full h-[91%] flex-center bg-mainDarkBg"
-        >
-            <Icon icon="line-md:loading-loop" class="text-4xl" />
+            <!-- loading -->
+            <div
+                v-if="isLoading"
+                class="absolute top-0 left-0 w-full h-[91%] flex-center bg-mainDarkBg"
+            >
+                <Icon icon="line-md:loading-loop" class="text-4xl" />
+            </div>
         </div>
     </div>
 </template>

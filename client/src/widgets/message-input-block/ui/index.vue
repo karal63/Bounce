@@ -100,7 +100,9 @@ watch(
                     Reply to
                     <span>{{ replyToMessageStore.replyMessage?.name }}</span>
                 </p>
-                <p>{{ replyToMessageStore.replyMessage?.content }}</p>
+                <p>
+                    {{ replyToMessageStore.replyMessage?.content }}
+                </p>
             </div>
 
             <div class="pr-3 pl-5">
