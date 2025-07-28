@@ -9,6 +9,7 @@ import type { Context } from "@/shared/types/Context";
 import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
 import { findMessageById } from "@/shared/lib/helpers/findMessageById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { getTime } from "@/shared/lib/helpers/getTime";
 const replyToMessageStore = useReplyToMessageStore();
 const currendChatStore = useCurrentChatStore();
 
@@ -109,13 +110,21 @@ const replyToMessage = (message: MessageWithName) => {
                         /></span>
                     </div>
 
-                    <p
-                        :class="
-                            checkPerson(message) ? 'text-end' : 'text-start'
-                        "
-                    >
-                        {{ message.content }}
-                    </p>
+                    <div class="flex gap-3">
+                        <p
+                            :class="
+                                checkPerson(message) ? 'text-end' : 'text-start'
+                            "
+                        >
+                            {{ message.content }}
+                        </p>
+
+                        <div>
+                            <span class="text-[.7rem] text-gray-300">{{
+                                getTime(message.sentAt)
+                            }}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="flex items-center">
