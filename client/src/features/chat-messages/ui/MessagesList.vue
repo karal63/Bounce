@@ -2,7 +2,7 @@
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import type { MessageWithName } from "@/shared/types/Message";
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import SingleMessage from "./SingleMessage.vue";
 import { useRouter } from "vue-router";
@@ -16,7 +16,6 @@ const isLoading = ref(false);
 
 const handleNewMessage = (msg: MessageWithName) => {
     const room = currentChatStore.currentRoom;
-
     if (room.type === "group") {
         currentChatStore.messages = [...currentChatStore.messages, msg];
     } else if (room.type === "direct") {
@@ -24,12 +23,21 @@ const handleNewMessage = (msg: MessageWithName) => {
             currentChatStore.messages = [...currentChatStore.messages, msg];
         }
     }
+    scrollToBottom();
 };
 
 const handleDeleteMessage = (messageId: string) => {
     currentChatStore.messages = currentChatStore.messages.filter(
         (msg) => msg.id !== messageId
     );
+};
+
+const scrollToBottom = () => {
+    nextTick(() => {
+        if (listRef.value) {
+            listRef.value.scrollTop = listRef.value.scrollHeight;
+        }
+    });
 };
 
 onMounted(() => {
@@ -59,11 +67,8 @@ watch(
 </script>
 
 <template>
-    <div class="flex justify-center overflow-y-auto h-[82%]">
-        <div
-            ref="listRef"
-            class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full"
-        >
+    <div ref="listRef" class="flex justify-center overflow-y-auto h-[82%]">
+        <div class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
             <div
                 v-if="currentChatStore.currentRoom.id"
                 class="flex-col gap-2 h-full"
