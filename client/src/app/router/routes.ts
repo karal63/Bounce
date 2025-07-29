@@ -15,7 +15,7 @@ export const routes: RouteRecordRaw[] = [
         component: DefaultLayout,
         children: [
             {
-                path: "/landing",
+                path: "",
                 component: Landing,
             },
             {
