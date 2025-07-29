@@ -73,6 +73,7 @@ const closeContext = () => {
 <template>
     <div class="relative">
         <ul
+            v-if="filteredUsers.length > 0"
             ref="contextRef"
             class="bg-mainHoverDarkBg rounded-md w-full max-h-max flex-col gap-2 p-2"
         >
@@ -95,6 +96,8 @@ const closeContext = () => {
                 </RouterLink>
             </li>
         </ul>
+
+        <div v-else>No results</div>
 
         <UserContext :userContext="userContext" @closeContext="closeContext" />
     </div>

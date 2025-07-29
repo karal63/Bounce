@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MessagedUsersList } from "@/features/chat-messaged-users";
 import { default as SearchBar } from "./SearchBar.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import type { MessagedUser } from "@/shared/types/MessagedUser";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
@@ -20,6 +20,13 @@ const filter = (input: string) => {
         });
     }
 };
+
+watch(
+    () => currentChatStore.messagedUsers,
+    () => {
+        filteredUsers.value = currentChatStore.messagedUsers;
+    }
+);
 </script>
 
 <template>
