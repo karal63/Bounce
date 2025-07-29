@@ -10,6 +10,7 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { findMemberByName } from "@/shared/lib/helpers/findMemberByName";
 import MentionList from "./MentionList.vue";
 import ReplyBar from "./ReplyBar.vue";
+import Attachment from "./Attachment.vue";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
@@ -25,6 +26,7 @@ const message = ref<ReadyMessage>({
 const isMentionListOpen = ref(false);
 const cursorPos = ref<number>(0);
 const inputRef = ref<HTMLElement | null>(null);
+const areAttachmentsOpen = ref(false);
 
 const submit = () => {
     send(message.value);
@@ -91,8 +93,21 @@ watch(
         >
             <!-- reply menu -->
             <ReplyBar />
+            <Attachment
+                @closeAttachments="areAttachmentsOpen = false"
+                :areAttachmentsOpen="areAttachmentsOpen"
+            />
 
             <form class="flex items-center gap-2">
+                <button
+                    @click.prevent="areAttachmentsOpen = true"
+                    class="cursor-pointer"
+                >
+                    <Icon
+                        icon="iconoir:plus"
+                        class="text-purple-400 text-4xl"
+                    />
+                </button>
                 <textarea
                     ref="inputRef"
                     v-model="message.content"

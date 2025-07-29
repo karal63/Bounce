@@ -6,6 +6,7 @@ defineProps<{
     width: string;
     left?: number;
     top?: number;
+    bottom?: number;
 }>();
 const emit = defineEmits<{
     (e: "closeContext"): void;
@@ -25,9 +26,10 @@ useClickOutside(contextRef, () => close());
         ref="contextRef"
         class="absolute bg-mainGray p-1 rounded-md border border-mainHoverOnGray flex-col gap-1"
         :style="{
-            width: `${width}px`,
-            left: `${left}px`,
-            top: `calc(${top}px - 50px)`,
+            width: width && `${width}px`,
+            left: left && `${left}px`,
+            top: top && `calc(${top}px - 50px)`,
+            bottom: bottom && `${bottom}px`,
         }"
     >
         <slot />
