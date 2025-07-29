@@ -53,6 +53,7 @@ const mention = (name: string) => {
     );
 
     message.value.content = firstPart + name + secondPart;
+    isMentionListOpen.value = false;
 };
 
 watch(
@@ -87,7 +88,7 @@ watch(
         class="flex justify-center w-full h-[10%]"
     >
         <div
-            class="max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full pt-4 border-t border-mainBorder"
+            class="relative max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full pt-4 border-t border-mainBorder"
         >
             <!-- reply menu -->
             <div
