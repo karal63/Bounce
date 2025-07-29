@@ -9,7 +9,7 @@ import type { Group } from "@/shared/types/Group";
 const shareModalStore = useShareModalStore();
 const currentChatStore = useCurrentChatStore();
 
-const showContent = ref(true);
+const showContent = ref(false);
 const currentGroup = ref<Group | null>(null);
 const isCopied = ref(false);
 
@@ -42,7 +42,8 @@ watch(
     () => currentChatStore.currentRoom.id,
     () => {
         currentGroup.value = getCurrentGroup() ?? null;
-    }
+    },
+    { immediate: true }
 );
 </script>
 
@@ -60,7 +61,6 @@ watch(
             >
                 <div class="w-[400px] flex-col items-center mt-7 mb-5">
                     <h1 class="text-2xl font-semibold">Share group</h1>
-                    <!-- ADD SHAPE FOR p and put button that will copy content -->
 
                     <p class="mt-5 border border-white/10 px-4 py-3 rounded-md">
                         http://localhost:5173/{{ currentGroup?.invitationLink }}
