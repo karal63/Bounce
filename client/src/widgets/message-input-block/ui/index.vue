@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, watchEffect } from "vue";
+import { ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import type { ReadyMessage } from "@/shared/types/Message";
 
@@ -9,12 +9,11 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 import { findMemberByName } from "@/shared/lib/helpers/findMemberByName";
 import MentionList from "./MentionList.vue";
-import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
+import ReplyBar from "./ReplyBar.vue";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
-const replyToMessageStore = useReplyToMessageStore();
 
 const message = ref<ReadyMessage>({
     groupId: null,
@@ -91,36 +90,7 @@ watch(
             class="relative max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full pt-4 border-t border-mainBorder"
         >
             <!-- reply menu -->
-            <div
-                v-if="replyToMessageStore.isReplyig"
-                class="flex items-center py-2 border border-b-0 rounded-md border-mainBorder bg-mainDarkBg"
-            >
-                <div class="pl-3 pr-5">
-                    <Icon icon="ic:baseline-reply" class="text-3xl" />
-                </div>
-
-                <div class="flex-col w-full">
-                    <p class="text-purple-500 font-semibold">
-                        Reply to
-                        <span>{{
-                            replyToMessageStore.replyMessage?.name
-                        }}</span>
-                    </p>
-                    <p>
-                        {{ replyToMessageStore.replyMessage?.content }}
-                    </p>
-                </div>
-
-                <div class="pr-3 pl-5">
-                    <!-- close icon -->
-                    <button @click="replyToMessageStore.clearReplyMessage()">
-                        <Icon
-                            icon="pajamas:close"
-                            class="text-2xl text-purple-500 cursor-pointer"
-                        />
-                    </button>
-                </div>
-            </div>
+            <ReplyBar />
 
             <form class="flex items-center gap-2">
                 <textarea
