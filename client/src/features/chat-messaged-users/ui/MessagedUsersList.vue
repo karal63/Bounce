@@ -16,6 +16,8 @@ const { socket } = useSocket();
 const { getMessages } = useGetMessages();
 const { getMessagedUsers } = useGetMessagedUsers();
 
+defineProps<{ filteredUsers: MessagedUser[] }>();
+
 const userContext = ref<Context<MessagedUser>>({
     isVisible: false,
     posX: 0,
@@ -75,7 +77,7 @@ const closeContext = () => {
             class="bg-mainHoverDarkBg rounded-md w-full max-h-max flex-col gap-2 p-2"
         >
             <li
-                v-for="user of currentChatStore.messagedUsers"
+                v-for="user of filteredUsers"
                 class="cursor-pointer"
                 @contextmenu.prevent="(e) => openContextMenu(user, e)"
             >
