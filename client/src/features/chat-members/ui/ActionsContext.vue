@@ -82,6 +82,7 @@ const openConversation = async () => {
         }"
     >
         <button
+            v-if="sessionStore.user?.id !== memberContext.user?.userId"
             @click="openConversation"
             class="w-full text-left px-1 py-1 cursor-pointer hover:bg-mainHoverOnGray rounded-md"
         >

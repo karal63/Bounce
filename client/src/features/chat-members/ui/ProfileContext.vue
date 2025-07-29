@@ -24,8 +24,8 @@ useClickOutside(contextRef, () => emit("closeContext"));
         ref="contextRef"
         class="absolute w-[250px] bg-mainGray p-3 rounded-md border border-mainHoverOnGray flex-col"
         :style="{
-            left: `calc(${memberContext.posX}px - 80%)`,
-            top: `calc(${memberContext.posY}px - 120%)`,
+            left: `calc(-115%)`,
+            top: `${memberContext.posY}px`,
         }"
     >
         <div class="flex justify-between w-full">
