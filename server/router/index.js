@@ -3,16 +3,22 @@ const router = express.Router();
 const AuthController = require("../controllers/auth-controller");
 const verifyToken = require("../middlewares/verifyToken");
 const { body } = require("express-validator");
+const multer = require("multer");
+
+const upload = multer({ storage: multer.memoryStorage() });
+
 const MessageController = require("../controllers/message-controller");
 const MemberController = require("../controllers/member-controller");
 const GroupController = require("../controllers/group-controller");
 const UserController = require("../controllers/user-controller");
+const UploadController = require("../controllers/upload-controller");
 
 const auth = new AuthController();
 const message = new MessageController();
 const member = new MemberController();
 const group = new GroupController();
 const user = new UserController();
+const uploadController = new UploadController();
 
 router.post(
     "/signup",
@@ -114,6 +120,13 @@ router.post("/add-messaged-user/:targetId", verifyToken, (req, res, next) =>
 
 router.delete("/delete-messaged-user/:id", verifyToken, (req, res, next) =>
     user.deleteMessagedUser(req, res, next)
+);
+
+router.post(
+    "/upload-image",
+    verifyToken,
+    upload.single("image"),
+    (req, res, next) => uploadController.uploadImage(req, res, next)
 );
 
 module.exports = router;
