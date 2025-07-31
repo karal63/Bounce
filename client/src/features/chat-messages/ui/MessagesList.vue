@@ -7,6 +7,7 @@ import { Icon } from "@iconify/vue";
 import SingleMessage from "./SingleMessage.vue";
 import { useRouter } from "vue-router";
 import { useGetAttachments } from "../model/useGetAttachments";
+import type { Attachment } from "@/shared/types/Attachment";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
@@ -17,15 +18,30 @@ const router = useRouter();
 const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 
-const handleNewMessage = (msg: MessageWithName) => {
+const handleNewMessage = ({
+    newMessage,
+    attachments,
+}: {
+    newMessage: MessageWithName;
+    attachments: Attachment[];
+}) => {
+    console.log(newMessage);
+    console.log(attachments);
     const room = currentChatStore.currentRoom;
     if (room.type === "group") {
-        currentChatStore.messages = [...currentChatStore.messages, msg];
+        currentChatStore.messages = [...currentChatStore.messages, newMessage];
     } else if (room.type === "direct") {
-        if (currentChatStore.currentRoom.id === msg.recipientId) {
-            currentChatStore.messages = [...currentChatStore.messages, msg];
+        if (currentChatStore.currentRoom.id === newMessage.recipientId) {
+            currentChatStore.messages = [
+                ...currentChatStore.messages,
+                newMessage,
+            ];
         }
     }
+    currentChatStore.attachments = [
+        ...currentChatStore.attachments,
+        ...attachments,
+    ];
     scrollToBottom();
 };
 

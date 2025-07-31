@@ -8,11 +8,16 @@ class MessageController {
     async sendGroupMessage(req, res, next) {
         try {
             const { message, room } = req.body;
-            const { newMessage, mentionedUsersId } = await messageService.send(
-                message
-            );
+            const { newMessage, mentionedUsersId, messageAttachments } =
+                await messageService.send(message);
 
-            io.to(room).emit("newMessage", newMessage);
+            console.log(newMessage);
+            console.log(messageAttachments);
+
+            io.to(room).emit("newMessage", {
+                newMessage,
+                attachments: messageAttachments,
+            });
 
             if (mentionedUsersId) {
                 for (const mentionId of mentionedUsersId) {

@@ -39,6 +39,9 @@ export const useSendMessage = () => {
             //     ...currentChatStore.attachments,
             //     ...attachmentStore.attachments,
             // ];
+            // return from server added attachments
+            // think how to implemment this with socket
+            // this func will not probably work in direct messages
 
             replyToMessageStore.isReplyig = false;
             replyToMessageStore.clearReplyMessage();

@@ -2,7 +2,6 @@
 import ContextButton from "@/shared/ui/context-menu/ContextButton.vue";
 import ContextMenu from "@/shared/ui/context-menu/ContextMenu.vue";
 import { Icon } from "@iconify/vue";
-import { ref, watchEffect } from "vue";
 import { useUploadImage } from "../model/useUploadImage";
 
 const { uploadImage } = useUploadImage();

@@ -42,7 +42,17 @@ class MessageService {
             [messageId]
         );
 
-        return { newMessage: messageRows[0], mentionedUsersId };
+        const [attachmentsRows] = await db.query(
+            "SELECT * FROM message_images WHERE messageId = ?",
+            [messageId]
+        );
+        console.log(attachmentsRows);
+
+        return {
+            newMessage: messageRows[0],
+            mentionedUsersId,
+            messageAttachments: attachmentsRows,
+        };
     }
 
     async getAll(userId, type, recipientId) {
