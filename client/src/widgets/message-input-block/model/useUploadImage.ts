@@ -1,16 +1,23 @@
+import { useAttachmentsStore } from "@/features/attachments-panel";
 import { apiUploadImage } from "../api/uploadImage";
 
 export const useUploadImage = () => {
+    const attachmentsStore = useAttachmentsStore();
+
     const uploadImage = async (file: File | undefined) => {
         try {
             if (!file) return;
-            console.log(file);
 
             const formData = new FormData();
             formData.append("image", file);
 
-            const res = await apiUploadImage(formData);
-            console.log("added: ", res);
+            const image = await apiUploadImage(formData);
+            console.log(image.data);
+            attachmentsStore.attachments.push(image.data);
+            console.log(attachmentsStore.attachments);
+
+            if (!attachmentsStore.isAttachmentsPanelOpen)
+                attachmentsStore.isAttachmentsPanelOpen = true;
         } catch (error) {
             console.log(error);
         }

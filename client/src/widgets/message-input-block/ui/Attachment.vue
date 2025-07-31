@@ -11,12 +11,13 @@ defineProps<{
     areAttachmentsOpen: Boolean;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
     (e: "closeAttachments"): void;
 }>();
 
 const setFile = async (file: File | undefined) => {
     await uploadImage(file);
+    emit("closeAttachments");
 };
 </script>
 
@@ -27,6 +28,7 @@ const setFile = async (file: File | undefined) => {
         :bottom="70"
         width="160"
         @close-context="$emit('closeAttachments')"
+        class="z-10"
     >
         <ContextButton :important="false" class="flex items-center gap-2"
             ><Icon icon="proicons:attach" class="text-xl" /> Attach

@@ -11,6 +11,7 @@ import { findMemberByName } from "@/shared/lib/helpers/findMemberByName";
 import MentionList from "./MentionList.vue";
 import ReplyBar from "./ReplyBar.vue";
 import Attachment from "./Attachment.vue";
+import AttachmentsPanel from "@/features/attachments-panel/ui/AttachmentsPanel.vue";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
@@ -97,6 +98,7 @@ watch(
                 @closeAttachments="areAttachmentsOpen = false"
                 :areAttachmentsOpen="areAttachmentsOpen"
             />
+            <AttachmentsPanel />
 
             <form class="flex items-center gap-2">
                 <button
