@@ -1,5 +1,6 @@
 const cloudinary = require("../cloudinary");
 const { Readable } = require("stream");
+const { v4 } = require("uuid");
 
 class UploadController {
     async uploadImage(req, res, next) {
@@ -8,7 +9,7 @@ class UploadController {
             const result = cloudinary.uploader.upload_stream(
                 (error, result) => {
                     if (error) return res.status(500).json(error);
-                    return res.json({ url: result.secure_url });
+                    return res.json({ id: v4(), url: result.secure_url });
                 }
             );
 
