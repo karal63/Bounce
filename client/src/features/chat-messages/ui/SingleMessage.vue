@@ -10,8 +10,11 @@ import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
 import { findMessageById } from "@/shared/lib/helpers/findMessageById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getTime } from "@/shared/lib/helpers/getTime";
+import { useAttachmentsStore } from "@/features/attachments-panel";
+import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 const replyToMessageStore = useReplyToMessageStore();
-const currendChatStore = useCurrentChatStore();
+const currentChatStore = useCurrentChatStore();
+const attachmentsStore = useAttachmentsStore();
 
 const props = defineProps<{
     message: MessageWithName;
@@ -70,7 +73,7 @@ const replyToMessage = (message: MessageWithName) => {
                 <div
                     v-if="
                         message.senderId &&
-                        currendChatStore.currentRoom.type === 'group'
+                        currentChatStore.currentRoom.type === 'group'
                     "
                     class="w-8 h-8 bg-purple-700 flex-center rounded-full"
                 >
@@ -85,6 +88,17 @@ const replyToMessage = (message: MessageWithName) => {
                             : 'bg-white/20 rounded-bl-none'
                     "
                 >
+                    <div
+                        v-for="attachment of getAttachmentsForMessage(
+                            message.id
+                        )"
+                    >
+                        <img
+                            :src="attachment.imageUrl"
+                            alt="123"
+                            class="max-w-[250px]"
+                        />
+                    </div>
                     <!-- reply menu -->
                     <div
                         v-if="message.replyToMessageId"

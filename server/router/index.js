@@ -129,4 +129,8 @@ router.post(
     (req, res, next) => uploadController.uploadImage(req, res, next)
 );
 
+router.get("/attachments/:roomId", verifyToken, (req, res, next) =>
+    message.getAttachments(req, res, next)
+);
+
 module.exports = router;

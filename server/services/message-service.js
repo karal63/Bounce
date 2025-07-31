@@ -81,6 +81,15 @@ class MessageService {
 
         return updatedMessage[0];
     }
+
+    async getAttachments(roomId) {
+        const [attachments] = await db.query(
+            "SELECT message_images.* FROM message_images JOIN messages ON message_images.messageId=messages.id WHERE messages.groupId = ?",
+            [roomId]
+        );
+
+        return attachments;
+    }
 }
 
 module.exports = MessageService;

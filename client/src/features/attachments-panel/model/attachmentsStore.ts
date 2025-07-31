@@ -4,7 +4,7 @@ import { ref } from "vue";
 
 export const useAttachmentsStore = defineStore("useAttachmentsStore", () => {
     const isAttachmentsPanelOpen = ref(false);
-    const attachments = ref<Attachment[]>([{ id: "123", url: "123" }]);
+    const attachments = ref<Attachment[]>([]);
 
     return { attachments, isAttachmentsPanelOpen };
 });

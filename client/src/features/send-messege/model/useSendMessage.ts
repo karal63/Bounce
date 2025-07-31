@@ -35,6 +35,11 @@ export const useSendMessage = () => {
                 console.warn("Unsupported room type:", room.type);
             }
 
+            currentChatStore.attachments = [
+                ...currentChatStore.attachments,
+                ...attachmentStore.attachments,
+            ];
+
             replyToMessageStore.isReplyig = false;
             replyToMessageStore.clearReplyMessage();
             attachmentStore.isAttachmentsPanelOpen = false;

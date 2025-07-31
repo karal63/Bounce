@@ -86,6 +86,17 @@ class MessageController {
             next(error);
         }
     }
+
+    async getAttachments(req, res, next) {
+        try {
+            const { roomId } = req.params;
+            const attachments = await messageService.getAttachments(roomId);
+            res.status(200).json(attachments);
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
 }
 
 module.exports = MessageController;

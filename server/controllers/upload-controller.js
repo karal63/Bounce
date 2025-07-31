@@ -13,10 +13,6 @@ class UploadController {
                 }
             );
 
-            // TODO:
-            // add one more field in db (images) or add new table images with reference to message id
-            // this api call returns an image, create attachments panel that will show selected image
-
             require("stream").Readable.from(req.file.buffer).pipe(result);
         } catch (error) {
             next(error);

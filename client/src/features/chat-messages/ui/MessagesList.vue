@@ -6,9 +6,12 @@ import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import SingleMessage from "./SingleMessage.vue";
 import { useRouter } from "vue-router";
+import { useGetAttachments } from "../model/useGetAttachments";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
+const { getAttachments } = useGetAttachments();
+
 const router = useRouter();
 
 const listRef = ref<HTMLElement | null>(null);
@@ -40,8 +43,9 @@ const scrollToBottom = () => {
     });
 };
 
-onMounted(() => {
+onMounted(async () => {
     if (!currentChatStore.currentRoom.id) return router.push("/chat");
+    await getAttachments();
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
 });
