@@ -1,10 +1,10 @@
-import type { Attachment } from "@/shared/types/Attachment";
+import type { AttachmentToUpload } from "@/shared/types/Attachment";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useAttachmentsStore = defineStore("useAttachmentsStore", () => {
     const isAttachmentsPanelOpen = ref(false);
-    const attachments = ref<Attachment[]>([]);
+    const attachments = ref<AttachmentToUpload[]>([]);
 
     return { attachments, isAttachmentsPanelOpen };
 });

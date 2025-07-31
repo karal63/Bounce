@@ -18,7 +18,7 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
     const groups = ref<Group[]>([]);
     const hasPermissions = ref(false);
     const messagedUsers = ref<MessagedUser[]>([]);
-    const attachments = ref([]);
+    const attachments = ref<Attachment[]>([]);
 
     return {
         currentRoom,

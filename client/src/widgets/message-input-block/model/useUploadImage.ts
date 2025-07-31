@@ -12,9 +12,7 @@ export const useUploadImage = () => {
             formData.append("image", file);
 
             const image = await apiUploadImage(formData);
-            console.log(image.data);
             attachmentsStore.attachments.push(image.data);
-            console.log(attachmentsStore.attachments);
 
             if (!attachmentsStore.isAttachmentsPanelOpen)
                 attachmentsStore.isAttachmentsPanelOpen = true;
