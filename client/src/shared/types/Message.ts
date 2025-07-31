@@ -1,3 +1,5 @@
+import type { Attachment } from "./Attachment";
+
 export type ReadyMessage = {
     groupId?: string | null;
     recipientId?: string | null;
@@ -5,6 +7,7 @@ export type ReadyMessage = {
     content: string;
     mentionedUsersId: (string | null)[];
     replyToMessageId: string | undefined;
+    attachments: Attachment[];
 };
 
 export type Message = {

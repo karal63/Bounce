@@ -11,8 +11,10 @@ class MessageService {
             content,
             replyToMessageId,
             mentionedUsersId,
+            attachments,
         } = message;
-        if (!content) throw ApiError.BadRequest("Message is blank.");
+        if (!content && attachments.length < 1)
+            throw ApiError.BadRequest("Message is blank.");
 
         const messageId = v4();
 
@@ -25,6 +27,13 @@ class MessageService {
             await db.query(
                 "INSERT INTO messages (id, recipientId, senderId, content, replyToMessageId) VALUES (?, ?, ?, ?, ?);",
                 [messageId, recipientId, senderId, content, replyToMessageId]
+            );
+        }
+
+        for (const attachment of attachments) {
+            await db.query(
+                "INSERT INTO message_images (id, messageId, imageUrl) VALUES (UUID(), ?, ?);",
+                [messageId, attachment.url]
             );
         }
 

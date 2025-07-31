@@ -34,10 +34,14 @@ const remove = (id: string) => {
     <div
         ref="attachmentRef"
         @click="remove(attachment.id)"
-        class="relative w-20 h-20 flex-center rounded-xl bg-purple-900 transition-all"
+        class="relative w-20 h-20 rounded-xl bg-purple-900 transition-all"
     >
         <div class="w-full h-full rounded-xl overflow-hidden">
-            <img :src="attachment.url" alt="image" class="w-20" />
+            <img
+                :src="attachment.url"
+                alt="image"
+                class="w-full h-full object-cover"
+            />
         </div>
         <span
             class="absolute z-10 -bottom-1 -right-1 w-5 h-5 bg-white text-black rounded-full flex-center font-semibold"
@@ -49,7 +53,7 @@ const remove = (id: string) => {
             :class="isHovering ? 'opacity-100' : 'opacity-0'"
         >
             <button class="text-6xl cursor-pointer">
-                <Icon icon="ic:round-close" />
+                <Icon icon="ep:close" />
             </button>
         </div>
     </div>

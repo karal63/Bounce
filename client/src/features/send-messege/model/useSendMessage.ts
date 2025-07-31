@@ -1,3 +1,4 @@
+import { useAttachmentsStore } from "@/features/attachments-panel";
 import { apiSendDirectMessage } from "@/shared/api/message/sendDirectMessage";
 import { apiSendGroupMessage } from "@/shared/api/message/sendGroupMessage";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
@@ -7,6 +8,7 @@ import type { ReadyMessage } from "@/shared/types/Message";
 export const useSendMessage = () => {
     const currentChatStore = useCurrentChatStore();
     const replyToMessageStore = useReplyToMessageStore();
+    const attachmentStore = useAttachmentsStore();
 
     const send = async (message: ReadyMessage) => {
         try {
@@ -18,6 +20,7 @@ export const useSendMessage = () => {
                     ...message,
                     groupId: room.id,
                     replyToMessageId: replyToMessageStore.replyMessage?.id,
+                    attachments: attachmentStore.attachments,
                 };
                 await apiSendGroupMessage(readyMessage, room.id);
             } else if (room.type === "direct") {
@@ -25,6 +28,7 @@ export const useSendMessage = () => {
                     ...message,
                     recipientId: room.id,
                     replyToMessageId: replyToMessageStore.replyMessage?.id,
+                    attachments: attachmentStore.attachments,
                 };
                 await apiSendDirectMessage(readyMessage, room.id);
             } else {
@@ -33,6 +37,8 @@ export const useSendMessage = () => {
 
             replyToMessageStore.isReplyig = false;
             replyToMessageStore.clearReplyMessage();
+            attachmentStore.isAttachmentsPanelOpen = false;
+            attachmentStore.attachments = [];
         } catch (error) {
             console.log(error);
         }

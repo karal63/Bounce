@@ -23,6 +23,7 @@ const message = ref<ReadyMessage>({
     content: "",
     mentionedUsersId: [],
     replyToMessageId: "",
+    attachments: [],
 });
 const isMentionListOpen = ref(false);
 const cursorPos = ref<number>(0);
