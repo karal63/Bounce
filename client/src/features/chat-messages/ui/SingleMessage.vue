@@ -1,34 +1,33 @@
 <script setup lang="ts">
 import type { MessageWithName } from "@/shared/types/Message";
 import { checkPerson } from "../lib/checkPerson";
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import { useHover } from "@/shared/lib/hooks/useHover";
 import { Icon } from "@iconify/vue";
-import MessageContext from "./MessageContext.vue";
-import type { Context } from "@/shared/types/Context";
 import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
 import { findMessageById } from "@/shared/lib/helpers/findMessageById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getTime } from "@/shared/lib/helpers/getTime";
-import { useAttachmentsStore } from "@/features/attachments-panel";
 import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 const replyToMessageStore = useReplyToMessageStore();
 const currentChatStore = useCurrentChatStore();
-const attachmentsStore = useAttachmentsStore();
 
 const props = defineProps<{
     message: MessageWithName;
-    posLeft: number | undefined;
+    pos: HTMLElement | null;
+}>();
+const emit = defineEmits<{
+    (
+        e: "showContext",
+        buttonElement: Ref<HTMLElement | null>,
+        message: MessageWithName
+    ): void;
 }>();
 
 const messageRef = ref<HTMLElement | null>(null);
 const buttonRef = ref<HTMLElement | null>(null);
 
 const isHovering = ref(false);
-const messageContext = ref<Context>({
-    isVisible: false,
-    posX: 0,
-});
 
 useHover(
     messageRef,
@@ -36,19 +35,8 @@ useHover(
     () => (isHovering.value = false)
 );
 
-const hideContext = () => {
-    messageContext.value.isVisible = false;
-};
-
 const showContext = () => {
-    const button = buttonRef.value as HTMLElement;
-    if (!button) return;
-    const rect = button.getBoundingClientRect();
-
-    messageContext.value = {
-        isVisible: true,
-        posX: props.posLeft ? rect.left - props.posLeft : 0,
-    };
+    emit("showContext", buttonRef, props.message);
 };
 
 const replyToMessage = (message: MessageWithName) => {
@@ -67,7 +55,7 @@ const replyToMessage = (message: MessageWithName) => {
             :class="checkPerson(message) ? 'items-end' : 'items-start'"
         >
             <div
-                class="flex items-center gap-3"
+                class="flex items-end gap-3"
                 :class="checkPerson(message) && 'flex-row-reverse'"
             >
                 <div
@@ -165,12 +153,5 @@ const replyToMessage = (message: MessageWithName) => {
                 </div>
             </div>
         </div>
-
-        <MessageContext
-            v-if="messageContext.isVisible && buttonRef"
-            :message="message"
-            :messageContext="messageContext"
-            @hideContext="hideContext"
-        />
     </div>
 </template>

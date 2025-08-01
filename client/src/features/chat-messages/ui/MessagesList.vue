@@ -2,12 +2,21 @@
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import type { MessageWithName } from "@/shared/types/Message";
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import {
+    nextTick,
+    onBeforeUnmount,
+    onMounted,
+    ref,
+    watch,
+    type Ref,
+} from "vue";
 import { Icon } from "@iconify/vue";
 import SingleMessage from "./SingleMessage.vue";
 import { useRouter } from "vue-router";
 import { useGetAttachments } from "../model/useGetAttachments";
 import type { Attachment } from "@/shared/types/Attachment";
+import MessageContext from "./MessageContext.vue";
+import type { Context } from "@/shared/types/Context";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
@@ -17,6 +26,12 @@ const router = useRouter();
 
 const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
+const messageContext = ref<Context>({
+    isVisible: true,
+    posX: 0,
+    posY: 0,
+    message: null,
+});
 
 const handleNewMessage = ({
     newMessage,
@@ -62,6 +77,32 @@ const scrollToBottom = () => {
     });
 };
 
+const hideContext = () => {
+    messageContext.value.isVisible = false;
+};
+
+const showContext = (
+    buttonElement: Ref<HTMLElement | null>,
+    message: MessageWithName
+) => {
+    const containerRect = listRef.value?.getBoundingClientRect();
+    const buttonRect = buttonElement.value?.getBoundingClientRect();
+
+    if (!containerRect || !buttonRect || !listRef.value) return;
+
+    // Calculate position of button relative to container (scroll container)
+    const posY = buttonRect.top - containerRect.top + listRef.value.scrollTop;
+    const posX =
+        buttonRect.left - containerRect.left + listRef.value.scrollLeft;
+
+    messageContext.value = {
+        isVisible: true,
+        posY: posY - 45,
+        posX: posX - 100,
+        message,
+    };
+};
+
 onMounted(async () => {
     if (!currentChatStore.currentRoom.id) return router.push("/chat");
     await getAttachments();
@@ -92,12 +133,19 @@ watch(
 
 <template>
     <div ref="listRef" class="h-[90%] flex justify-center overflow-y-auto">
-        <div class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
+        <div class="relative pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
             <div v-if="currentChatStore.currentRoom.id" class="flex-col gap-2">
                 <SingleMessage
-                    :posLeft="listRef?.getBoundingClientRect().left"
                     v-for="message of currentChatStore.messages"
+                    :pos="listRef"
                     :message="message"
+                    @showContext="showContext"
+                />
+
+                <MessageContext
+                    v-if="messageContext.isVisible"
+                    :messageContext="messageContext"
+                    @hideContext="hideContext"
                 />
             </div>
 

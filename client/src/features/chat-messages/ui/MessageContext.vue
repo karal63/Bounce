@@ -6,7 +6,6 @@ import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import type { Context } from "@/shared/types/Context";
-import type { MessageWithName } from "@/shared/types/Message";
 import { onMounted, ref } from "vue";
 
 const { deleteMessage } = useDeleteMessage();
@@ -17,7 +16,6 @@ const emit = defineEmits<{
     (event: "hideContext"): void;
 }>();
 const props = defineProps<{
-    message: MessageWithName;
     messageContext: Context;
 }>();
 const contextRef = ref<HTMLElement | null>(null);
@@ -29,15 +27,17 @@ const accessabilities = ref({
 useClickOutside(contextRef, () => emit("hideContext"));
 
 const handleDelete = async () => {
-    await deleteMessage(props.message.id);
+    if (!props.messageContext.message?.id) return;
+    await deleteMessage(props.messageContext.message?.id);
     emit("hideContext");
 };
 
 onMounted(() => {
-    if (!props.message.senderId || !sessionStore.user?.id) return;
+    if (!props.messageContext.message?.senderId || !sessionStore.user?.id)
+        return;
 
     if (currentChatStore.currentRoom.type === "group") {
-        const message = props.message;
+        const message = props.messageContext.message;
 
         const receiver = findMemberById(
             currentChatStore.members,
@@ -51,7 +51,7 @@ onMounted(() => {
             accessabilities.value.delete = true;
         }
     } else if (currentChatStore.currentRoom.type === "direct") {
-        const message = props.message;
+        const message = props.messageContext.message;
         if (sessionStore.user?.id === message.senderId) {
             accessabilities.value.delete = true;
         }
@@ -62,8 +62,11 @@ onMounted(() => {
 <template>
     <ul
         ref="contextRef"
-        class="absolute bottom-[110%] flex bg-mainGray border border-mainBorder rounded-md"
-        :style="{ left: `${messageContext.posX}px` }"
+        class="absolute flex bg-mainGray border border-mainBorder rounded-md"
+        :style="{
+            left: `${messageContext.posX}px`,
+            top: `${messageContext.posY}px`,
+        }"
     >
         <li>
             <button
