@@ -9,7 +9,7 @@ import { getPermissions } from "@/shared/lib/helpers/getPermissions";
 import { useKickMemberStore } from "@/features/kick-member";
 import { useBanMemberStore } from "@/features/ban-member";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { useGetMessages } from "@/features/chat-messages";
+import { useGetAttachments, useGetMessages } from "@/features/chat-messages";
 import type { MemberWithName } from "@/shared/types/Member";
 import { useAddMessagedUsers } from "../model/useAddMessagedUser";
 
@@ -28,6 +28,7 @@ const banMemberStore = useBanMemberStore();
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
 const { addMessagedUser } = useAddMessagedUsers();
+const { getAttachments } = useGetAttachments();
 
 const contextRef = ref<HTMLElement | null>(null);
 const permissions = ref({
@@ -67,6 +68,7 @@ const openConversation = async () => {
         props.memberContext.user.userId
     );
     currentChatStore.messages = await getMessages();
+    await getAttachments();
     currentChatStore.members = [];
     props.memberContext.isVisible = false;
 };

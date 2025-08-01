@@ -65,6 +65,7 @@ const scrollToBottom = () => {
 onMounted(async () => {
     if (!currentChatStore.currentRoom.id) return router.push("/chat");
     await getAttachments();
+    console.log("getting");
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
 });
