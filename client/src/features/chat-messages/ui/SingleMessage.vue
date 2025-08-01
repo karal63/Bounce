@@ -9,8 +9,10 @@ import { findMessageById } from "@/shared/lib/helpers/findMessageById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getTime } from "@/shared/lib/helpers/getTime";
 import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
+import { useImagePreviewStore } from "@/features/image-preview";
 const replyToMessageStore = useReplyToMessageStore();
 const currentChatStore = useCurrentChatStore();
+const imagePreviewStore = useImagePreviewStore();
 
 const props = defineProps<{
     message: MessageWithName;
@@ -82,9 +84,15 @@ const replyToMessage = (message: MessageWithName) => {
                         )"
                     >
                         <img
+                            @click="
+                                imagePreviewStore.previewImage = {
+                                    isPreviewing: true,
+                                    image: attachment,
+                                }
+                            "
                             :src="attachment.imageUrl"
                             alt="image"
-                            class="max-w-[250px] rounded-xl"
+                            class="max-w-[250px] rounded-xl cursor-pointer"
                         />
                     </div>
                     <!-- reply menu -->
