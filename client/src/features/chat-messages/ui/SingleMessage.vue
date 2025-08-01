@@ -95,7 +95,7 @@ const replyToMessage = (message: MessageWithName) => {
                     >
                         <img
                             :src="attachment.imageUrl"
-                            alt="123"
+                            alt="image"
                             class="max-w-[250px]"
                         />
                     </div>

@@ -12,7 +12,7 @@ export const useGetAttachments = () => {
         const attachments = await apiGetAttachments(
             currentChatStore.currentRoom.id
         );
-        console.log(attachments);
+
         currentChatStore.attachments = attachments.data;
     };
 

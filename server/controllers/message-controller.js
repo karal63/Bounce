@@ -11,9 +11,6 @@ class MessageController {
             const { newMessage, mentionedUsersId, messageAttachments } =
                 await messageService.send(message);
 
-            console.log(newMessage);
-            console.log(messageAttachments);
-
             io.to(room).emit("newMessage", {
                 newMessage,
                 attachments: messageAttachments,
@@ -41,15 +38,20 @@ class MessageController {
     async sendDirectMessage(req, res, next) {
         try {
             const { message, room } = req.body;
-            const { newMessage, mentionedUsersId } = await messageService.send(
-                message
-            );
+            const { newMessage, mentionedUsersId, messageAttachments } =
+                await messageService.send(message);
 
             const senderSocketId = userSocketMap.get(message.senderId);
             const receiverSocketId = userSocketMap.get(room);
 
-            io.to(senderSocketId).emit("newMessage", newMessage);
-            io.to(receiverSocketId).emit("newMessage", newMessage);
+            io.to(senderSocketId).emit("newMessage", {
+                newMessage,
+                attachments: messageAttachments,
+            });
+            io.to(receiverSocketId).emit("newMessage", {
+                newMessage,
+                attachments: messageAttachments,
+            });
 
             io.to(receiverSocketId).emit("mention:show-notification", message);
 

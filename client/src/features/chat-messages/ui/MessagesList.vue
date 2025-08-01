@@ -25,23 +25,26 @@ const handleNewMessage = ({
     newMessage: MessageWithName;
     attachments: Attachment[];
 }) => {
-    console.log(newMessage);
-    console.log(attachments);
     const room = currentChatStore.currentRoom;
     if (room.type === "group") {
         currentChatStore.messages = [...currentChatStore.messages, newMessage];
+        currentChatStore.attachments = [
+            ...currentChatStore.attachments,
+            ...attachments,
+        ];
     } else if (room.type === "direct") {
         if (currentChatStore.currentRoom.id === newMessage.recipientId) {
             currentChatStore.messages = [
                 ...currentChatStore.messages,
                 newMessage,
             ];
+            currentChatStore.attachments = [
+                ...currentChatStore.attachments,
+                ...attachments,
+            ];
         }
     }
-    currentChatStore.attachments = [
-        ...currentChatStore.attachments,
-        ...attachments,
-    ];
+
     scrollToBottom();
 };
 
