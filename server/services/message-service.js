@@ -93,10 +93,9 @@ class MessageService {
 
     async getAttachments(roomId) {
         const [attachments] = await db.query(
-            "SELECT message_images.* FROM message_images JOIN messages ON message_images.messageId=messages.id WHERE messages.groupId = ? || messages.recipientId = ?",
-            [roomId, roomId]
+            "SELECT message_images.* FROM message_images JOIN messages ON message_images.messageId=messages.id WHERE messages.groupId = ? || messages.recipientId = ? || messages.senderId = ?",
+            [roomId, roomId, roomId]
         );
-        console.log(roomId);
 
         return attachments;
     }
