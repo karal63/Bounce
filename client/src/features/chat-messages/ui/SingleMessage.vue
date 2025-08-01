@@ -96,7 +96,7 @@ const replyToMessage = (message: MessageWithName) => {
                         <img
                             :src="attachment.imageUrl"
                             alt="image"
-                            class="max-w-[250px]"
+                            class="max-w-[250px] rounded-xl"
                         />
                     </div>
                     <!-- reply menu -->
@@ -125,17 +125,20 @@ const replyToMessage = (message: MessageWithName) => {
                         /></span>
                     </div>
 
-                    <div class="flex gap-3">
-                        <p
-                            :class="
-                                checkPerson(message) ? 'text-end' : 'text-start'
-                            "
-                        >
+                    <div
+                        class="flex gap-3"
+                        :class="
+                            checkPerson(message)
+                                ? 'justify-end'
+                                : 'justify-start'
+                        "
+                    >
+                        <p>
                             {{ message.content }}
                         </p>
 
                         <div>
-                            <span class="text-[.7rem] text-gray-3 00">{{
+                            <span class="text-[.6rem] text-gray-300">{{
                                 getTime(message.sentAt)
                             }}</span>
                         </div>
