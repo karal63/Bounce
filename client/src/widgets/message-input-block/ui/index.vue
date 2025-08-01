@@ -88,7 +88,7 @@ watch(
 <template>
     <div
         v-if="currentChatStore.currentRoom.id"
-        class="flex justify-center w-full h-[10%]"
+        class="h-[10%] flex justify-center w-full"
     >
         <div
             class="relative max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full pt-4 border-t border-mainBorder"

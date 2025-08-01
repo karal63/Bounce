@@ -1,7 +1,6 @@
 # 🌌 Bounce
 
-<!-- next: direct conversation layout kind of broke if there are not enough messages, fix it -->
-<!-- make attachments work in direct messages -->
+<!-- move some elements in single message to their own places like time etc -->
 
 <!-- fix context button, i dont know why i added there emit 'unban' -->
 

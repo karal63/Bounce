@@ -34,7 +34,7 @@ const showShareLinkModal = () => {
 
 <template>
     <div
-        class="bg-mainHoverDarkBg px-4 py-2 rounded-md flex justify-between items-center"
+        class="h-[8%] bg-mainHoverDarkBg px-4 py-2 rounded-md flex justify-between items-center"
     >
         <h1 class="text-2xl">{{ getGroupName }}</h1>
         <div
