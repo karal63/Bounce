@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useGetMessages } from "@/features/chat-messages";
+import { useGetAttachments, useGetMessages } from "@/features/chat-messages";
 import { useGetMembers } from "@/features/chat-members";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
@@ -17,6 +17,7 @@ import { useRouter } from "vue-router";
 const { socket } = useSocket();
 const { getMessages } = useGetMessages();
 const { getMembers } = useGetMembers();
+const { getAttachments } = useGetAttachments();
 const currentChatStore = useCurrentChatStore();
 const sessionStore = useSessionStore();
 const router = useRouter();
@@ -43,6 +44,7 @@ const setGroup = async (room: string) => {
     };
     currentChatStore.messages = await getMessages();
     currentChatStore.members = await getMembers();
+    await getAttachments();
 
     if (!sessionStore.user?.id) return;
     const member = findMemberById(
