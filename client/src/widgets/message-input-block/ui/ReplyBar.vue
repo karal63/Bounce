@@ -8,7 +8,7 @@ const replyToMessageStore = useReplyToMessageStore();
 <template>
     <div
         v-if="replyToMessageStore.isReplyig"
-        class="flex items-center py-2 border border-b-0 rounded-md border-mainBorder bg-mainDarkBg"
+        class="absolute bg-mainDarkBg bottom-full left-0 w-full flex items-center py-2 border rounded-md border-mainBorder"
     >
         <div class="pl-3 pr-5">
             <Icon icon="ic:baseline-reply" class="text-3xl" />

@@ -5,10 +5,6 @@ import { watchEffect } from "vue";
 import SingleAttachment from "./SingleAttachment.vue";
 
 const attachmentsStore = useAttachmentsStore();
-
-watchEffect(() => {
-    console.log(attachmentsStore.attachments);
-});
 </script>
 
 <template>
