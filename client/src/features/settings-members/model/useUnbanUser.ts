@@ -3,7 +3,7 @@ import { useSettingsMembersStore } from "./store";
 
 export const useUnbanUser = () => {
     const store = useSettingsMembersStore();
-    const unbanUser = async (id?: number) => {
+    const unbanUser = async (id?: string) => {
         try {
             if (!id) return;
             await apiUnbanUser(id);

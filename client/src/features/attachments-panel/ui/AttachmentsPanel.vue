@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { useAttachmentsStore } from "../model/attachmentsStore";
-import { watchEffect } from "vue";
 import SingleAttachment from "./SingleAttachment.vue";
 
 const attachmentsStore = useAttachmentsStore();
