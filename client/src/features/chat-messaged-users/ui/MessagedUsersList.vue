@@ -87,7 +87,7 @@ const closeContext = () => {
                     @click="goToConversation(user)"
                     class="flex items-center gap-2 py-1 px-1 rounded-xl transition-all hover:bg-mainHoverOnGray"
                 >
-                    <UserAvatar size="40" />
+                    <UserAvatar alt="user" :src="undefined" size="40" />
                     <div>
                         <h3 class="text-lg">
                             {{ user.otherUserName }}

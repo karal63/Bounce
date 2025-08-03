@@ -28,7 +28,7 @@ useHover(
 <template>
     <tr ref="userRef" class="relative">
         <td class="py-3 flex items-center gap-2">
-            <UserAvatar size="40" alt="userAvatar" />
+            <UserAvatar alt="user" :src="undefined" size="40" />
             {{ bannedUser.name }}
         </td>
         <td class="py-3">{{ bannedUser.joinedAt }}</td>

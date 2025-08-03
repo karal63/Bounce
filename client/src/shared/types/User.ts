@@ -3,4 +3,5 @@ export type User = {
     email: string;
     name: string;
     accountActivated: boolean;
+    avatarUrl: string;
 };

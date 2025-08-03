@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import defaultAvatar from "@/shared/assets/default-user.png";
+
 defineProps<{
-    // src?: string;
-    alt?: string;
-    size?: string;
+    src?: string;
+    alt: string;
+    size: string;
 }>();
 </script>
 
@@ -12,10 +14,9 @@ defineProps<{
         :style="{ width: `${size}px`, height: `${size}px` }"
     >
         <img
-            src="../assets/userAvatar.png"
-            :alt="alt || 'User Avatar'"
+            :src="src ? src : defaultAvatar"
+            :alt="alt"
             class="w-full h-full object-cover"
         />
-        <!-- <span v-else class="text-gray-500 text-sm">?</span> -->
     </div>
 </template>

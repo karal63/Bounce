@@ -10,6 +10,7 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getTime } from "@/shared/lib/helpers/getTime";
 import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 import { useImagePreviewStore } from "@/features/image-preview";
+import UserAvatar from "@/shared/ui/UserAvatar.vue";
 const replyToMessageStore = useReplyToMessageStore();
 const currentChatStore = useCurrentChatStore();
 const imagePreviewStore = useImagePreviewStore();
@@ -60,15 +61,7 @@ const replyToMessage = (message: MessageWithName) => {
                 class="flex items-end gap-3"
                 :class="checkPerson(message) && 'flex-row-reverse'"
             >
-                <div
-                    v-if="
-                        message.senderId &&
-                        currentChatStore.currentRoom.type === 'group'
-                    "
-                    class="w-8 h-8 bg-purple-700 flex-center rounded-full"
-                >
-                    {{ message.name[0] }}
-                </div>
+                <UserAvatar alt="member" :src="undefined" size="30" />
 
                 <div
                     class="max-w-max px-2 py-1 rounded-xl"
