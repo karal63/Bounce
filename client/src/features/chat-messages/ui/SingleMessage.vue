@@ -61,7 +61,7 @@ const replyToMessage = (message: MessageWithName) => {
                 class="flex items-end gap-3"
                 :class="checkPerson(message) && 'flex-row-reverse'"
             >
-                <UserAvatar alt="member" :src="undefined" size="30" />
+                <UserAvatar alt="member" :src="message.avatarUrl" size="30" />
 
                 <div
                     class="max-w-max px-2 py-1 rounded-xl"

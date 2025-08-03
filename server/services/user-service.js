@@ -71,6 +71,7 @@ class UserService {
                 email: user.email,
                 name: user.name,
                 accountActivated: user.isActivated,
+                avatarUrl: user.avatarUrl,
             },
         };
     }
@@ -126,7 +127,8 @@ class UserService {
     SELECT 
         m.*, 
         u.name AS otherUserName,
-        u.id AS otherUserId
+        u.id AS otherUserId,
+        u.avatarUrl
     FROM 
         messaged_users m
     JOIN 
@@ -139,7 +141,8 @@ UNION
     SELECT 
         m.*, 
         u.name AS otherUserName,
-        u.id AS otherUserId
+        u.id AS otherUserId,
+        u.avatarUrl
     FROM 
         messaged_users m
     JOIN 

@@ -3,7 +3,8 @@ import { ref } from "vue";
 
 type Notification = {
     isVisible: boolean;
-    senderId: number | null | undefined;
+    senderId: string | null | undefined;
+    senderAvatar: string;
     message: string;
 };
 
@@ -11,6 +12,7 @@ export const useNotificationStore = defineStore("notificationStore", () => {
     const notification = ref<Notification>({
         isVisible: false,
         senderId: null,
+        senderAvatar: "",
         message: "",
     });
 

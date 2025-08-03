@@ -38,7 +38,7 @@ class MessageService {
         }
 
         const [messageRows] = await db.query(
-            "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE messages.id = ?",
+            "SELECT messages.*, users.name, users.avatarUrl FROM messages JOIN users ON messages.senderId = users.id WHERE messages.id = ?",
             [messageId]
         );
 
@@ -57,14 +57,14 @@ class MessageService {
     async getAll(userId, type, recipientId) {
         if (type === "group") {
             const [rows] = await db.query(
-                "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE groupId = ? AND isDeleted = false ORDER BY messages.sentAt ASC;",
+                "SELECT messages.*, users.name, users.avatarUrl FROM messages JOIN users ON messages.senderId = users.id WHERE groupId = ? AND isDeleted = false ORDER BY messages.sentAt ASC;",
                 [recipientId]
             );
             return rows;
         } else if (type === "direct") {
             console.log(userId, recipientId);
             const [rows] = await db.query(
-                "SELECT messages.*, users.name FROM messages JOIN users ON messages.senderId = users.id WHERE (messages.recipientId = ? AND messages.senderId = ?) || (messages.senderId = ? AND messages.recipientId = ?) AND messages.isDeleted = false AND groupId IS NULL ORDER BY messages.sentAt ASC;",
+                "SELECT messages.*, users.name, users.avatarUrl FROM messages JOIN users ON messages.senderId = users.id WHERE (messages.recipientId = ? AND messages.senderId = ?) || (messages.senderId = ? AND messages.recipientId = ?) AND messages.isDeleted = false AND groupId IS NULL ORDER BY messages.sentAt ASC;",
                 [recipientId, userId, recipientId, userId]
             );
             return rows;

@@ -4,7 +4,7 @@ import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { Icon } from "@iconify/vue";
 import { useNotificationStore } from "../model/store";
 import { useSocket } from "@/shared/config/useSocketStore";
-import type { ReadyMessage } from "@/shared/types/Message";
+import type { MessageWithName, ReadyMessage } from "@/shared/types/Message";
 import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import ModalTransition from "@/shared/ui/ModalTransition.vue";
@@ -31,10 +31,11 @@ watch(
     { immediate: true }
 );
 
-socket.on("mention:show-notification", (message: ReadyMessage) => {
+socket.on("mention:show-notification", (message: MessageWithName) => {
     notificationStore.notification = {
         isVisible: true,
         senderId: message.senderId,
+        senderAvatar: message.avatarUrl,
         message: message.content,
     };
 });
@@ -50,7 +51,11 @@ socket.on("mention:show-notification", (message: ReadyMessage) => {
         >
             <div class="flex">
                 <div class="w-[22%]">
-                    <UserAvatar size="45" />
+                    <UserAvatar
+                        alt="sender"
+                        :src="notificationStore.notification.senderAvatar"
+                        size="45"
+                    />
                 </div>
                 <div class="w-[78%]">
                     <p class="mb-1">

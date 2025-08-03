@@ -11,4 +11,5 @@ export type Member = {
 
 export type MemberWithName = Member & {
     name: string;
+    avatarUrl: string;
 };

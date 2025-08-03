@@ -5,4 +5,5 @@ export type MessagedUser = {
     created_at: string;
     otherUserName: string;
     otherUserId: string;
+    avatarUrl: string;
 };
