@@ -27,6 +27,6 @@ const unban = async () => {
         :top="context.posY"
         @closeContext="emit('closeContext')"
     >
-        <ContextButton @unban="unban" :important="true"> Unban </ContextButton>
+        <ContextButton :important="true" @click="unban"> Unban </ContextButton>
     </ContextMenu>
 </template>
