@@ -105,8 +105,6 @@ const showContext = (
 
 onMounted(async () => {
     if (!currentChatStore.currentRoom.id) return router.push("/chat");
-    await getAttachments();
-    console.log("getting");
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
 });
@@ -118,14 +116,15 @@ onBeforeUnmount(() => {
 
 watch(
     () => currentChatStore.currentRoom.id,
-    () => {
+    async () => {
         isLoading.value = true;
-        setTimeout(() => {
-            listRef.value?.scroll({
-                top: listRef.value.scrollHeight,
-            });
-            isLoading.value = false;
-        }, 100);
+        await getAttachments();
+        console.log("getting attachments");
+        isLoading.value = false;
+        listRef.value?.scroll({
+            top: listRef.value.scrollHeight,
+        });
+        setTimeout(() => {}, 100);
     },
     { immediate: true }
 );
