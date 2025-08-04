@@ -98,7 +98,7 @@ const showContext = (
     messageContext.value = {
         isVisible: true,
         posY: posY - 45,
-        posX: posX - 100,
+        posX: posX,
         message,
     };
 };
@@ -130,8 +130,11 @@ watch(
 </script>
 
 <template>
-    <div ref="listRef" class="h-[90%] flex justify-center overflow-y-auto">
-        <div class="relative pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
+    <div
+        ref="listRef"
+        class="relative h-[90%] flex justify-center overflow-y-auto"
+    >
+        <div class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
             <div v-if="currentChatStore.currentRoom.id" class="flex-col gap-2">
                 <SingleMessage
                     v-for="message of currentChatStore.messages"

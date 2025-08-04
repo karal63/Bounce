@@ -10,6 +10,7 @@ import { getTime } from "@/shared/lib/helpers/getTime";
 import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 import { useImagePreviewStore } from "@/features/image-preview";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import heartIcon from "@/shared/assets/heart.png";
 const replyToMessageStore = useReplyToMessageStore();
 const imagePreviewStore = useImagePreviewStore();
 
@@ -132,10 +133,19 @@ const replyToMessage = (message: MessageWithName) => {
                     </div>
                 </div>
 
-                <div class="flex items-center">
+                <div
+                    v-show="isHovering"
+                    class="flex items-center"
+                    :class="checkPerson(message) ? 'flex-row-reverse' : ''"
+                >
                     <button
-                        v-show="isHovering"
-                        ref="buttonRef"
+                        v-if="!checkPerson(message)"
+                        class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
+                    >
+                        <img alt="like" :src="heartIcon" class="w-5" />
+                    </button>
+
+                    <button
                         @click="replyToMessage(message)"
                         class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
                     >
@@ -143,7 +153,7 @@ const replyToMessage = (message: MessageWithName) => {
                     </button>
 
                     <button
-                        v-show="isHovering"
+                        ref="buttonRef"
                         @click="showContext"
                         class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
                     >
