@@ -96,6 +96,7 @@ class UserService {
                 email: dbUser.email,
                 name: dbUser.name,
                 accountActivated: dbUser.isActivated,
+                avatarUrl: dbUser.avatarUrl,
             },
         };
     }
