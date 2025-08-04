@@ -2,6 +2,6 @@ export type User = {
     id: string;
     email: string;
     name: string;
-    accountActivated: boolean;
+    isActivated: boolean;
     avatarUrl: string;
 };

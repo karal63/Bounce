@@ -4,7 +4,7 @@ import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { Icon } from "@iconify/vue";
 import { useNotificationStore } from "../model/store";
 import { useSocket } from "@/shared/config/useSocketStore";
-import type { MessageWithName, ReadyMessage } from "@/shared/types/Message";
+import type { MessageWithName } from "@/shared/types/Message";
 import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import ModalTransition from "@/shared/ui/ModalTransition.vue";

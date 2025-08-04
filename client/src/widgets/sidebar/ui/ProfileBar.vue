@@ -47,10 +47,6 @@ const emit = defineEmits<{
             <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
         </div>
 
-        <ProfileContext
-            v-if="buttonRef"
-            :buttonRef="buttonRef"
-            @logout="emit('logout')"
-        />
+        <ProfileContext :buttonRef="buttonRef" @logout="emit('logout')" />
     </div>
 </template>

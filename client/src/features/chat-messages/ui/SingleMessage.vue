@@ -6,13 +6,11 @@ import { useHover } from "@/shared/lib/hooks/useHover";
 import { Icon } from "@iconify/vue";
 import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
 import { findMessageById } from "@/shared/lib/helpers/findMessageById";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { getTime } from "@/shared/lib/helpers/getTime";
 import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 import { useImagePreviewStore } from "@/features/image-preview";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 const replyToMessageStore = useReplyToMessageStore();
-const currentChatStore = useCurrentChatStore();
 const imagePreviewStore = useImagePreviewStore();
 
 const props = defineProps<{

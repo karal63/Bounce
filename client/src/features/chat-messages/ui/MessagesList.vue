@@ -124,7 +124,6 @@ watch(
         listRef.value?.scroll({
             top: listRef.value.scrollHeight,
         });
-        setTimeout(() => {}, 100);
     },
     { immediate: true }
 );

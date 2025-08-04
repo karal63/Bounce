@@ -70,7 +70,7 @@ class UserService {
                 id: user.id,
                 email: user.email,
                 name: user.name,
-                accountActivated: user.isActivated,
+                isActivated: user.isActivated,
                 avatarUrl: user.avatarUrl,
             },
         };
@@ -95,7 +95,7 @@ class UserService {
                 id: dbUser.id,
                 email: dbUser.email,
                 name: dbUser.name,
-                accountActivated: dbUser.isActivated,
+                isActivated: dbUser.isActivated,
                 avatarUrl: dbUser.avatarUrl,
             },
         };
@@ -166,6 +166,21 @@ UNION
 
     async deleteMessagedUser(id) {
         await db.query("DELETE FROM messaged_users WHERE id = ?", [id]);
+    }
+
+    async update(userId, data) {
+        const keys = Object.keys(data);
+        const values = Object.values(data);
+
+        const setClause = keys.map((key) => `${key} = ?`).join(", "); // "avatarUrl = ?, name = ?"
+
+        const sql = `UPDATE users SET ${setClause} WHERE id = ?`;
+        await db.query(sql, [...values, userId]);
+        const [rows] = await db.query(
+            "SELECT id, email, name, isActivated, avatarUrl FROM users WHERE id = ?",
+            [userId]
+        );
+        return rows[0];
     }
 }
 
