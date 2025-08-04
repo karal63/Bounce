@@ -133,4 +133,8 @@ router.get("/attachments/:roomId", verifyToken, (req, res, next) =>
     message.getAttachments(req, res, next)
 );
 
+router.patch("/user", verifyToken, (req, res, next) =>
+    user.update(req, res, next)
+);
+
 module.exports = router;

@@ -22,7 +22,7 @@ class MessageController {
                     if (targetSocketId) {
                         io.to(targetSocketId).emit(
                             "mention:show-notification",
-                            message
+                            newMessage
                         );
                     }
                 }
@@ -53,7 +53,10 @@ class MessageController {
                 attachments: messageAttachments,
             });
 
-            io.to(receiverSocketId).emit("mention:show-notification", message);
+            io.to(receiverSocketId).emit(
+                "mention:show-notification",
+                newMessage
+            );
 
             res.sendStatus(200);
         } catch (error) {

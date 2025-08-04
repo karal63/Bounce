@@ -4,6 +4,7 @@ import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { sidebarStore } from "../model/sidebarStore";
 import ProfileContext from "./ProfileContext.vue";
 import { ref } from "vue";
+import UserAvatar from "@/shared/ui/UserAvatar.vue";
 
 const sidebar = sidebarStore();
 const sessionStore = useSessionStore();
@@ -27,7 +28,13 @@ const emit = defineEmits<{
         >
             <div class="flex items-center gap-4">
                 <div>
-                    <div class="w-10 h-10 rounded-full bg-purple-600"></div>
+                    <div>
+                        <UserAvatar
+                            :src="sessionStore.user?.avatarUrl"
+                            alt="user"
+                            size="40"
+                        />
+                    </div>
                 </div>
                 <div>
                     <h4>{{ sessionStore.user?.name }}</h4>
@@ -40,10 +47,6 @@ const emit = defineEmits<{
             <Icon icon="pepicons-pencil:dots-y" class="text-lg" />
         </div>
 
-        <ProfileContext
-            v-if="buttonRef"
-            :buttonRef="buttonRef"
-            @logout="emit('logout')"
-        />
+        <ProfileContext :buttonRef="buttonRef" @logout="emit('logout')" />
     </div>
 </template>

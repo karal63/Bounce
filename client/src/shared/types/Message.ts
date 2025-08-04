@@ -24,4 +24,5 @@ export type Message = {
 
 export type MessageWithName = Message & {
     name: string;
+    avatarUrl: string;
 };

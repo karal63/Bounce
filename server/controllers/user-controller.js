@@ -33,6 +33,16 @@ class UserController {
             next(error);
         }
     }
+
+    async update(req, res, next) {
+        try {
+            const data = req.body;
+            const updatedUser = await user.update(req.user.id, data);
+            res.json(updatedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = UserController;

@@ -3,7 +3,7 @@ const db = require("../db");
 class MemberService {
     async get(groupId) {
         const [rows] = await db.query(
-            "SELECT members.*, users.name FROM members JOIN users ON members.userId = users.id WHERE groupId = ? AND isBanned = false",
+            "SELECT members.*, users.name, avatarUrl FROM members JOIN users ON members.userId = users.id WHERE groupId = ? AND isBanned = false",
             [groupId]
         );
         return rows;

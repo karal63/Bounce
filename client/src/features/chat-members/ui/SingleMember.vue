@@ -51,7 +51,7 @@ const showActions = (e: MouseEvent) => {
         class="py-1 px-1 flex items-center justify-between gap-2 hover:bg-mainHoverOnGray rounded-xl cursor-pointer transition-all"
     >
         <div class="flex items-center gap-2">
-            <UserAvatar size="40" />
+            <UserAvatar alt="member" :src="member.avatarUrl" size="40" />
             <div>
                 <h3 class="text-lg">{{ member.name }}</h3>
             </div>
