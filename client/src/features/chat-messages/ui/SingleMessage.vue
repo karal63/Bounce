@@ -11,6 +11,7 @@ import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 import { useImagePreviewStore } from "@/features/image-preview";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import heartIcon from "@/shared/assets/heart.png";
+import { getReactionsForMessage } from "../lib/getReactionsForMessage";
 const replyToMessageStore = useReplyToMessageStore();
 const imagePreviewStore = useImagePreviewStore();
 
@@ -130,6 +131,26 @@ const replyToMessage = (message: MessageWithName) => {
                                 getTime(message.sentAt)
                             }}</span>
                         </div>
+                    </div>
+
+                    <!--  -->
+                    <!-- reactions -->
+                    <div
+                        class="w-full flex"
+                        :class="
+                            checkPerson(message)
+                                ? 'justify-end'
+                                : 'justify-start'
+                        "
+                    >
+                        <button
+                            v-for="reaction in getReactionsForMessage(
+                                message.id
+                            )"
+                            class="px-2 rounded-xl bg-blue-400 cursor-pointer hover:bg-blue-400/80 transition-all"
+                        >
+                            {{ reaction.reaction }}
+                        </button>
                     </div>
                 </div>
 

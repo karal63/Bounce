@@ -17,10 +17,12 @@ import { useGetAttachments } from "../model/useGetAttachments";
 import type { Attachment } from "@/shared/types/Attachment";
 import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
+import { useGetReactions } from "../model/useGetReactions";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const { getAttachments } = useGetAttachments();
+const { getReactions } = useGetReactions();
 
 const router = useRouter();
 
@@ -119,6 +121,7 @@ watch(
     async () => {
         isLoading.value = true;
         await getAttachments();
+        await getReactions();
         console.log("getting attachments");
         isLoading.value = false;
         listRef.value?.scroll({

@@ -137,4 +137,8 @@ router.patch("/user", verifyToken, (req, res, next) =>
     user.update(req, res, next)
 );
 
+router.get("/reactions/:roomId", verifyToken, (req, res, next) =>
+    message.getReactions(req, res, next)
+);
+
 module.exports = router;

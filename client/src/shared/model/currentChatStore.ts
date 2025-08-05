@@ -7,6 +7,7 @@ import type { Group } from "@/shared/types/Group";
 import type { CurrentRoom } from "../types/CurrentRoom";
 import type { MessagedUser } from "../types/MessagedUser";
 import type { Attachment } from "../types/Attachment";
+import type { Reaction } from "../types/Reaction";
 
 export const useCurrentChatStore = defineStore("currentChat", () => {
     const currentRoom = ref<CurrentRoom>({
@@ -19,6 +20,7 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
     const hasPermissions = ref(false);
     const messagedUsers = ref<MessagedUser[]>([]);
     const attachments = ref<Attachment[]>([]);
+    const reactions = ref<Reaction[]>([]);
 
     return {
         currentRoom,
@@ -28,5 +30,6 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
         hasPermissions,
         messagedUsers,
         attachments,
+        reactions,
     };
 });

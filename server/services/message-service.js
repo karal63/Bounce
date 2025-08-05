@@ -99,6 +99,15 @@ class MessageService {
 
         return attachments;
     }
+
+    async getReactions(roomId) {
+        const [reactions] = await db.query(
+            "SELECT message_reactions.* FROM message_reactions JOIN messages ON message_reactions.messageId=messages.id WHERE messages.groupId = ? || messages.recipientId = ? || messages.senderId = ?",
+            [roomId, roomId, roomId]
+        );
+
+        return reactions;
+    }
 }
 
 module.exports = MessageService;
