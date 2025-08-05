@@ -11,7 +11,7 @@ import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 import { useImagePreviewStore } from "@/features/image-preview";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import heartIcon from "@/shared/assets/heart.png";
-import { getReactionsForMessage } from "../lib/getReactionsForMessage";
+import MessageReactions from "./MessageReactions.vue";
 const replyToMessageStore = useReplyToMessageStore();
 const imagePreviewStore = useImagePreviewStore();
 
@@ -22,8 +22,9 @@ const props = defineProps<{
 const emit = defineEmits<{
     (
         e: "showContext",
-        buttonElement: Ref<HTMLElement | null>,
-        message: MessageWithName
+        targetElement: Ref<HTMLElement | null>,
+        message: MessageWithName,
+        type: "reactions" | "context"
     ): void;
 }>();
 
@@ -39,7 +40,11 @@ useHover(
 );
 
 const showContext = () => {
-    emit("showContext", buttonRef, props.message);
+    emit("showContext", buttonRef, props.message, "context");
+};
+
+const showReactions = () => {
+    emit("showContext", messageRef, props.message, "reactions");
 };
 
 const replyToMessage = (message: MessageWithName) => {
@@ -64,7 +69,8 @@ const replyToMessage = (message: MessageWithName) => {
                 <UserAvatar alt="member" :src="message.avatarUrl" size="30" />
 
                 <div
-                    class="max-w-max px-2 py-1 rounded-xl"
+                    @contextmenu.prevent="showReactions"
+                    class="px-2 py-1 rounded-xl"
                     :class="
                         checkPerson(message)
                             ? 'bg-purple-500 rounded-br-none'
@@ -102,12 +108,14 @@ const replyToMessage = (message: MessageWithName) => {
                             <span class="font-semibold">{{
                                 findMessageById(message.replyToMessageId)?.name
                             }}</span>
-                            <span class="text-sm">
+                            <p
+                                class="text-sm max-w-[300px] white-space: normal"
+                            >
                                 {{
                                     findMessageById(message.replyToMessageId)
                                         ?.content
                                 }}
-                            </span>
+                            </p>
                         </div>
                         <span
                             ><Icon icon="ic:baseline-reply" class="text-lg"
@@ -122,11 +130,11 @@ const replyToMessage = (message: MessageWithName) => {
                                 : 'justify-start'
                         "
                     >
-                        <p>
+                        <p class="max-w-[300px] whitespace-normal break-words">
                             {{ message.content }}
                         </p>
 
-                        <div>
+                        <div class="flex-col justify-end">
                             <span class="text-[.6rem] text-gray-300">{{
                                 getTime(message.sentAt)
                             }}</span>
@@ -135,23 +143,10 @@ const replyToMessage = (message: MessageWithName) => {
 
                     <!--  -->
                     <!-- reactions -->
-                    <div
-                        class="w-full flex"
-                        :class="
-                            checkPerson(message)
-                                ? 'justify-end'
-                                : 'justify-start'
-                        "
-                    >
-                        <button
-                            v-for="reaction in getReactionsForMessage(
-                                message.id
-                            )"
-                            class="px-2 rounded-xl bg-blue-400 cursor-pointer hover:bg-blue-400/80 transition-all"
-                        >
-                            {{ reaction.reaction }}
-                        </button>
-                    </div>
+                    <MessageReactions
+                        @checkPerson="checkPerson($event)"
+                        :message="message"
+                    />
                 </div>
 
                 <div

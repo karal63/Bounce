@@ -18,6 +18,8 @@ import type { Attachment } from "@/shared/types/Attachment";
 import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
 import { useGetReactions } from "../model/useGetReactions";
+import { ReactionsContext } from "@/features/reaction";
+import type { ReactionContext } from "../../reaction/model/types";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
@@ -29,6 +31,12 @@ const router = useRouter();
 const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 const messageContext = ref<Context>({
+    isVisible: true,
+    posX: 0,
+    posY: 0,
+    message: null,
+});
+const reactionPanelContext = ref<ReactionContext>({
     isVisible: true,
     posX: 0,
     posY: 0,
@@ -84,11 +92,12 @@ const hideContext = () => {
 };
 
 const showContext = (
-    buttonElement: Ref<HTMLElement | null>,
-    message: MessageWithName
+    targetElement: Ref<HTMLElement | null>,
+    message: MessageWithName,
+    type: "reactions" | "context"
 ) => {
     const containerRect = listRef.value?.getBoundingClientRect();
-    const buttonRect = buttonElement.value?.getBoundingClientRect();
+    const buttonRect = targetElement.value?.getBoundingClientRect();
 
     if (!containerRect || !buttonRect || !listRef.value) return;
 
@@ -97,12 +106,21 @@ const showContext = (
     const posX =
         buttonRect.left - containerRect.left + listRef.value.scrollLeft;
 
-    messageContext.value = {
-        isVisible: true,
-        posY: posY - 45,
-        posX: posX,
-        message,
-    };
+    if (type === "context") {
+        messageContext.value = {
+            isVisible: true,
+            posY: posY - 45,
+            posX: posX,
+            message,
+        };
+    } else if (type === "reactions") {
+        reactionPanelContext.value = {
+            isVisible: true,
+            posY: posY - 60,
+            posX: posX,
+            message,
+        };
+    }
 };
 
 onMounted(async () => {
@@ -150,6 +168,11 @@ watch(
                     v-if="messageContext.isVisible"
                     :messageContext="messageContext"
                     @hideContext="hideContext"
+                />
+
+                <ReactionsContext
+                    :reactionPanelContext="reactionPanelContext"
+                    @closeReactions="reactionPanelContext.isVisible = false"
                 />
             </div>
 
