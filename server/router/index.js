@@ -12,6 +12,8 @@ const MemberController = require("../controllers/member-controller");
 const GroupController = require("../controllers/group-controller");
 const UserController = require("../controllers/user-controller");
 const UploadController = require("../controllers/upload-controller");
+const StickerController = require("../controllers/sticker-controller");
+const ReactionController = require("../controllers/reaction-controller");
 
 const auth = new AuthController();
 const message = new MessageController();
@@ -19,6 +21,8 @@ const member = new MemberController();
 const group = new GroupController();
 const user = new UserController();
 const uploadController = new UploadController();
+const sticker = new StickerController();
+const reaction = new ReactionController();
 
 router.post(
     "/signup",
@@ -139,6 +143,14 @@ router.patch("/user", verifyToken, (req, res, next) =>
 
 router.get("/reactions/:roomId", verifyToken, (req, res, next) =>
     message.getReactions(req, res, next)
+);
+
+router.get("/stickers", verifyToken, (req, res, next) =>
+    sticker.get(req, res, next)
+);
+
+router.post("/add-reaction/:messageId", verifyToken, (req, res, next) =>
+    reaction.add(req, res, next)
 );
 
 module.exports = router;

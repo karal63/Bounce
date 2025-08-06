@@ -116,7 +116,7 @@ const showContext = (
     } else if (type === "reactions") {
         reactionPanelContext.value = {
             isVisible: true,
-            posY: posY - 60,
+            posY: posY - 50,
             posX: posX,
             message,
         };
