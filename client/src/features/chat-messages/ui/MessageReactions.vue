@@ -11,14 +11,14 @@ defineProps<{
 
 <template>
     <div
-        class="w-full flex"
+        class="w-full flex gap-1 mt-2 mb-1"
         :class="checkPerson(message) ? 'justify-end' : 'justify-start'"
     >
         <button
             v-for="reaction in getReactionsForMessage(message.id)"
-            class="px-2 rounded-xl bg-blue-400 cursor-pointer hover:bg-blue-400/80 transition-all"
+            class="px-2 rounded-xl bg-blue-400/75 cursor-pointer hover:bg-blue-400/80 transition-all"
         >
-            {{ reaction.reaction }}
+            {{ reaction.sticker }}
         </button>
     </div>
 </template>
