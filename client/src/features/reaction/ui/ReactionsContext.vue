@@ -20,8 +20,6 @@ const contextRef = ref<HTMLElement | null>(null);
 
 useClickOutside(contextRef, () => emit("closeReactions"));
 
-// 2. create functionality for adding new reactions, deleting
-
 const add = async (stickerId: string) => {
     if (!props.reactionPanelContext.message) return;
     await addReaction(props.reactionPanelContext.message, stickerId);

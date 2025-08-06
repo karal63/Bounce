@@ -153,7 +153,7 @@ router.post("/add-reaction", verifyToken, (req, res, next) =>
     reaction.add(req, res, next)
 );
 
-router.delete("/delete-reaction/:reactionId", verifyToken, (req, res, next) =>
+router.post("/delete-reaction/:reactionId", verifyToken, (req, res, next) =>
     reaction.delete(req, res, next)
 );
 

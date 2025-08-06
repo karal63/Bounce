@@ -8,8 +8,12 @@ class ReactionController {
         try {
             const { message, stickerId } = req.body;
 
-            const newReaction = await reaction.add(message.id, stickerId);
-            newReaction, message.groupId, message.senderId, message.recipientId;
+            const newReaction = await reaction.add(
+                req.user,
+                message.id,
+                stickerId
+            );
+            if (!newReaction) return;
 
             if (message.groupId) {
                 io.to(message.groupId).emit("newReaction", newReaction);
@@ -29,7 +33,21 @@ class ReactionController {
     async delete(req, res, next) {
         try {
             const { reactionId } = req.params;
+            const { message } = req.body;
+
+            console.log(reactionId, message);
+
             await reaction.delete(reactionId);
+
+            if (message.groupId) {
+                io.to(message.groupId).emit("deleteReaction", reactionId);
+            } else if (message.recipientId) {
+                const senderId = userSocketMap.get(message.senderId);
+                const recipientId = userSocketMap.get(message.recipientId);
+                io.to(senderId).emit("deleteReaction", reactionId);
+                io.to(recipientId).emit("deleteReaction", reactionId);
+            }
+
             res.sendStatus(200);
         } catch (error) {
             next(error);

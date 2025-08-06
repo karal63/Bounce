@@ -10,22 +10,19 @@ export const useReaction = () => {
         reactionId: string
     ) => {
         try {
-            const newReaction = await apiAddReaction(message, reactionId);
-            // currentChatStore.reactions = [
-            //     ...currentChatStore.reactions,
-            //     newReaction.data,
-            // ];
+            await apiAddReaction(message, reactionId);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const deleteReaction = async (reactionId: string) => {
+    const deleteReaction = async (
+        message: MessageWithName,
+        reactionId: string
+    ) => {
         try {
-            await apiDeleteReaction(reactionId);
-            currentChatStore.reactions = currentChatStore.reactions.filter(
-                (reaction) => reaction.id !== reactionId
-            );
+            console.log(message, reactionId);
+            await apiDeleteReaction(message, reactionId);
         } catch (error) {
             console.log(error);
         }

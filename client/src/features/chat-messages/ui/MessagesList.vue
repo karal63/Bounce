@@ -84,6 +84,13 @@ const handleNewReaction = (reaction: Reaction) => {
     currentChatStore.reactions = [...currentChatStore.reactions, reaction];
 };
 
+const handleDeleteReaction = (reactionId: string) => {
+    console.log("reaction deleted");
+    currentChatStore.reactions = currentChatStore.reactions.filter(
+        (reaction) => reaction.id !== reactionId
+    );
+};
+
 const scrollToBottom = () => {
     nextTick(() => {
         if (listRef.value) {
@@ -133,12 +140,14 @@ onMounted(async () => {
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
     socket.on("newReaction", handleNewReaction);
+    socket.on("deleteReaction", handleDeleteReaction);
 });
 
 onBeforeUnmount(() => {
     socket.off("newMessage", handleNewMessage);
     socket.off("message-deleted", handleDeleteMessage);
     socket.off("newReaction", handleNewReaction);
+    socket.off("deleteReaction", handleDeleteReaction);
 });
 
 watch(

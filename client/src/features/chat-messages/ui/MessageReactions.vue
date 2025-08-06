@@ -35,7 +35,7 @@ watch(
     >
         <button
             v-for="reaction in reactions"
-            @click="deleteReaction(reaction.id)"
+            @click="deleteReaction(message, reaction.id)"
             class="px-2 rounded-xl bg-blue-400/75 cursor-pointer hover:bg-blue-400/80 transition-all"
         >
             {{ reaction.sticker }}
