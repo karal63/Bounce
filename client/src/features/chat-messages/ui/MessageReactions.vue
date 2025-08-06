@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { checkPerson, getReactionsForMessage } from "@/features/chat-messages";
+import { useReaction } from "@/features/reaction";
 import type { MessageWithName } from "@/shared/types/Message";
+
+const { deleteReaction } = useReaction();
 
 defineProps<{
     message: MessageWithName;
@@ -16,6 +19,7 @@ defineProps<{
     >
         <button
             v-for="reaction in getReactionsForMessage(message.id)"
+            @click="deleteReaction(reaction.id)"
             class="px-2 rounded-xl bg-blue-400/75 cursor-pointer hover:bg-blue-400/80 transition-all"
         >
             {{ reaction.sticker }}

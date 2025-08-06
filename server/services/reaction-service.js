@@ -14,6 +14,12 @@ class ReactionService {
         );
         return rows[0];
     }
+
+    async delete(reactionId) {
+        await db.query("DELETE FROM message_reactions WHERE id = ?", [
+            reactionId,
+        ]);
+    }
 }
 
 module.exports = ReactionService;

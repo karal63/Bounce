@@ -14,6 +14,16 @@ class ReactionController {
             next(error);
         }
     }
+
+    async delete(req, res, next) {
+        try {
+            const { reactionId } = req.params;
+            await reaction.delete(reactionId);
+            res.sendStatus(200);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = ReactionController;

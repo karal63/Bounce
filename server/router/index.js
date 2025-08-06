@@ -153,4 +153,8 @@ router.post("/add-reaction/:messageId", verifyToken, (req, res, next) =>
     reaction.add(req, res, next)
 );
 
+router.delete("/delete-reaction/:reactionId", verifyToken, (req, res, next) =>
+    reaction.delete(req, res, next)
+);
+
 module.exports = router;

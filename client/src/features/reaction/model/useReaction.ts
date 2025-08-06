@@ -1,5 +1,6 @@
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { apiAddReaction } from "../api/addReaction";
+import { apiDeleteReaction } from "../api/deleteReaction";
 
 export const useReaction = () => {
     const currentChatStore = useCurrentChatStore();
@@ -13,7 +14,16 @@ export const useReaction = () => {
         }
     };
 
-    const deleteReaction = async () => [];
+    const deleteReaction = async (reactionId: string) => {
+        try {
+            await apiDeleteReaction(reactionId);
+            currentChatStore.reactions = currentChatStore.reactions.filter(
+                (reaction) => reaction.id !== reactionId
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return { addReaction, deleteReaction };
 };
