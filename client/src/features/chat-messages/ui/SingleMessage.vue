@@ -12,8 +12,10 @@ import { useImagePreviewStore } from "@/features/image-preview";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import heartIcon from "@/shared/assets/heart.png";
 import MessageReactions from "./MessageReactions.vue";
+import { useReaction } from "@/features/reaction";
 const replyToMessageStore = useReplyToMessageStore();
 const imagePreviewStore = useImagePreviewStore();
+const { addReaction } = useReaction();
 
 const props = defineProps<{
     message: MessageWithName;
@@ -49,6 +51,10 @@ const showReactions = () => {
 
 const replyToMessage = (message: MessageWithName) => {
     replyToMessageStore.setReplyMessage(message);
+};
+
+const loveMessage = () => {
+    addReaction(props.message.id, "love");
 };
 </script>
 
@@ -156,6 +162,7 @@ const replyToMessage = (message: MessageWithName) => {
                 >
                     <button
                         v-if="!checkPerson(message)"
+                        @click="loveMessage"
                         class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
                     >
                         <img alt="like" :src="heartIcon" class="w-5" />

@@ -4,7 +4,7 @@ import { useReaction } from "@/features/reaction";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import type { MessageWithName } from "@/shared/types/Message";
 import type { Reaction } from "@/shared/types/Reaction";
-import { ref, watch, watchEffect } from "vue";
+import { ref, watch } from "vue";
 
 const currentChatStore = useCurrentChatStore();
 const { deleteReaction } = useReaction();
