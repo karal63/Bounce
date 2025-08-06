@@ -8,7 +8,10 @@ export const useReaction = () => {
         try {
             console.log(messageId, reactionId);
             const newReaction = await apiAddReaction(messageId, reactionId);
-            currentChatStore.reactions.push(newReaction.data);
+            currentChatStore.reactions = [
+                ...currentChatStore.reactions,
+                newReaction.data,
+            ];
         } catch (error) {
             console.log(error);
         }
