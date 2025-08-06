@@ -10,10 +10,10 @@ class ReactionController {
 
             const newReaction = await reaction.add(
                 req.user,
-                message.id,
+                message,
                 stickerId
             );
-            if (!newReaction) return;
+            if (!newReaction) return res.sendStatus(200);
 
             if (message.groupId) {
                 io.to(message.groupId).emit("newReaction", newReaction);
@@ -35,18 +35,7 @@ class ReactionController {
             const { reactionId } = req.params;
             const { message } = req.body;
 
-            console.log(reactionId, message);
-
-            await reaction.delete(reactionId);
-
-            if (message.groupId) {
-                io.to(message.groupId).emit("deleteReaction", reactionId);
-            } else if (message.recipientId) {
-                const senderId = userSocketMap.get(message.senderId);
-                const recipientId = userSocketMap.get(message.recipientId);
-                io.to(senderId).emit("deleteReaction", reactionId);
-                io.to(recipientId).emit("deleteReaction", reactionId);
-            }
+            await reaction.delete(reactionId, message);
 
             res.sendStatus(200);
         } catch (error) {
