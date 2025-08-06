@@ -102,7 +102,16 @@ class MessageService {
 
     async getReactions(roomId) {
         const [reactions] = await db.query(
-            "SELECT message_reactions.id, message_reactions.messageId, stickers.sticker FROM message_reactions JOIN messages ON message_reactions.messageId=messages.id JOIN stickers ON message_reactions.stickerId = stickers.id WHERE messages.groupId = ? OR messages.recipientId = ? OR messages.senderId = ?",
+            `SELECT
+             message_reactions.id,
+             message_reactions.messageId,
+             stickers.sticker,
+             COUNT(*) as count
+         FROM message_reactions
+         JOIN messages ON message_reactions.messageId = messages.id
+         JOIN stickers ON message_reactions.stickerId = stickers.id
+         WHERE messages.groupId = ? OR messages.recipientId = ? OR messages.senderId = ?
+         GROUP BY message_reactions.messageId, message_reactions.stickerId`,
             [roomId, roomId, roomId]
         );
 

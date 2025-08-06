@@ -39,6 +39,7 @@ watch(
             class="px-2 rounded-xl bg-blue-400/75 cursor-pointer hover:bg-blue-400/80 transition-all"
         >
             {{ reaction.sticker }}
+            <span>{{ reaction.count }}</span>
         </button>
     </div>
 </template>

@@ -24,7 +24,6 @@ const add = async (stickerId: string) => {
     if (!props.reactionPanelContext.message) return;
     await addReaction(props.reactionPanelContext.message, stickerId);
     props.reactionPanelContext.isVisible = false;
-    console.log(123);
 };
 </script>
 

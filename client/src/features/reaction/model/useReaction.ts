@@ -21,7 +21,6 @@ export const useReaction = () => {
         reactionId: string
     ) => {
         try {
-            console.log(message, reactionId);
             await apiDeleteReaction(message, reactionId);
         } catch (error) {
             console.log(error);

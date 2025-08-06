@@ -12,7 +12,6 @@ class ReactionService {
         );
         if (reactionRows.length > 0)
             return this.delete(reactionRows[0].id, message);
-        console.log("added");
 
         await db.query(
             "INSERT INTO message_reactions (id, messageId, stickerId, senderId) VALUES (?, ?, ?, ?)",
