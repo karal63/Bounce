@@ -149,7 +149,7 @@ router.get("/stickers", verifyToken, (req, res, next) =>
     sticker.get(req, res, next)
 );
 
-router.post("/add-reaction/:messageId", verifyToken, (req, res, next) =>
+router.post("/add-reaction", verifyToken, (req, res, next) =>
     reaction.add(req, res, next)
 );
 

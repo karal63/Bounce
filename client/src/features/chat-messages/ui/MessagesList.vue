@@ -20,6 +20,7 @@ import type { Context } from "@/shared/types/Context";
 import { useGetReactions } from "../model/useGetReactions";
 import { ReactionsContext } from "@/features/reaction";
 import type { ReactionContext } from "../../reaction/model/types";
+import type { Reaction } from "@/shared/types/Reaction";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
@@ -79,6 +80,10 @@ const handleDeleteMessage = (messageId: string) => {
     );
 };
 
+const handleNewReaction = (reaction: Reaction) => {
+    currentChatStore.reactions = [...currentChatStore.reactions, reaction];
+};
+
 const scrollToBottom = () => {
     nextTick(() => {
         if (listRef.value) {
@@ -127,11 +132,13 @@ onMounted(async () => {
     if (!currentChatStore.currentRoom.id) return router.push("/chat");
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
+    socket.on("newReaction", handleNewReaction);
 });
 
 onBeforeUnmount(() => {
     socket.off("newMessage", handleNewMessage);
     socket.off("message-deleted", handleDeleteMessage);
+    socket.off("newReaction", handleNewReaction);
 });
 
 watch(

@@ -24,7 +24,8 @@ useClickOutside(contextRef, () => emit("closeReactions"));
 
 const add = async (stickerId: string) => {
     if (!props.reactionPanelContext.message) return;
-    await addReaction(props.reactionPanelContext.message.id, stickerId);
+    await addReaction(props.reactionPanelContext.message, stickerId);
+    props.reactionPanelContext.isVisible = false;
 };
 </script>
 

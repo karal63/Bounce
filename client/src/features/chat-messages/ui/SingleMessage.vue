@@ -54,7 +54,7 @@ const replyToMessage = (message: MessageWithName) => {
 };
 
 const loveMessage = () => {
-    addReaction(props.message.id, "love");
+    addReaction(props.message, "love");
 };
 </script>
 

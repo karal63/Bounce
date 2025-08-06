@@ -8,7 +8,6 @@ export const useGetStickers = () => {
         try {
             const stickers = await apiGetStickers();
             currentChatStore.stickers = stickers.data;
-            console.log(stickers.data);
         } catch (error) {
             console.log(error);
         }
