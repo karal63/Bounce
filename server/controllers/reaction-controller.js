@@ -8,8 +8,8 @@ class ReactionController {
             const { messageId } = req.params;
             const { stickerId } = req.body;
 
-            await reaction.add(messageId, stickerId);
-            res.sendStatus(200);
+            const newReaction = await reaction.add(messageId, stickerId);
+            res.json(newReaction);
         } catch (error) {
             next(error);
         }

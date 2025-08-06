@@ -12,7 +12,6 @@ export const useGetReactions = () => {
         const reactions = await apiGetReactions(
             currentChatStore.currentRoom.id
         );
-        console.log(reactions);
 
         currentChatStore.reactions = reactions.data;
     };
