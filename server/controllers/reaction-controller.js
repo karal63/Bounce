@@ -1,14 +1,14 @@
 const ReactionService = require("../services/reaction-service");
 const { userSocketMap, io } = require("../socket");
 
-const reaction = new ReactionService();
+const reactionService = new ReactionService();
 
 class ReactionController {
     async add(req, res, next) {
         try {
             const { message, stickerId } = req.body;
 
-            const newReaction = await reaction.add(
+            const newReaction = await reactionService.add(
                 req.user,
                 message,
                 stickerId
@@ -30,12 +30,11 @@ class ReactionController {
         }
     }
 
-    async delete(req, res, next) {
+    async handleClick(req, res, next) {
         try {
-            const { reactionId } = req.params;
-            const { message } = req.body;
+            const { message, reaction } = req.body;
 
-            await reaction.delete(reactionId, message);
+            await reactionService.handleClick(req.user, reaction, message);
 
             res.sendStatus(200);
         } catch (error) {

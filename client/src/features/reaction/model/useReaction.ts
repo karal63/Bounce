@@ -1,10 +1,9 @@
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import type { Reaction } from "@/shared/types/Reaction";
 import { apiAddReaction } from "../api/addReaction";
-import { apiDeleteReaction } from "../api/deleteReaction";
+import { apiHandleClick } from "../api/handleClick";
 import type { MessageWithName } from "@/shared/types/Message";
 
 export const useReaction = () => {
-    const currentChatStore = useCurrentChatStore();
     const addReaction = async (
         message: MessageWithName,
         reactionId: string
@@ -16,16 +15,16 @@ export const useReaction = () => {
         }
     };
 
-    const deleteReaction = async (
+    const handleClick = async (
         message: MessageWithName,
-        reactionId: string
+        reaction: Reaction
     ) => {
         try {
-            await apiDeleteReaction(message, reactionId);
+            await apiHandleClick(message, reaction);
         } catch (error) {
             console.log(error);
         }
     };
 
-    return { addReaction, deleteReaction };
+    return { addReaction, handleClick };
 };

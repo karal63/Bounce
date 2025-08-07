@@ -105,6 +105,8 @@ class MessageService {
             `SELECT
              message_reactions.id,
              message_reactions.messageId,
+             message_reactions.stickerId,
+             message_reactions.senderId,
              stickers.sticker,
              COUNT(*) as count
          FROM message_reactions

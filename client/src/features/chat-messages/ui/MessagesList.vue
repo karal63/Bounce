@@ -81,14 +81,59 @@ const handleDeleteMessage = (messageId: string) => {
 };
 
 const handleNewReaction = (reaction: Reaction) => {
-    currentChatStore.reactions = [...currentChatStore.reactions, reaction];
+    const index = currentChatStore.reactions.findIndex(
+        (r) =>
+            r.messageId === reaction.messageId &&
+            r.stickerId === reaction.stickerId
+    );
+
+    if (index !== -1) {
+        console.log(currentChatStore.reactions);
+        currentChatStore.reactions = currentChatStore.reactions.map((r, i) =>
+            i === index
+                ? {
+                      ...r,
+                      count: r.count + 1,
+                  }
+                : r
+        );
+        console.log(currentChatStore.reactions[index]);
+    } else {
+        // Add as new reaction
+        currentChatStore.reactions = [
+            ...currentChatStore.reactions,
+            {
+                ...reaction,
+                count: 1,
+            },
+        ];
+    }
 };
 
-const handleDeleteReaction = (reactionId: string) => {
-    console.log("reaction deleted");
-    currentChatStore.reactions = currentChatStore.reactions.filter(
-        (reaction) => reaction.id !== reactionId
+const handleDeleteReaction = (reaction: Reaction) => {
+    const index = currentChatStore.reactions.findIndex(
+        (r) =>
+            r.messageId === reaction.messageId &&
+            r.stickerId === reaction.stickerId
     );
+
+    if (index !== -1) {
+        currentChatStore.reactions = currentChatStore.reactions.reduce(
+            (acc: Reaction[], r, i) => {
+                if (i === index) {
+                    if (r.count > 1) {
+                        acc.push({ ...r, count: r.count - 1 });
+                    } else {
+                        console.log("delete");
+                    }
+                } else {
+                    acc.push(r);
+                }
+                return acc;
+            },
+            []
+        );
+    }
 };
 
 const scrollToBottom = () => {

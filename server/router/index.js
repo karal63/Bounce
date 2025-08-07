@@ -153,8 +153,8 @@ router.post("/add-reaction", verifyToken, (req, res, next) =>
     reaction.add(req, res, next)
 );
 
-router.post("/delete-reaction/:reactionId", verifyToken, (req, res, next) =>
-    reaction.delete(req, res, next)
+router.post("/handle-reaction-click", verifyToken, (req, res, next) =>
+    reaction.handleClick(req, res, next)
 );
 
 module.exports = router;

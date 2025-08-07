@@ -7,7 +7,7 @@ import type { Reaction } from "@/shared/types/Reaction";
 import { ref, watch } from "vue";
 
 const currentChatStore = useCurrentChatStore();
-const { deleteReaction } = useReaction();
+const { handleClick } = useReaction();
 
 const props = defineProps<{
     message: MessageWithName;
@@ -35,7 +35,7 @@ watch(
     >
         <button
             v-for="reaction in reactions"
-            @click="deleteReaction(message, reaction.id)"
+            @click="handleClick(message, reaction)"
             class="px-2 rounded-xl bg-blue-400/75 cursor-pointer hover:bg-blue-400/80 transition-all"
         >
             {{ reaction.sticker }}
