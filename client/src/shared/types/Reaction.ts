@@ -4,5 +4,5 @@ export type Reaction = {
     senderId: string;
     stickerId: string;
     sticker: string;
-    count: number;
+    count?: number;
 };

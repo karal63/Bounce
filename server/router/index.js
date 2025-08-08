@@ -157,4 +157,8 @@ router.post("/handle-reaction-click", verifyToken, (req, res, next) =>
     reaction.handleClick(req, res, next)
 );
 
+router.get("/get-all-reactions/:roomId", verifyToken, (req, res, next) =>
+    reaction.getAll(req, res, next)
+);
+
 module.exports = router;

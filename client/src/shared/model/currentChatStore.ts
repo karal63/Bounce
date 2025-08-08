@@ -22,6 +22,7 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
     const messagedUsers = ref<MessagedUser[]>([]);
     const attachments = ref<Attachment[]>([]);
     const reactions = ref<Reaction[]>([]);
+    const allReactions = ref<Reaction[]>([]);
     const stickers = ref<Sticker[]>([]);
 
     return {
@@ -33,6 +34,7 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
         messagedUsers,
         attachments,
         reactions,
+        allReactions,
         stickers,
     };
 });

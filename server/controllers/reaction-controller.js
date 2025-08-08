@@ -41,6 +41,17 @@ class ReactionController {
             next(error);
         }
     }
+
+    async getAll(req, res, next) {
+        try {
+            const { roomId } = req.params;
+            console.log(roomId);
+            const allReactions = await reactionService.getAll(roomId);
+            res.json(allReactions);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = ReactionController;

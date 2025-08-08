@@ -23,7 +23,7 @@ class ReactionService {
             `SELECT
             message_reactions.*,
             stickers.sticker,
-            COUNT(*) AS count,
+            COUNT(*) AS count
          FROM message_reactions
          JOIN stickers ON message_reactions.stickerId = stickers.id
          WHERE message_reactions.id = ?
@@ -89,6 +89,18 @@ class ReactionService {
                 senderId
             );
         }
+    }
+
+    async getAll(roomId) {
+        const [reactions] = await db.query(
+            `SELECT message_reactions.* FROM message_reactions 
+            JOIN messages 
+            ON messages.id = message_reactions.messageId
+            WHERE messages.groupId = ?`,
+            [roomId]
+        );
+        console.log(reactions);
+        return reactions;
     }
 }
 

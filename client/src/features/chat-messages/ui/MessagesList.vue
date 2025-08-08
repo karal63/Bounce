@@ -18,7 +18,7 @@ import type { Attachment } from "@/shared/types/Attachment";
 import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
 import { useGetReactions } from "../model/useGetReactions";
-import { ReactionsContext } from "@/features/reaction";
+import { ReactionsContext, useReaction } from "@/features/reaction";
 import type { ReactionContext } from "../../reaction/model/types";
 import type { Reaction } from "@/shared/types/Reaction";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
@@ -28,6 +28,7 @@ const sessionStore = useSessionStore();
 const { socket } = useSocket();
 const { getAttachments } = useGetAttachments();
 const { getReactions } = useGetReactions();
+const { getAllReactions } = useReaction();
 
 const router = useRouter();
 
@@ -99,6 +100,7 @@ const handleNewReaction = (reaction: Reaction) => {
             }
             return r;
         });
+        currentChatStore.allReactions.push(reaction);
     } else {
         // Add as new reaction
 
@@ -109,6 +111,7 @@ const handleNewReaction = (reaction: Reaction) => {
                 count: 1,
             },
         ];
+        currentChatStore.allReactions.push(reaction);
     }
 };
 
@@ -131,6 +134,9 @@ const handleDeleteReaction = (reaction: Reaction) => {
             return acc;
         },
         []
+    );
+    currentChatStore.allReactions = currentChatStore.allReactions.filter(
+        (r) => r.id !== reaction.id
     );
 };
 
@@ -199,6 +205,8 @@ watch(
         isLoading.value = true;
         await getAttachments();
         await getReactions();
+        await getAllReactions();
+
         console.log("getting attachments");
         isLoading.value = false;
         listRef.value?.scroll({

@@ -5,6 +5,7 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import type { MessageWithName } from "@/shared/types/Message";
 import type { Reaction } from "@/shared/types/Reaction";
 import { ref, watch } from "vue";
+import { checkIfReacted } from "../lib/checkIfReacted";
 
 const currentChatStore = useCurrentChatStore();
 const { handleClick } = useReaction();
@@ -36,8 +37,8 @@ watch(
         <button
             v-for="reaction in reactions"
             @click="handleClick(message, reaction)"
-            class="px-2 rounded-xl bg-mainGray hover:bg-blue-400/80 cursor-pointer transition-all"
-            :class="reaction.reactedByMe ? 'bg-blue-400/75' : ''"
+            class="px-2 rounded-xl hover:bg-blue-400/80 cursor-pointer transition-all"
+            :class="checkIfReacted(reaction) ? 'bg-blue-400/75' : 'bg-mainGray'"
         >
             {{ reaction.sticker }}
             <span>{{ reaction.count }}</span>
