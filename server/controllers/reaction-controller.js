@@ -1,3 +1,4 @@
+const emitReactionUpdate = require("../helpers/emitReactionUpdate");
 const ReactionService = require("../services/reaction-service");
 const { userSocketMap, io } = require("../socket");
 
@@ -15,14 +16,13 @@ class ReactionController {
             );
             if (!newReaction) return res.sendStatus(200);
 
-            if (message.groupId) {
-                io.to(message.groupId).emit("newReaction", newReaction);
-            } else if (message.recipientId) {
-                const senderId = userSocketMap.get(message.senderId);
-                const recipientId = userSocketMap.get(message.recipientId);
-                io.to(senderId).emit("newReaction", newReaction);
-                io.to(recipientId).emit("newReaction", newReaction);
-            }
+            await emitReactionUpdate(
+                "reactionAdded",
+                newReaction,
+                message.groupId,
+                message.recipientId,
+                message.senderId
+            );
 
             res.json(newReaction);
         } catch (error) {

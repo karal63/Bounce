@@ -21,8 +21,10 @@ import { useGetReactions } from "../model/useGetReactions";
 import { ReactionsContext } from "@/features/reaction";
 import type { ReactionContext } from "../../reaction/model/types";
 import type { Reaction } from "@/shared/types/Reaction";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const currentChatStore = useCurrentChatStore();
+const sessionStore = useSessionStore();
 const { socket } = useSocket();
 const { getAttachments } = useGetAttachments();
 const { getReactions } = useGetReactions();
@@ -88,18 +90,18 @@ const handleNewReaction = (reaction: Reaction) => {
     );
 
     if (index !== -1) {
-        console.log(currentChatStore.reactions);
-        currentChatStore.reactions = currentChatStore.reactions.map((r, i) =>
-            i === index
-                ? {
-                      ...r,
-                      count: r.count + 1,
-                  }
-                : r
-        );
-        console.log(currentChatStore.reactions[index]);
+        currentChatStore.reactions = currentChatStore.reactions.map((r, i) => {
+            if (i === index) {
+                return {
+                    ...r,
+                    count: r.count + 1,
+                };
+            }
+            return r;
+        });
     } else {
         // Add as new reaction
+
         currentChatStore.reactions = [
             ...currentChatStore.reactions,
             {
@@ -111,29 +113,25 @@ const handleNewReaction = (reaction: Reaction) => {
 };
 
 const handleDeleteReaction = (reaction: Reaction) => {
-    const index = currentChatStore.reactions.findIndex(
-        (r) =>
-            r.messageId === reaction.messageId &&
-            r.stickerId === reaction.stickerId
-    );
-
-    if (index !== -1) {
-        currentChatStore.reactions = currentChatStore.reactions.reduce(
-            (acc: Reaction[], r, i) => {
-                if (i === index) {
-                    if (r.count > 1) {
-                        acc.push({ ...r, count: r.count - 1 });
-                    } else {
-                        console.log("delete");
-                    }
-                } else {
-                    acc.push(r);
+    currentChatStore.reactions = currentChatStore.reactions.reduce(
+        (acc: Reaction[], r) => {
+            if (
+                r.messageId === reaction.messageId &&
+                r.stickerId === reaction.stickerId
+            ) {
+                if (r.count > 1) {
+                    acc.push({
+                        ...r,
+                        count: r.count - 1,
+                    });
                 }
-                return acc;
-            },
-            []
-        );
-    }
+            } else {
+                acc.push(r);
+            }
+            return acc;
+        },
+        []
+    );
 };
 
 const scrollToBottom = () => {
@@ -184,15 +182,15 @@ onMounted(async () => {
     if (!currentChatStore.currentRoom.id) return router.push("/chat");
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
-    socket.on("newReaction", handleNewReaction);
-    socket.on("deleteReaction", handleDeleteReaction);
+    socket.on("reactionAdded", handleNewReaction);
+    socket.on("reactionRemoved", handleDeleteReaction);
 });
 
 onBeforeUnmount(() => {
     socket.off("newMessage", handleNewMessage);
     socket.off("message-deleted", handleDeleteMessage);
-    socket.off("newReaction", handleNewReaction);
-    socket.off("deleteReaction", handleDeleteReaction);
+    socket.off("reactionAdded", handleNewReaction);
+    socket.off("reactionRemoved", handleDeleteReaction);
 });
 
 watch(

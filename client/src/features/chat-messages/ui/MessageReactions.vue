@@ -36,7 +36,8 @@ watch(
         <button
             v-for="reaction in reactions"
             @click="handleClick(message, reaction)"
-            class="px-2 rounded-xl bg-blue-400/75 cursor-pointer hover:bg-blue-400/80 transition-all"
+            class="px-2 rounded-xl bg-mainGray hover:bg-blue-400/80 cursor-pointer transition-all"
+            :class="reaction.reactedByMe ? 'bg-blue-400/75' : ''"
         >
             {{ reaction.sticker }}
             <span>{{ reaction.count }}</span>

@@ -13,6 +13,7 @@ import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import heartIcon from "@/shared/assets/heart.png";
 import MessageReactions from "./MessageReactions.vue";
 import { useReaction } from "@/features/reaction";
+
 const replyToMessageStore = useReplyToMessageStore();
 const imagePreviewStore = useImagePreviewStore();
 const { addReaction } = useReaction();

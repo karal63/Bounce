@@ -13,7 +13,7 @@ export const useGetReactions = () => {
             currentChatStore.currentRoom.id
         );
 
-        currentChatStore.reactions = reactions.data;
+        currentChatStore.reactions = reactions.data.map((reaction) => reaction);
     };
 
     return { getReactions };

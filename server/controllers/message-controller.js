@@ -111,7 +111,10 @@ class MessageController {
     async getReactions(req, res, next) {
         try {
             const { roomId } = req.params;
-            const reactions = await messageService.getReactions(roomId);
+            const reactions = await messageService.getReactions(
+                roomId,
+                req.user
+            );
             res.status(200).json(reactions);
         } catch (error) {
             console.log(error);
