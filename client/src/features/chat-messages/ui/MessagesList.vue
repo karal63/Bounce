@@ -53,14 +53,17 @@ const handleNewMessage = ({
     attachments: Attachment[];
 }) => {
     const room = currentChatStore.currentRoom;
-    if (room.type === "group") {
+    if (room.type === "group" && newMessage.groupId === room.id) {
         currentChatStore.messages = [...currentChatStore.messages, newMessage];
         currentChatStore.attachments = [
             ...currentChatStore.attachments,
             ...attachments,
         ];
     } else if (room.type === "direct") {
-        if (currentChatStore.currentRoom.id === newMessage.recipientId) {
+        if (
+            currentChatStore.currentRoom.id === newMessage.recipientId ||
+            currentChatStore.currentRoom.id === newMessage.senderId
+        ) {
             currentChatStore.messages = [
                 ...currentChatStore.messages,
                 newMessage,

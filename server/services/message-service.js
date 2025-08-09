@@ -24,6 +24,7 @@ class MessageService {
                 [messageId, groupId, senderId, content, replyToMessageId]
             );
         } else if (recipientId) {
+            console.log(senderId, recipientId);
             await db.query(
                 "INSERT INTO messages (id, recipientId, senderId, content, replyToMessageId) VALUES (?, ?, ?, ?, ?);",
                 [messageId, recipientId, senderId, content, replyToMessageId]
