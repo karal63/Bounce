@@ -1,6 +1,6 @@
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { apiGetReactions } from "@/shared/api/message/getReactions";
+import { apiGetReactions } from "@/shared/api";
 
 export const useGetReactions = () => {
     const currentChatStore = useCurrentChatStore();

@@ -1,19 +1,18 @@
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { createPinia, setActivePinia } from "pinia";
-import { useGetAttachments } from "./useGetAttachments";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import type { apiGetAttachments } from "@/shared/api";
+import { useGetReactions } from "./useGetReactions";
 
 vi.mock("@/shared/api", () => ({
-    apiGetAttachments: vi.fn(() => Promise.resolve({ data: ["file1.png"] })),
+    apiGetReactions: vi.fn(() => Promise.resolve({ data: ["reaction"] })),
 }));
 
-describe("useGetAttachments", () => {
+describe("useGetReactions", () => {
     beforeEach(() => {
         setActivePinia(createPinia());
     });
 
-    it("loads attachments if there are current room and user id", async () => {
+    it("loads messaages if there are current room and user id", async () => {
         const currentChatStore = useCurrentChatStore();
         const sessionStore = useSessionStore();
 
@@ -29,9 +28,9 @@ describe("useGetAttachments", () => {
             avatarUrl: "avatarUrl",
         };
 
-        const { getAttachments } = useGetAttachments();
-        await getAttachments();
+        const { getReactions } = useGetReactions();
+        await getReactions();
 
-        expect(currentChatStore.attachments).toEqual(["file1.png"]);
+        expect(currentChatStore.reactions).toEqual(["reaction"]);
     });
 });
