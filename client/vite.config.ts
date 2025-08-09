@@ -5,6 +5,11 @@ import { fileURLToPath, URL } from "node:url";
 
 // https://vite.dev/config/
 export default defineConfig({
+    test: {
+        globals: true,
+        environment: "jsdom",
+        setupFiles: "./vitest.setup.ts",
+    },
     plugins: [vue(), tailwindcss()],
     resolve: {
         alias: {
