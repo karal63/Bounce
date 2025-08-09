@@ -13,7 +13,7 @@ class ReactionService {
             [message.id, userDto.id, stickerId]
         );
         if (reactionRows.length > 0)
-            return this.handleClick(reactionRows[0].id, message);
+            return this.handleClick(userDto, reactionRows[0], message);
 
         await db.query(
             "INSERT INTO message_reactions (id, messageId, stickerId, senderId) VALUES (?, ?, ?, ?)",
