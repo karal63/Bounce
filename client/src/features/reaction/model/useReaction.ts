@@ -10,6 +10,8 @@ export const useReaction = () => {
     const currentChatStore = useCurrentChatStore();
     const sessionStore = useSessionStore();
 
+    // adding (deleting) reaction error fixed, now challenge yourself like you are in the job, task is:
+    // you already merged pull request and you find out you forgot something, how to push it in feature/reactions
     const addReaction = async (
         message: MessageWithName,
         reactionId: string
