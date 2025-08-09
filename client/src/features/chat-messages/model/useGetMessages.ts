@@ -1,5 +1,5 @@
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { apiGetMessages } from "@/shared/api/message/getMessages";
+import { apiGetMessages } from "@/shared/api";
 import type { MessageWithName } from "@/shared/types/Message";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 

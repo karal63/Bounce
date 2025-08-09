@@ -1,6 +1,6 @@
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { apiGetAttachments } from "@/shared/api/message/getAttachments";
+import { apiGetAttachments } from "@/shared/api";
 
 export const useGetAttachments = () => {
     const currentChatStore = useCurrentChatStore();
