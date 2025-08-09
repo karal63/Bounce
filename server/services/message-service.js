@@ -93,11 +93,28 @@ class MessageService {
 
     async getAttachments(roomId) {
         const [attachments] = await db.query(
-            "SELECT message_images.* FROM message_images JOIN messages ON message_images.messageId=messages.id WHERE messages.groupId = ? || messages.recipientId = ? || messages.senderId = ?",
+            "SELECT message_images.* FROM message_images JOIN messages ON message_images.messageId=messages.id WHERE messages.groupId = ? OR messages.recipientId = ? OR messages.senderId = ?",
             [roomId, roomId, roomId]
         );
 
         return attachments;
+    }
+
+    async getReactions(roomId, userDto) {
+        const [reactions] = await db.query(
+            `SELECT
+                    message_reactions.*,
+                    stickers.sticker,
+                    COUNT(*) AS count
+                FROM message_reactions
+                JOIN messages ON message_reactions.messageId = messages.id
+                JOIN stickers ON message_reactions.stickerId = stickers.id
+                WHERE messages.groupId = ? OR messages.recipientId = ? OR messages.senderId = ?
+                GROUP BY message_reactions.messageId, message_reactions.stickerId`,
+            [roomId, roomId, roomId]
+        );
+
+        return reactions;
     }
 }
 

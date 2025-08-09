@@ -1,7 +1,7 @@
 # 🌌 Bounce
 
-<!-- allow user to select avatar from computer -->
-<!-- in app.vue you are using on mounted socket.connect instead of method connectSocket which includes handshake -->
+<!-- not receicing direct message immediately (socket) -->
+<!-- fix auto scrolling to the bottom when opening a new chat, also make chat appear on the bottom -->
 <!-- you are probably sending multiple requests to get attachments, i moved it to watch(room id) and now i dont need to do this manually -->
 
 <!-- create pinned messages panel (button in message context) (OPTIONAL) -->

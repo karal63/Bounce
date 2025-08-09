@@ -17,16 +17,28 @@ import { useGetAttachments } from "../model/useGetAttachments";
 import type { Attachment } from "@/shared/types/Attachment";
 import MessageContext from "./MessageContext.vue";
 import type { Context } from "@/shared/types/Context";
+import { useGetReactions } from "../model/useGetReactions";
+import { ReactionsContext, useReaction } from "@/features/reaction";
+import type { ReactionContext } from "../../reaction/model/types";
+import type { Reaction } from "@/shared/types/Reaction";
 
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const { getAttachments } = useGetAttachments();
+const { getReactions } = useGetReactions();
+const { getAllReactions } = useReaction();
 
 const router = useRouter();
 
 const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 const messageContext = ref<Context>({
+    isVisible: true,
+    posX: 0,
+    posY: 0,
+    message: null,
+});
+const reactionPanelContext = ref<ReactionContext>({
     isVisible: true,
     posX: 0,
     posY: 0,
@@ -69,6 +81,64 @@ const handleDeleteMessage = (messageId: string) => {
     );
 };
 
+const handleNewReaction = (reaction: Reaction) => {
+    const index = currentChatStore.reactions.findIndex(
+        (r) =>
+            r.messageId === reaction.messageId &&
+            r.stickerId === reaction.stickerId
+    );
+
+    if (index !== -1) {
+        currentChatStore.reactions = currentChatStore.reactions.map((r, i) => {
+            if (i === index) {
+                if (!r.count) return r;
+                return {
+                    ...r,
+                    count: r.count + 1,
+                };
+            }
+            return r;
+        });
+        currentChatStore.allReactions.push(reaction);
+    } else {
+        // Add as new reaction
+
+        currentChatStore.reactions = [
+            ...currentChatStore.reactions,
+            {
+                ...reaction,
+                count: 1,
+            },
+        ];
+        currentChatStore.allReactions.push(reaction);
+    }
+};
+
+const handleDeleteReaction = (reaction: Reaction) => {
+    currentChatStore.reactions = currentChatStore.reactions.reduce(
+        (acc: Reaction[], r) => {
+            if (
+                r.messageId === reaction.messageId &&
+                r.stickerId === reaction.stickerId
+            ) {
+                if (r.count && r.count > 1) {
+                    acc.push({
+                        ...r,
+                        count: r.count - 1,
+                    });
+                }
+            } else {
+                acc.push(r);
+            }
+            return acc;
+        },
+        []
+    );
+    currentChatStore.allReactions = currentChatStore.allReactions.filter(
+        (r) => r.id !== reaction.id
+    );
+};
+
 const scrollToBottom = () => {
     nextTick(() => {
         if (listRef.value) {
@@ -82,11 +152,12 @@ const hideContext = () => {
 };
 
 const showContext = (
-    buttonElement: Ref<HTMLElement | null>,
-    message: MessageWithName
+    targetElement: Ref<HTMLElement | null>,
+    message: MessageWithName,
+    type: "reactions" | "context"
 ) => {
     const containerRect = listRef.value?.getBoundingClientRect();
-    const buttonRect = buttonElement.value?.getBoundingClientRect();
+    const buttonRect = targetElement.value?.getBoundingClientRect();
 
     if (!containerRect || !buttonRect || !listRef.value) return;
 
@@ -95,23 +166,36 @@ const showContext = (
     const posX =
         buttonRect.left - containerRect.left + listRef.value.scrollLeft;
 
-    messageContext.value = {
-        isVisible: true,
-        posY: posY - 45,
-        posX: posX - 100,
-        message,
-    };
+    if (type === "context") {
+        messageContext.value = {
+            isVisible: true,
+            posY: posY - 45,
+            posX: posX,
+            message,
+        };
+    } else if (type === "reactions") {
+        reactionPanelContext.value = {
+            isVisible: true,
+            posY: posY - 50,
+            posX: posX,
+            message,
+        };
+    }
 };
 
 onMounted(async () => {
     if (!currentChatStore.currentRoom.id) return router.push("/chat");
     socket.on("newMessage", handleNewMessage);
     socket.on("message-deleted", handleDeleteMessage);
+    socket.on("reactionAdded", handleNewReaction);
+    socket.on("reactionRemoved", handleDeleteReaction);
 });
 
 onBeforeUnmount(() => {
     socket.off("newMessage", handleNewMessage);
     socket.off("message-deleted", handleDeleteMessage);
+    socket.off("reactionAdded", handleNewReaction);
+    socket.off("reactionRemoved", handleDeleteReaction);
 });
 
 watch(
@@ -119,6 +203,9 @@ watch(
     async () => {
         isLoading.value = true;
         await getAttachments();
+        await getReactions();
+        await getAllReactions();
+
         console.log("getting attachments");
         isLoading.value = false;
         listRef.value?.scroll({
@@ -130,8 +217,11 @@ watch(
 </script>
 
 <template>
-    <div ref="listRef" class="h-[90%] flex justify-center overflow-y-auto">
-        <div class="relative pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
+    <div
+        ref="listRef"
+        class="relative h-[90%] flex justify-center overflow-y-auto"
+    >
+        <div class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
             <div v-if="currentChatStore.currentRoom.id" class="flex-col gap-2">
                 <SingleMessage
                     v-for="message of currentChatStore.messages"
@@ -144,6 +234,11 @@ watch(
                     v-if="messageContext.isVisible"
                     :messageContext="messageContext"
                     @hideContext="hideContext"
+                />
+
+                <ReactionsContext
+                    :reactionPanelContext="reactionPanelContext"
+                    @closeReactions="reactionPanelContext.isVisible = false"
                 />
             </div>
 

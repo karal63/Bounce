@@ -11,6 +11,14 @@ import { ConfirmBanModal } from "@/features/ban-member";
 import { BanReasonModal } from "@/features/show-ban-reason";
 import { NotificationWindow } from "@/widgets/notification";
 import { ImagePreviewModal } from "@/shared/ui";
+import { onMounted } from "vue";
+import { useGetStickers } from "@/shared/model/useGetStickers";
+
+const { getStickers } = useGetStickers();
+
+onMounted(async () => {
+    await getStickers();
+});
 </script>
 
 <template>

@@ -10,8 +10,13 @@ import { getTime } from "@/shared/lib/helpers/getTime";
 import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
 import { useImagePreviewStore } from "@/features/image-preview";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import heartIcon from "@/shared/assets/heart.png";
+import MessageReactions from "./MessageReactions.vue";
+import { useReaction } from "@/features/reaction";
+
 const replyToMessageStore = useReplyToMessageStore();
 const imagePreviewStore = useImagePreviewStore();
+const { addReaction } = useReaction();
 
 const props = defineProps<{
     message: MessageWithName;
@@ -20,8 +25,9 @@ const props = defineProps<{
 const emit = defineEmits<{
     (
         e: "showContext",
-        buttonElement: Ref<HTMLElement | null>,
-        message: MessageWithName
+        targetElement: Ref<HTMLElement | null>,
+        message: MessageWithName,
+        type: "reactions" | "context"
     ): void;
 }>();
 
@@ -37,11 +43,19 @@ useHover(
 );
 
 const showContext = () => {
-    emit("showContext", buttonRef, props.message);
+    emit("showContext", buttonRef, props.message, "context");
+};
+
+const showReactions = () => {
+    emit("showContext", messageRef, props.message, "reactions");
 };
 
 const replyToMessage = (message: MessageWithName) => {
     replyToMessageStore.setReplyMessage(message);
+};
+
+const loveMessage = () => {
+    addReaction(props.message, "love");
 };
 </script>
 
@@ -62,7 +76,8 @@ const replyToMessage = (message: MessageWithName) => {
                 <UserAvatar alt="member" :src="message.avatarUrl" size="30" />
 
                 <div
-                    class="max-w-max px-2 py-1 rounded-xl"
+                    @contextmenu.prevent="showReactions"
+                    class="px-2 py-1 rounded-xl"
                     :class="
                         checkPerson(message)
                             ? 'bg-purple-500 rounded-br-none'
@@ -100,12 +115,14 @@ const replyToMessage = (message: MessageWithName) => {
                             <span class="font-semibold">{{
                                 findMessageById(message.replyToMessageId)?.name
                             }}</span>
-                            <span class="text-sm">
+                            <p
+                                class="text-sm max-w-[300px] white-space: normal"
+                            >
                                 {{
                                     findMessageById(message.replyToMessageId)
                                         ?.content
                                 }}
-                            </span>
+                            </p>
                         </div>
                         <span
                             ><Icon icon="ic:baseline-reply" class="text-lg"
@@ -120,22 +137,39 @@ const replyToMessage = (message: MessageWithName) => {
                                 : 'justify-start'
                         "
                     >
-                        <p>
+                        <p class="max-w-[300px] whitespace-normal break-words">
                             {{ message.content }}
                         </p>
 
-                        <div>
+                        <div class="flex-col justify-end">
                             <span class="text-[.6rem] text-gray-300">{{
                                 getTime(message.sentAt)
                             }}</span>
                         </div>
                     </div>
+
+                    <!--  -->
+                    <!-- reactions -->
+                    <MessageReactions
+                        @checkPerson="checkPerson($event)"
+                        :message="message"
+                    />
                 </div>
 
-                <div class="flex items-center">
+                <div
+                    v-show="isHovering"
+                    class="flex items-center"
+                    :class="checkPerson(message) ? 'flex-row-reverse' : ''"
+                >
                     <button
-                        v-show="isHovering"
-                        ref="buttonRef"
+                        v-if="!checkPerson(message)"
+                        @click="loveMessage"
+                        class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
+                    >
+                        <img alt="like" :src="heartIcon" class="w-5" />
+                    </button>
+
+                    <button
                         @click="replyToMessage(message)"
                         class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
                     >
@@ -143,7 +177,7 @@ const replyToMessage = (message: MessageWithName) => {
                     </button>
 
                     <button
-                        v-show="isHovering"
+                        ref="buttonRef"
                         @click="showContext"
                         class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
                     >
