@@ -99,7 +99,6 @@ class ReactionService {
             WHERE messages.groupId = ?`,
             [roomId]
         );
-        console.log(reactions);
         return reactions;
     }
 }

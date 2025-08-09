@@ -24,8 +24,6 @@ watch(
 );
 </script>
 
-<!-- now in reactions feature create methods like add, delete -->
-
 <template>
     <div
         class="w-full flex gap-1"
@@ -38,7 +36,11 @@ watch(
             v-for="reaction in reactions"
             @click="handleClick(message, reaction)"
             class="px-2 rounded-xl hover:bg-blue-400/80 cursor-pointer transition-all"
-            :class="checkIfReacted(reaction) ? 'bg-blue-400/75' : 'bg-mainGray'"
+            :class="
+                checkIfReacted(reaction)
+                    ? 'bg-blue-400/75 hover:bg-blue-400'
+                    : 'bg-mainGray hover:bg-mainGray/50'
+            "
         >
             {{ reaction.sticker }}
             <span>{{ reaction.count }}</span>

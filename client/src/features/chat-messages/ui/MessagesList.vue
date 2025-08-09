@@ -21,10 +21,8 @@ import { useGetReactions } from "../model/useGetReactions";
 import { ReactionsContext, useReaction } from "@/features/reaction";
 import type { ReactionContext } from "../../reaction/model/types";
 import type { Reaction } from "@/shared/types/Reaction";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const currentChatStore = useCurrentChatStore();
-const sessionStore = useSessionStore();
 const { socket } = useSocket();
 const { getAttachments } = useGetAttachments();
 const { getReactions } = useGetReactions();
@@ -93,6 +91,7 @@ const handleNewReaction = (reaction: Reaction) => {
     if (index !== -1) {
         currentChatStore.reactions = currentChatStore.reactions.map((r, i) => {
             if (i === index) {
+                if (!r.count) return r;
                 return {
                     ...r,
                     count: r.count + 1,
@@ -122,7 +121,7 @@ const handleDeleteReaction = (reaction: Reaction) => {
                 r.messageId === reaction.messageId &&
                 r.stickerId === reaction.stickerId
             ) {
-                if (r.count > 1) {
+                if (r.count && r.count > 1) {
                     acc.push({
                         ...r,
                         count: r.count - 1,
