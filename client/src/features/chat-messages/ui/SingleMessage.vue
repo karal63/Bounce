@@ -61,6 +61,7 @@ const loveMessage = () => {
 
 <template>
     <div
+        data-testid="single-message"
         class="flex relative"
         :class="checkPerson(message) ? 'justify-end' : 'justify-start'"
     >
@@ -170,6 +171,7 @@ const loveMessage = () => {
                     </button>
 
                     <button
+                        data-testid="reply-button"
                         @click="replyToMessage(message)"
                         class="w-8 h-8 rounded-full flex-center hover:bg-mainHoverOnGray cursor-pointer transition-all"
                     >
