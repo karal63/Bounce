@@ -211,9 +211,12 @@ watch(
 
         console.log("getting attachments");
         isLoading.value = false;
-        listRef.value?.scroll({
-            top: listRef.value.scrollHeight,
-        });
+
+        if (listRef.value?.scroll) {
+            listRef.value?.scroll({
+                top: listRef.value.scrollHeight,
+            });
+        }
     },
     { immediate: true }
 );
@@ -237,11 +240,6 @@ watch(
                     v-if="messageContext.isVisible"
                     :messageContext="messageContext"
                     @hideContext="hideContext"
-                />
-
-                <ReactionsContext
-                    :reactionPanelContext="reactionPanelContext"
-                    @closeReactions="reactionPanelContext.isVisible = false"
                 />
             </div>
 

@@ -7,6 +7,7 @@ const replyToMessageStore = useReplyToMessageStore();
 
 <template>
     <div
+        data-testid="reply-bar"
         v-if="replyToMessageStore.isReplyig"
         class="absolute bg-mainDarkBg bottom-full left-0 w-full flex items-center py-2 border rounded-md border-mainBorder"
     >
@@ -17,7 +18,10 @@ const replyToMessageStore = useReplyToMessageStore();
         <div class="flex-col w-full">
             <p class="text-purple-500 font-semibold">
                 Reply to
-                <span>{{ replyToMessageStore.replyMessage?.name }}</span>
+
+                <span data-testid="reply-name">{{
+                    replyToMessageStore.replyMessage?.name
+                }}</span>
             </p>
             <p>
                 {{ replyToMessageStore.replyMessage?.content }}
