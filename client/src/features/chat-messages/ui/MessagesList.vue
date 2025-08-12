@@ -241,6 +241,11 @@ watch(
                     :messageContext="messageContext"
                     @hideContext="hideContext"
                 />
+
+                <ReactionsContext
+                    :reactionPanelContext="reactionPanelContext"
+                    @closeReactions="reactionPanelContext.isVisible = false"
+                />
             </div>
 
             <!-- loading -->

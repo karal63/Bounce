@@ -14,13 +14,23 @@ import MessagesList from "@/features/chat-messages/ui/MessagesList.vue";
 import SingleMessage from "@/features/chat-messages/ui/SingleMessage.vue";
 import { MessageInputBlock } from "../..";
 
-vi.mock("@/features/reaction", () => ({
-    useReaction: () => ({
-        addReaction: vi.fn(),
-        handleClick: vi.fn(),
-        getAllReactions: vi.fn(() => Promise.resolve({ data: ["reaction"] })),
-    }),
-}));
+vi.mock("@/features/reaction", async () => {
+    // Import the real module
+    const actual = await vi.importActual<typeof import("@/features/reaction")>(
+        "@/features/reaction"
+    );
+
+    return {
+        ...actual, // Keep ReactionsContext, and anything else the real module exports
+        useReaction: () => ({
+            addReaction: vi.fn(),
+            handleClick: vi.fn(),
+            getAllReactions: vi.fn(() =>
+                Promise.resolve({ data: ["reaction"] })
+            ),
+        }),
+    };
+});
 
 describe("ReplyBar", () => {
     beforeEach(() => {
