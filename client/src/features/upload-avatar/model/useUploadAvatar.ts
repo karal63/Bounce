@@ -11,6 +11,7 @@ export const useUploadAvatar = () => {
         const avatar = await uploadImage(file);
         const updatedUser = await apiUpdateUser({ avatarUrl: avatar.url });
         sessionStore.user = updatedUser.data;
+        console.log(sessionStore.user);
     };
 
     return { uploadAvatar, loading };

@@ -88,7 +88,6 @@ watch(
 <template>
     <div
         v-if="currentChatStore.currentRoom.id"
-        data-testid="input-block"
         class="h-[10%] flex justify-center w-full"
     >
         <div
