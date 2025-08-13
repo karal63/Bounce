@@ -1,6 +1,5 @@
 import { createPinia, setActivePinia } from "pinia";
 import { useUploadAvatar } from "../useUploadAvatar";
-import { useUploadImage } from "@/shared/lib/hooks/useUploadImage";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 vi.mock("@/shared/lib/hooks/useUploadImage", () => ({
