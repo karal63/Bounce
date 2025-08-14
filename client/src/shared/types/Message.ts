@@ -1,4 +1,4 @@
-import type { AttachmentToUpload } from "./Attachment";
+import type { Attachment, AttachmentToUpload } from "./Attachment";
 
 export type ReadyMessage = {
     groupId?: string | null;
@@ -7,7 +7,7 @@ export type ReadyMessage = {
     content: string;
     mentionedUsersId: (string | null)[];
     replyToMessageId: string | undefined;
-    attachments: AttachmentToUpload[];
+    attachments: Attachment[];
 };
 
 export type Message = {

@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 
+// for tests you need created by user data, like group
+
 test.beforeEach(async ({ page }) => {
     await page.goto("/login");
     await page.getByTestId("login-email-input").fill("kuzmichleva1@gmail.com");
