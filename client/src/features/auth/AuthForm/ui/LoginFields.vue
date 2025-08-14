@@ -7,12 +7,14 @@ const modelValue = defineModel<AuthUser>();
 <template>
     <div class="flex-col gap-2">
         <input
+            data-testid="login-email-input"
             type="text"
             v-model="modelValue!.email"
             placeholder="Email"
             class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
         />
         <input
+            data-testid="login-password-input"
             type="password"
             v-model="modelValue!.password"
             placeholder="Password"

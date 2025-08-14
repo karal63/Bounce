@@ -43,7 +43,6 @@ onMounted(() => {
 
                 <div>
                     <RouterLink
-                        data-testid="login-button"
                         to="/login"
                         class="px-5 py-2 rounded-xl bg-white text-black font-semibold cursor-pointer"
                     >

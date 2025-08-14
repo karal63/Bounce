@@ -16,6 +16,7 @@ const emit = defineEmits<{
 
 <template>
     <li
+        data-testid="group-link"
         @click="emit('setGroup')"
         @contextmenu="emit('setContextGroup', props.group)"
         class="py-2 cursor-pointer flex items-center gap-2 hover:text-purple-500 transition-all"

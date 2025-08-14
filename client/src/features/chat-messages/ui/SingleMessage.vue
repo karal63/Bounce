@@ -61,7 +61,6 @@ const loveMessage = () => {
 
 <template>
     <div
-        data-testid="single-message"
         class="flex relative"
         :class="checkPerson(message) ? 'justify-end' : 'justify-start'"
     >
@@ -138,7 +137,10 @@ const loveMessage = () => {
                                 : 'justify-start'
                         "
                     >
-                        <p class="max-w-[300px] whitespace-normal break-words">
+                        <p
+                            data-testid="single-message"
+                            class="max-w-[300px] whitespace-normal break-words"
+                        >
                             {{ message.content }}
                         </p>
 

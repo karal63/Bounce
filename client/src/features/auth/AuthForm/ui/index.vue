@@ -79,6 +79,7 @@ const handleSubmit = () => {
 
                 <button
                     v-else
+                    data-testid="auth-submit-button"
                     type="submit"
                     class="mt-4 bg-purple-600 px-10 py-2 rounded-md cursor-pointer"
                 >

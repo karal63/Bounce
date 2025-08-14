@@ -112,6 +112,7 @@ watch(
                     />
                 </button>
                 <textarea
+                    data-testid="message-input"
                     ref="inputRef"
                     v-model="message.content"
                     @input="handleInput"
@@ -120,6 +121,7 @@ watch(
                     class="flex-1 resize-none rounded-md bg-white/10 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
                 ></textarea>
                 <button
+                    data-testid="send-message-button"
                     @click.prevent="submit"
                     type="submit"
                     class="bg-purple-500 text-white px-4 text-2xl h-[48px] rounded-md hover:bg-mainAccentHover transition cursor-pointer"
