@@ -3,6 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
     timeout: 30 * 1000, // 30 seconds per test
     retries: 0,
+    testMatch: "**/*.e2e.ts",
 
     use: {
         headless: false,

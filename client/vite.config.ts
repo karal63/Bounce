@@ -9,6 +9,7 @@ export default defineConfig({
         globals: true,
         environment: "jsdom",
         setupFiles: "./vitest.setup.ts",
+        exclude: ["**/*.e2e.{js,ts}", "node_modules/**"],
     },
     plugins: [vue(), tailwindcss()],
     resolve: {
