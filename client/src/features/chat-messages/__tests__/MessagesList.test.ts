@@ -33,7 +33,7 @@ import { mount } from "@vue/test-utils";
 import MessagesList from "../ui/MessagesList.vue";
 import { createPinia, setActivePinia } from "pinia";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { useSocket } from "@/shared/config/useSocketStore";
+// @ts-expect-error (optional: mock export)
 import { mockSocket } from "socket.io-client";
 import type { MessageWithName } from "@/shared/types/Message";
 import type { Attachment } from "@/shared/types/Attachment";
