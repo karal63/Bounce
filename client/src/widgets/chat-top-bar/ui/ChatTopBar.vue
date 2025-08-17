@@ -5,6 +5,8 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useShareModalStore } from "@/features/group-share-link";
 import { useUiStore } from "@/shared/model/uiStore";
 import { useRoute } from "vue-router";
+import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import { findMessagedUserById } from "@/shared/lib/helpers";
 
 const shareModalStore = useShareModalStore();
 const uiStore = useUiStore();
@@ -36,11 +38,22 @@ const showShareLinkModal = () => {
     <div
         class="h-[8%] bg-mainHoverDarkBg px-4 py-2 rounded-md flex justify-between items-center"
     >
-        <h1 class="text-2xl">{{ getGroupName }}</h1>
-        <div
-            v-if="currentChatStore.currentRoom.id"
-            class="flex items-center gap-2"
-        >
+        <div class="flex items-center gap-3">
+            <UserAvatar
+                v-if="
+                    currentChatStore.currentRoom.id &&
+                    currentChatStore.currentRoom.type === 'direct'
+                "
+                size="40"
+                alt="user avatar"
+                :src="
+                    findMessagedUserById(currentChatStore.currentRoom.id)
+                        ?.avatarUrl
+                "
+            />
+            <h1 class="text-2xl">{{ getGroupName }}</h1>
+        </div>
+        <div class="flex items-center gap-2">
             <button
                 v-if="
                     route.path.startsWith('/chat') &&
