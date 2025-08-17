@@ -57,6 +57,7 @@ const showShareLinkModal = () => {
             <button
                 v-if="
                     route.path.startsWith('/chat') &&
+                    !route.path.startsWith('/chat/settings') &&
                     currentChatStore.currentRoom.type === 'group'
                 "
                 @click="showShareLinkModal"
@@ -67,6 +68,7 @@ const showShareLinkModal = () => {
             <button
                 v-if="
                     route.path.startsWith('/chat') &&
+                    !route.path.startsWith('/chat/settings') &&
                     currentChatStore.currentRoom.type === 'group'
                 "
                 @click="uiStore.toggleMembersBar()"
@@ -77,6 +79,7 @@ const showShareLinkModal = () => {
             <RouterLink
                 v-if="
                     route.path.startsWith('/chat') &&
+                    !route.path.startsWith('/chat/settings') &&
                     currentChatStore.hasPermissions &&
                     currentChatStore.currentRoom.type === 'group'
                 "
