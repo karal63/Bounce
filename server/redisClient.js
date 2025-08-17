@@ -1,4 +1,5 @@
 const { createClient } = require("redis");
+require("dotenv").config();
 
 const redisClient = createClient({
     username: "default",
@@ -8,6 +9,10 @@ const redisClient = createClient({
         port: process.env.REDIS_PORT,
     },
 });
-redisClient.on("error", (err) => console.log("Redis Client Error", err));
+
+redisClient.on("error", (err) => {
+    console.log("Redis Client Error", err);
+    process.exit(1);
+});
 
 module.exports = redisClient;
