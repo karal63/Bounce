@@ -13,11 +13,16 @@ import { NotificationWindow } from "@/widgets/notification";
 import { ImagePreviewModal } from "@/shared/ui";
 import { onMounted } from "vue";
 import { useGetStickers } from "@/shared/model/useGetStickers";
+import { usePresence } from "@/features/presence";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const { getStickers } = useGetStickers();
+const currentChatStore = useCurrentChatStore();
 
 onMounted(async () => {
     await getStickers();
+    usePresence();
+    console.log(currentChatStore.onlineUsers);
 });
 </script>
 
