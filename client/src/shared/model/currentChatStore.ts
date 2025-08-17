@@ -24,6 +24,7 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
     const reactions = ref<Reaction[]>([]);
     const allReactions = ref<Reaction[]>([]);
     const stickers = ref<Sticker[]>([]);
+    const onlineUsers = ref(new Set<string>());
 
     return {
         currentRoom,
@@ -36,5 +37,6 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
         reactions,
         allReactions,
         stickers,
+        onlineUsers,
     };
 });

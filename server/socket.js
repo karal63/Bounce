@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { instrument } = require("@socket.io/admin-ui");
+const redisClient = require("./redisClient");
 require("dotenv").config();
 
 const app = express();
@@ -48,11 +49,22 @@ io.on("connection", (socket) => {
         socket.leave(room);
     });
 
-    socket.on("disconnect", () => {
+    socket.on("login", async (userId) => {
+        await redisClient.sAdd("online-users", userId);
+
+        socket.emit("online:users", await redisClient.sMembers("online-users"));
+
+        socket.broadcast.emit("status:update", { userId, online: true });
+        console.log("user logged");
+    });
+
+    socket.on("disconnect", async () => {
         console.log("A user disconnected: ", socket.id);
         if (userId) {
             userSocketMap.delete(userId);
         }
+        socket.broadcast.emit("status:update", { userId, online: false });
+        await redisClient.sRem("online-users", userId);
     });
 });
 

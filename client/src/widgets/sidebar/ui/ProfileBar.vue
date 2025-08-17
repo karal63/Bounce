@@ -5,9 +5,11 @@ import { sidebarStore } from "../model/sidebarStore";
 import ProfileContext from "./ProfileContext.vue";
 import { ref } from "vue";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const sidebar = sidebarStore();
 const sessionStore = useSessionStore();
+const currentChatStore = useCurrentChatStore();
 const buttonRef = ref<HTMLElement | null>(null);
 
 const emit = defineEmits<{
@@ -38,7 +40,15 @@ const emit = defineEmits<{
                 </div>
                 <div>
                     <h4>{{ sessionStore.user?.name }}</h4>
-                    <div class="mt-1">
+                    <div
+                        v-if="
+                            sessionStore.user?.id &&
+                            currentChatStore.onlineUsers.has(
+                                sessionStore.user?.id
+                            )
+                        "
+                        class="mt-1"
+                    >
                         <span class="text-sm pr-1">🟢</span>Active
                     </div>
                 </div>

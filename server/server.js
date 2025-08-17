@@ -9,6 +9,6 @@ app.use(errorMiddleware);
 
 // Server start
 server.listen(process.env.PORT, async () => {
-    // await redisClient.connect();
+    await redisClient.connect();
     console.log(`Server is listening on port ${process.env.PORT}`);
 });

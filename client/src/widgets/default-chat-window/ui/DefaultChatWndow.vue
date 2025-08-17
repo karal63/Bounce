@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="w-[80%] flex-center flex-col">
+    <div class="w-full flex-center flex-col">
         <div class="flex items-center gap-3">
             <div class="flex-col gap-1">
                 <div class="bg-purple-900 w-6 h-2 rounded-xl -ml-1"></div>

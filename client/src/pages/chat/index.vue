@@ -13,6 +13,7 @@ import { NotificationWindow } from "@/widgets/notification";
 import { ImagePreviewModal } from "@/shared/ui";
 import { onMounted } from "vue";
 import { useGetStickers } from "@/shared/model/useGetStickers";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const { getStickers } = useGetStickers();
 

@@ -75,7 +75,7 @@ const closeContext = () => {
         <ul
             v-if="filteredUsers.length > 0"
             ref="contextRef"
-            class="bg-mainHoverDarkBg rounded-md w-full max-h-max flex-col gap-2 p-2"
+            class="bg-mainHoverDarkBg rounded-md w-[250px] max-h-max flex-col gap-2 p-2"
         >
             <li
                 v-for="user of filteredUsers"
@@ -85,13 +85,37 @@ const closeContext = () => {
                 <RouterLink
                     :to="'/chat/' + user.userId"
                     @click="goToConversation(user)"
-                    class="flex items-center gap-2 py-1 px-1 rounded-xl transition-all hover:bg-mainHoverOnGray"
+                    class="flex items-center gap-3 py-1 px-1 rounded-xl transition-all hover:bg-mainHoverOnGray"
                 >
-                    <UserAvatar alt="user" :src="user.avatarUrl" size="40" />
                     <div>
+                        <UserAvatar
+                            alt="user"
+                            :src="user.avatarUrl"
+                            size="40"
+                        />
+                    </div>
+                    <div class="w-full">
                         <h3 class="text-lg">
                             {{ user.otherUserName }}
                         </h3>
+                        <p
+                            class="w-full text-sm text-end"
+                            :class="
+                                currentChatStore.onlineUsers.has(
+                                    user.otherUserId
+                                )
+                                    ? 'text-green-400'
+                                    : 'text-secondary'
+                            "
+                        >
+                            {{
+                                currentChatStore.onlineUsers.has(
+                                    user.otherUserId
+                                )
+                                    ? "Online"
+                                    : "Offline"
+                            }}
+                        </p>
                     </div>
                 </RouterLink>
             </li>
