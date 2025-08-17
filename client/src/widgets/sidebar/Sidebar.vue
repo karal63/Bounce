@@ -6,7 +6,6 @@ import ProfileBar from "./ui/ProfileBar.vue";
 
 import { useGetGroups } from "@/features/chat-groups";
 import { useModalStore } from "@/features/create-or-join";
-import { useLogout } from "@/features/auth/logout";
 import { GroupsList } from "@/features/chat-groups";
 import { useDeleteGroupStore } from "@/features/delete-group";
 import { useSocket } from "@/shared/config/useSocketStore";
@@ -16,7 +15,6 @@ const deleteGroupStore = useDeleteGroupStore();
 
 const { getGroups } = useGetGroups();
 const modal = useModalStore();
-const { logout } = useLogout();
 const { socket } = useSocket();
 
 const clearRoom = () => {
@@ -63,6 +61,6 @@ onMounted(async () => {
         </div>
 
         <!-- menu context -->
-        <ProfileBar @logout="logout" />
+        <ProfileBar />
     </div>
 </template>

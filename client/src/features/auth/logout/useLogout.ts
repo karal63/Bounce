@@ -12,12 +12,29 @@ export const useLogout = () => {
 
     const logout = async () => {
         await apiLogout();
+        router.push("/login");
+        disconnectSocket();
+
+        // cleanup
         localStorage.removeItem("accessToken");
+
         sessionStore.user = null;
         sessionStore.isAuthenticated = false;
-        disconnectSocket();
-        currentChatStore.currentRoom = null;
-        router.push("/login");
+
+        currentChatStore.currentRoom = {
+            id: null,
+            type: null,
+        };
+        currentChatStore.messages = [];
+        currentChatStore.messagedUsers = [];
+        currentChatStore.groups = [];
+        currentChatStore.onlineUsers = new Set();
+        currentChatStore.reactions = [];
+        currentChatStore.attachments = [];
+        currentChatStore.stickers = [];
+        currentChatStore.members = [];
+        currentChatStore.hasPermissions = false;
+        currentChatStore.allReactions = [];
     };
 
     return { logout };

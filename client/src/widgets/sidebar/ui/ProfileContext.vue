@@ -4,18 +4,15 @@ import { sidebarStore } from "../model/sidebarStore";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import { Icon } from "@iconify/vue";
 import { useUploadAvatar } from "@/features/upload-avatar";
+import { useLogout } from "@/features/auth/logout";
 
 const sidebar = sidebarStore();
 const { uploadAvatar, loading } = useUploadAvatar();
+const { logout } = useLogout();
 
 const props = defineProps<{ buttonRef: HTMLElement | null }>();
 
 const buttonRef = toRef(props, "buttonRef");
-
-const emit = defineEmits<{
-    (event: "logout"): void;
-}>();
-
 const contextRef = ref<HTMLElement | null>(null);
 
 useClickOutside(
@@ -55,7 +52,7 @@ const setFile = async (file: File | undefined) => {
         ></label>
 
         <button
-            @click="emit('logout')"
+            @click="logout"
             class="w-full text-left hover:bg-mainHoverDarkBg py-2 px-4 cursor-pointer rounded-md transition-all"
         >
             Logout

@@ -12,8 +12,6 @@ const emit = defineEmits<{
     (event: "setGroup"): void;
     (event: "setContextGroup", group: Group): void;
 }>();
-
-console.log(props.group);
 </script>
 
 <template>
