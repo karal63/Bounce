@@ -39,18 +39,31 @@ const showShareLinkModal = () => {
         class="h-[8%] bg-mainHoverDarkBg px-4 py-2 rounded-md flex justify-between items-center"
     >
         <div class="flex items-center gap-3">
-            <UserAvatar
-                v-if="
-                    currentChatStore.currentRoom.id &&
-                    currentChatStore.currentRoom.type === 'direct'
-                "
-                size="40"
-                alt="user avatar"
-                :src="
-                    findMessagedUserById(currentChatStore.currentRoom.id)
-                        ?.avatarUrl
-                "
-            />
+            <div class="relative">
+                <UserAvatar
+                    v-if="
+                        currentChatStore.currentRoom.id &&
+                        currentChatStore.currentRoom.type === 'direct'
+                    "
+                    size="40"
+                    alt="user avatar"
+                    :src="
+                        findMessagedUserById(currentChatStore.currentRoom.id)
+                            ?.avatarUrl
+                    "
+                />
+
+                <span
+                    v-if="
+                        currentChatStore.currentRoom.id &&
+                        currentChatStore.currentRoom.type === 'direct' &&
+                        currentChatStore.onlineUsers.has(
+                            currentChatStore.currentRoom.id
+                        )
+                    "
+                    class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full"
+                ></span>
+            </div>
             <h1 class="text-2xl">{{ getGroupName }}</h1>
         </div>
         <div class="flex items-center gap-2">
