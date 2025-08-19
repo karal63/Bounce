@@ -7,6 +7,8 @@ import { useUiStore } from "@/shared/model/uiStore";
 import { useRoute } from "vue-router";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { findMessagedUserById } from "@/shared/lib/helpers";
+import { checkIfUserTyping } from "../lib/helpers/checkIfUserTyping";
+import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 
 const shareModalStore = useShareModalStore();
 const uiStore = useUiStore();
@@ -68,10 +70,19 @@ const showShareLinkModal = () => {
                 <h1 class="text-2xl">{{ getGroupName }}</h1>
                 <!-- typing indicator -->
                 <div
-                    v-if="currentChatStore.isTyping"
+                    v-if="checkIfUserTyping()"
                     class="h-5 flex items-center gap-2 text-purple-500"
                 >
-                    Typing
+                    <span v-if="currentChatStore.currentRoom.type === 'group'"
+                        >{{
+                            findMemberById(
+                                currentChatStore.members,
+                                checkIfUserTyping()?.typingUserId
+                            )?.name
+                        }}
+                        typing</span
+                    >
+                    <span v-else> Typing </span>
                     <span>
                         <Icon icon="svg-spinners:3-dots-bounce" />
                     </span>

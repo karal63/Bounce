@@ -13,12 +13,13 @@ import { NotificationWindow } from "@/widgets/notification";
 import { ImagePreviewModal } from "@/shared/ui";
 import { onMounted } from "vue";
 import { useGetStickers } from "@/shared/model/useGetStickers";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { useTypingIndicator } from "@/features/typing-indicator";
 
 const { getStickers } = useGetStickers();
 
 onMounted(async () => {
     await getStickers();
+    useTypingIndicator();
 });
 </script>
 

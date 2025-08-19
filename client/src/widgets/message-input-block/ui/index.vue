@@ -31,7 +31,7 @@ const isMentionListOpen = ref(false);
 const cursorPos = ref<number>(0);
 const inputRef = ref<HTMLElement | null>(null);
 const areAttachmentsOpen = ref(false);
-const isTyping = ref(false);
+const multiClicked = ref(false);
 let typingTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const submit = () => {
@@ -51,6 +51,7 @@ function handleInput(event: Event) {
     const prevChar = input[cursorPos - 1];
     isMentionListOpen.value = prevChar === "@";
     userTyped();
+    multiClicked.value = true;
 }
 
 const mention = (name: string) => {
@@ -89,16 +90,26 @@ watch(
     }
 );
 
-// make this feature work
-// should with every input if there is timeout and if so create new
-// if timeout gone, stop
-
 const userTyped = () => {
-    currentChatStore.isTyping = true;
-    if (typingTimeout) clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        currentChatStore.isTyping = false;
-    }, 4000);
+    if (!multiClicked.value) {
+        currentChatStore.isTyping = true;
+
+        socket.emit("user-typing", {
+            typingUserId: sessionStore.user?.id,
+            recipientId: currentChatStore.currentRoom.id,
+        });
+
+        if (typingTimeout) clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+            currentChatStore.isTyping = false;
+            multiClicked.value = false;
+
+            socket.emit("user-not-typing", {
+                typingUserId: sessionStore.user?.id,
+                recipientId: currentChatStore.currentRoom.id,
+            });
+        }, 4000);
+    }
 };
 </script>
 
