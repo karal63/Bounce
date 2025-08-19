@@ -225,7 +225,7 @@ watch(
 <template>
     <div
         ref="listRef"
-        class="relative h-[90%] flex justify-center overflow-y-auto"
+        class="relative h-[90%] mb-2 flex justify-center overflow-y-auto"
     >
         <div class="pb-4 max-3xl:w-[60%] max-xl:w-[80%] max-lg:w-full">
             <div v-if="currentChatStore.currentRoom.id" class="flex-col gap-2">

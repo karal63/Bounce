@@ -27,7 +27,7 @@ onMounted(async () => {
         <div class="relative ml-10 w-full flex-col">
             <ChatTopBar />
             <div class="flex h-[92%]">
-                <div class="relative w-full h-full">
+                <div class="relative w-full h-full flex-col">
                     <MessagesList />
                     <MessageInputBlock />
                 </div>

@@ -12,10 +12,12 @@ import MentionList from "./MentionList.vue";
 import ReplyBar from "./ReplyBar.vue";
 import Attachment from "./Attachment.vue";
 import AttachmentsPanel from "@/features/attachments-panel/ui/AttachmentsPanel.vue";
+import { useSocket } from "@/shared/config/useSocketStore";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
+const { socket } = useSocket();
 
 const message = ref<ReadyMessage>({
     groupId: null,
@@ -29,6 +31,8 @@ const isMentionListOpen = ref(false);
 const cursorPos = ref<number>(0);
 const inputRef = ref<HTMLElement | null>(null);
 const areAttachmentsOpen = ref(false);
+const isTyping = ref(false);
+let typingTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const submit = () => {
     send(message.value);
@@ -46,6 +50,7 @@ function handleInput(event: Event) {
 
     const prevChar = input[cursorPos - 1];
     isMentionListOpen.value = prevChar === "@";
+    userTyped();
 }
 
 const mention = (name: string) => {
@@ -83,6 +88,18 @@ watch(
         }
     }
 );
+
+// make this feature work
+// should with every input if there is timeout and if so create new
+// if timeout gone, stop
+
+const userTyped = () => {
+    currentChatStore.isTyping = true;
+    if (typingTimeout) clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        currentChatStore.isTyping = false;
+    }, 4000);
+};
 </script>
 
 <template>
@@ -124,7 +141,7 @@ watch(
                     data-testid="send-message-button"
                     @click.prevent="submit"
                     type="submit"
-                    class="bg-purple-500 text-white px-4 text-2xl h-[48px] rounded-md hover:bg-mainAccentHover transition cursor-pointer"
+                    class="bg-gradient-to-br from-purple-600 to-purple-300 text-white px-4 text-2xl h-[48px] rounded-md hover:bg-mainAccentHover transition cursor-pointer"
                 >
                     <Icon icon="material-symbols:send" />
                 </button>

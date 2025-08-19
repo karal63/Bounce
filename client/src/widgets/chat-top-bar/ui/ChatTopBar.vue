@@ -64,7 +64,32 @@ const showShareLinkModal = () => {
                     class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full"
                 ></span>
             </div>
-            <h1 class="text-2xl">{{ getGroupName }}</h1>
+            <div class="flex-col">
+                <h1 class="text-2xl">{{ getGroupName }}</h1>
+                <!-- typing indicator -->
+                <div
+                    v-if="currentChatStore.isTyping"
+                    class="h-5 flex items-center gap-2 text-purple-500"
+                >
+                    Typing
+                    <span>
+                        <Icon icon="svg-spinners:3-dots-bounce" />
+                    </span>
+                </div>
+                <p
+                    v-else-if="
+                        currentChatStore.currentRoom.id &&
+                        currentChatStore.currentRoom.type === 'direct' &&
+                        currentChatStore.onlineUsers.has(
+                            currentChatStore.currentRoom.id
+                        )
+                    "
+                    class="text-green-500 text-sm"
+                >
+                    Online
+                </p>
+                <p v-else class="text-secondary text-sm">Offline</p>
+            </div>
         </div>
         <div class="flex items-center gap-2">
             <button
