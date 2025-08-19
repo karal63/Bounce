@@ -8,9 +8,15 @@ export const useLogout = () => {
     const sessionStore = useSessionStore();
     const currentChatStore = useCurrentChatStore();
     const router = useRouter();
-    const { disconnectSocket } = useSocket();
+    const { disconnectSocket, socket } = useSocket();
 
     const logout = async () => {
+        // remove typing status for user that logged out
+        socket.emit("user-not-typing", {
+            typingUserId: sessionStore.user?.id,
+            recipientId: currentChatStore.currentRoom.id,
+        });
+
         await apiLogout();
         router.push("/login");
         disconnectSocket();

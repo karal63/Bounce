@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("user-not-typing", (user) => {
-        // emit redis to delete row
+        console.log(user);
         socket
             .to(userSocketMap.get(user.recipientId) || user.recipientId)
             .emit("user-typing:update", { user, typing: false });

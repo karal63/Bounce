@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onBeforeUnmount, onUnmounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import type { ReadyMessage } from "@/shared/types/Message";
 
@@ -92,8 +92,6 @@ watch(
 
 const userTyped = () => {
     if (!multiClicked.value) {
-        currentChatStore.isTyping = true;
-
         socket.emit("user-typing", {
             typingUserId: sessionStore.user?.id,
             recipientId: currentChatStore.currentRoom.id,
@@ -101,7 +99,6 @@ const userTyped = () => {
 
         if (typingTimeout) clearTimeout(typingTimeout);
         typingTimeout = setTimeout(() => {
-            currentChatStore.isTyping = false;
             multiClicked.value = false;
 
             socket.emit("user-not-typing", {
@@ -111,6 +108,19 @@ const userTyped = () => {
         }, 4000);
     }
 };
+
+const removeTyping = () => {
+    socket.emit("user-not-typing", {
+        typingUserId: sessionStore.user?.id,
+        recipientId: currentChatStore.currentRoom.id,
+    });
+};
+
+window.addEventListener("beforeunload", removeTyping);
+
+onUnmounted(() => {
+    removeEventListener("beforeunload", removeTyping);
+});
 </script>
 
 <template>
