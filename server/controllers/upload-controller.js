@@ -5,7 +5,6 @@ const { v4 } = require("uuid");
 class UploadController {
     async uploadImage(req, res, next) {
         try {
-            console.log("== upload image ==");
             const result = cloudinary.uploader.upload_stream(
                 (error, result) => {
                     if (error) return res.status(500).json(error);

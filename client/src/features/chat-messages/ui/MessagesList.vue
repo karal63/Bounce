@@ -209,7 +209,6 @@ watch(
         await getReactions();
         await getAllReactions();
 
-        console.log("getting attachments");
         isLoading.value = false;
 
         if (listRef.value?.scroll) {

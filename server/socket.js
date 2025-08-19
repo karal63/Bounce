@@ -55,7 +55,6 @@ io.on("connection", (socket) => {
         socket.emit("online:users", await redisClient.sMembers("online-users"));
 
         socket.broadcast.emit("status:update", { userId, online: true });
-        console.log("user logged");
     });
 
     socket.on("user-typing", async (user) => {
@@ -65,7 +64,6 @@ io.on("connection", (socket) => {
     });
 
     socket.on("user-not-typing", (user) => {
-        console.log(user);
         socket
             .to(userSocketMap.get(user.recipientId) || user.recipientId)
             .emit("user-typing:update", { user, typing: false });

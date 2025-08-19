@@ -48,7 +48,6 @@ class MemberController {
             const sockets = await io.fetchSockets();
             for (const socket of sockets) {
                 if (Number(socket.handshake.query.id) === bannedMember.userId) {
-                    console.log(bannedMember.userId);
                     io.to(socket.id).emit(
                         "to-banned:update-groups",
                         bannedMember
