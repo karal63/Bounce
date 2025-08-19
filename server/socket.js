@@ -58,6 +58,19 @@ io.on("connection", (socket) => {
         console.log("user logged");
     });
 
+    socket.on("user-typing", async (user) => {
+        socket
+            .to(userSocketMap.get(user.recipientId) || user.recipientId)
+            .emit("user-typing:update", { user, typing: true });
+    });
+
+    socket.on("user-not-typing", (user) => {
+        console.log(user);
+        socket
+            .to(userSocketMap.get(user.recipientId) || user.recipientId)
+            .emit("user-typing:update", { user, typing: false });
+    });
+
     socket.on("disconnect", async () => {
         console.log("A user disconnected: ", socket.id);
         if (userId) {

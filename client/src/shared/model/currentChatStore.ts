@@ -9,6 +9,7 @@ import type { MessagedUser } from "../types/MessagedUser";
 import type { Attachment } from "../types/Attachment";
 import type { Reaction } from "../types/Reaction";
 import type { Sticker } from "../types/Sticker";
+import type { TypingUser } from "../types/TypingUser";
 
 export const useCurrentChatStore = defineStore("currentChat", () => {
     const currentRoom = ref<CurrentRoom>({
@@ -25,6 +26,8 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
     const allReactions = ref<Reaction[]>([]);
     const stickers = ref<Sticker[]>([]);
     const onlineUsers = ref(new Set<string>());
+    const isTyping = ref(false);
+    const typingUsers = ref<TypingUser[]>([]);
 
     return {
         currentRoom,
@@ -38,5 +41,7 @@ export const useCurrentChatStore = defineStore("currentChat", () => {
         allReactions,
         stickers,
         onlineUsers,
+        isTyping,
+        typingUsers,
     };
 });

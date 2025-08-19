@@ -7,6 +7,8 @@ import { useUiStore } from "@/shared/model/uiStore";
 import { useRoute } from "vue-router";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { findMessagedUserById } from "@/shared/lib/helpers";
+import { checkIfUserTyping } from "../lib/helpers/checkIfUserTyping";
+import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 
 const shareModalStore = useShareModalStore();
 const uiStore = useUiStore();
@@ -64,7 +66,41 @@ const showShareLinkModal = () => {
                     class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full"
                 ></span>
             </div>
-            <h1 class="text-2xl">{{ getGroupName }}</h1>
+            <div class="flex-col">
+                <h1 class="text-2xl">{{ getGroupName }}</h1>
+                <!-- typing indicator -->
+                <div
+                    v-if="checkIfUserTyping()"
+                    class="h-5 flex items-center gap-2 text-purple-500"
+                >
+                    <span v-if="currentChatStore.currentRoom.type === 'group'"
+                        >{{
+                            findMemberById(
+                                currentChatStore.members,
+                                checkIfUserTyping()?.typingUserId
+                            )?.name
+                        }}
+                        typing</span
+                    >
+                    <span v-else> Typing </span>
+                    <span>
+                        <Icon icon="svg-spinners:3-dots-bounce" />
+                    </span>
+                </div>
+                <p
+                    v-else-if="
+                        currentChatStore.currentRoom.id &&
+                        currentChatStore.currentRoom.type === 'direct' &&
+                        currentChatStore.onlineUsers.has(
+                            currentChatStore.currentRoom.id
+                        )
+                    "
+                    class="text-green-500 text-sm"
+                >
+                    Online
+                </p>
+                <p v-else class="text-secondary text-sm">Offline</p>
+            </div>
         </div>
         <div class="flex items-center gap-2">
             <button

@@ -13,12 +13,13 @@ import { NotificationWindow } from "@/widgets/notification";
 import { ImagePreviewModal } from "@/shared/ui";
 import { onMounted } from "vue";
 import { useGetStickers } from "@/shared/model/useGetStickers";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { useTypingIndicator } from "@/features/typing-indicator";
 
 const { getStickers } = useGetStickers();
 
 onMounted(async () => {
     await getStickers();
+    useTypingIndicator();
 });
 </script>
 
@@ -27,7 +28,7 @@ onMounted(async () => {
         <div class="relative ml-10 w-full flex-col">
             <ChatTopBar />
             <div class="flex h-[92%]">
-                <div class="relative w-full h-full">
+                <div class="relative w-full h-full flex-col">
                     <MessagesList />
                     <MessageInputBlock />
                 </div>

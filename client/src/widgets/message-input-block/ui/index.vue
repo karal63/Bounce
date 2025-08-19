@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onBeforeUnmount, onUnmounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import type { ReadyMessage } from "@/shared/types/Message";
 
@@ -12,10 +12,12 @@ import MentionList from "./MentionList.vue";
 import ReplyBar from "./ReplyBar.vue";
 import Attachment from "./Attachment.vue";
 import AttachmentsPanel from "@/features/attachments-panel/ui/AttachmentsPanel.vue";
+import { useSocket } from "@/shared/config/useSocketStore";
 
 const { send } = useSendMessage();
 const sessionStore = useSessionStore();
 const currentChatStore = useCurrentChatStore();
+const { socket } = useSocket();
 
 const message = ref<ReadyMessage>({
     groupId: null,
@@ -29,6 +31,8 @@ const isMentionListOpen = ref(false);
 const cursorPos = ref<number>(0);
 const inputRef = ref<HTMLElement | null>(null);
 const areAttachmentsOpen = ref(false);
+const multiClicked = ref(false);
+let typingTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const submit = () => {
     send(message.value);
@@ -46,6 +50,8 @@ function handleInput(event: Event) {
 
     const prevChar = input[cursorPos - 1];
     isMentionListOpen.value = prevChar === "@";
+    userTyped();
+    multiClicked.value = true;
 }
 
 const mention = (name: string) => {
@@ -83,6 +89,38 @@ watch(
         }
     }
 );
+
+const userTyped = () => {
+    if (!multiClicked.value) {
+        socket.emit("user-typing", {
+            typingUserId: sessionStore.user?.id,
+            recipientId: currentChatStore.currentRoom.id,
+        });
+
+        if (typingTimeout) clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+            multiClicked.value = false;
+
+            socket.emit("user-not-typing", {
+                typingUserId: sessionStore.user?.id,
+                recipientId: currentChatStore.currentRoom.id,
+            });
+        }, 4000);
+    }
+};
+
+const removeTyping = () => {
+    socket.emit("user-not-typing", {
+        typingUserId: sessionStore.user?.id,
+        recipientId: currentChatStore.currentRoom.id,
+    });
+};
+
+window.addEventListener("beforeunload", removeTyping);
+
+onUnmounted(() => {
+    removeEventListener("beforeunload", removeTyping);
+});
 </script>
 
 <template>
@@ -124,7 +162,7 @@ watch(
                     data-testid="send-message-button"
                     @click.prevent="submit"
                     type="submit"
-                    class="bg-purple-500 text-white px-4 text-2xl h-[48px] rounded-md hover:bg-mainAccentHover transition cursor-pointer"
+                    class="bg-gradient-to-br from-purple-600 to-purple-300 text-white px-4 text-2xl h-[48px] rounded-md hover:bg-mainAccentHover transition cursor-pointer"
                 >
                     <Icon icon="material-symbols:send" />
                 </button>
