@@ -20,6 +20,7 @@ watch(
     () => currentChatStore.reactions,
     () => {
         reactions.value = getReactionsForMessage(props.message.id);
+        console.log(reactions.value);
     }
 );
 </script>

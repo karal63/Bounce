@@ -96,8 +96,8 @@ class ReactionService {
             `SELECT message_reactions.* FROM message_reactions 
             JOIN messages 
             ON messages.id = message_reactions.messageId
-            WHERE messages.groupId = ?`,
-            [roomId]
+            WHERE messages.groupId = ? OR messages.recipientId = ? OR messages.senderId = ?`,
+            [roomId, roomId, roomId]
         );
         return reactions;
     }

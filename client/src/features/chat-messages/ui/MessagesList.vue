@@ -33,13 +33,13 @@ const router = useRouter();
 const listRef = ref<HTMLElement | null>(null);
 const isLoading = ref(false);
 const messageContext = ref<Context>({
-    isVisible: true,
+    isVisible: false,
     posX: 0,
     posY: 0,
     message: null,
 });
 const reactionPanelContext = ref<ReactionContext>({
-    isVisible: true,
+    isVisible: false,
     posX: 0,
     posY: 0,
     message: null,
