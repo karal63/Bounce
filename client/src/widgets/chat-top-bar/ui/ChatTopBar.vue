@@ -36,12 +36,6 @@ const getGroupName = computed(() => {
 const showShareLinkModal = () => {
     shareModalStore.isShareModalOpen = true;
 };
-
-watchEffect(() => {
-    console.log(currentChatStore.onlineUsers);
-});
-
-console.log("render");
 </script>
 
 <template>

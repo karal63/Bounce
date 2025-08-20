@@ -50,9 +50,5 @@ onMounted(async () => {
     </div>
 </template>
 
-<!-- // END POINT HERE -->
-
-<!-- To complete -->
 <!-- Learn transitions in vue -->
-
 <!-- set linter to block imports not from public api -->
