@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { computed } from "vue";
+import { computed, watchEffect } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useShareModalStore } from "@/features/group-share-link";
 import { useUiStore } from "@/shared/model/uiStore";
@@ -9,12 +9,14 @@ import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { findMessagedUserById } from "@/shared/lib/helpers";
 import { checkIfUserTyping } from "../lib/helpers/checkIfUserTyping";
 import { findMemberById } from "@/shared/lib/helpers/findMemberById";
+import { useSessionStore } from "@/shared/session/model/sessionStore";
 
 const shareModalStore = useShareModalStore();
 const uiStore = useUiStore();
 const route = useRoute();
 
 const currentChatStore = useCurrentChatStore();
+const sessionStore = useSessionStore();
 
 const getGroupName = computed(() => {
     const room = currentChatStore.currentRoom;
@@ -34,6 +36,12 @@ const getGroupName = computed(() => {
 const showShareLinkModal = () => {
     shareModalStore.isShareModalOpen = true;
 };
+
+watchEffect(() => {
+    console.log(currentChatStore.onlineUsers);
+});
+
+console.log("render");
 </script>
 
 <template>
@@ -90,10 +98,16 @@ const showShareLinkModal = () => {
                 <p
                     v-else-if="
                         currentChatStore.currentRoom.id &&
-                        currentChatStore.currentRoom.type === 'direct' &&
-                        currentChatStore.onlineUsers.has(
+                        (currentChatStore.onlineUsers.has(
                             currentChatStore.currentRoom.id
-                        )
+                        ) ||
+                            currentChatStore.members.some(
+                                (member) =>
+                                    member.userId !== sessionStore.user?.id &&
+                                    currentChatStore.onlineUsers.has(
+                                        member.userId
+                                    )
+                            ))
                     "
                     class="text-green-500 text-sm"
                 >
