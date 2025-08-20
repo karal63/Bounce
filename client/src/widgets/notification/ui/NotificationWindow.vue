@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, onMounted, onUnmounted, watch } from "vue";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { Icon } from "@iconify/vue";
 import { useNotificationStore } from "../model/store";
 import { useSocket } from "@/shared/config/useSocketStore";
 import type { MessageWithName } from "@/shared/types/Message";
 import ModalTransition from "@/shared/ui/ModalTransition.vue";
+import { measureMemory } from "vm";
+import { getGroupById } from "@/shared/lib/helpers/getGroupById";
+import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 
 const notificationStore = useNotificationStore();
+const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
 const getValidMessage = computed(() => {
@@ -27,14 +31,33 @@ watch(
     }
 );
 
-socket.on("mention:show-notification", (message: MessageWithName) => {
+const showNotification = (message: MessageWithName) => {
+    let name: string | undefined = "";
+    if (message.groupId) {
+        name = getGroupById(currentChatStore.groups, message.groupId)?.name;
+    } else if (message.recipientId) {
+        name = message.name;
+    }
+
     notificationStore.notification = {
         isVisible: true,
         senderId: message.senderId,
-        name: message.name,
+        name: name ? name : "error: Unknown name",
         senderAvatar: message.avatarUrl,
         message: message.content,
     };
+};
+
+onMounted(() => {
+    socket.on("mention:show-notification", (message: MessageWithName) =>
+        showNotification(message)
+    );
+});
+
+onUnmounted(() => {
+    socket.off("mention:show-notification", (message: MessageWithName) =>
+        showNotification(message)
+    );
 });
 </script>
 
