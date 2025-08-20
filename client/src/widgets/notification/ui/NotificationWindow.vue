@@ -5,17 +5,14 @@ import { Icon } from "@iconify/vue";
 import { useNotificationStore } from "../model/store";
 import { useSocket } from "@/shared/config/useSocketStore";
 import type { MessageWithName } from "@/shared/types/Message";
-import { findMemberById } from "@/shared/lib/helpers/findMemberById";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import ModalTransition from "@/shared/ui/ModalTransition.vue";
 
 const notificationStore = useNotificationStore();
-const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
 const getValidMessage = computed(() => {
-    return notificationStore.notification.message.length > 40
-        ? notificationStore.notification.message.slice(0, 40) + "..."
+    return notificationStore.notification.message.length > 30
+        ? notificationStore.notification.message.slice(0, 20) + "..."
         : notificationStore.notification.message;
 });
 
@@ -27,20 +24,18 @@ watch(
                 notificationStore.notification.isVisible = false;
             }, 5000);
         }
-    },
-    { immediate: true }
+    }
 );
 
 socket.on("mention:show-notification", (message: MessageWithName) => {
     notificationStore.notification = {
         isVisible: true,
         senderId: message.senderId,
+        name: message.name,
         senderAvatar: message.avatarUrl,
         message: message.content,
     };
 });
-
-// create actual mention functionality
 </script>
 
 <template>
@@ -58,13 +53,8 @@ socket.on("mention:show-notification", (message: MessageWithName) => {
                     />
                 </div>
                 <div class="w-[78%]">
-                    <p class="mb-1">
-                        {{
-                            findMemberById(
-                                currentChatStore.members,
-                                notificationStore.notification.senderId
-                            )?.name
-                        }}
+                    <p class="mb-1 font-semibold">
+                        {{ notificationStore.notification.name }}
                     </p>
                     <p class="text-sm">{{ getValidMessage }}</p>
                 </div>
