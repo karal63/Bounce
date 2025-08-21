@@ -5,14 +5,18 @@ import appRouter from "@/app/router/index";
 import { createPinia } from "pinia";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 
-const app = createApp(App);
-const pinia = createPinia();
-app.use(pinia);
+const bootstrap = async () => {
+    const app = createApp(App);
+    const pinia = createPinia();
+    app.use(pinia);
 
-const sessionStore = useSessionStore();
+    const sessionStore = useSessionStore();
 
-if (localStorage.getItem("accessToken")) {
-    await sessionStore.checkAuth();
-}
+    if (localStorage.getItem("accessToken")) {
+        await sessionStore.checkAuth();
+    }
 
-app.use(appRouter).mount("#app");
+    app.use(appRouter).mount("#app");
+};
+
+bootstrap();
