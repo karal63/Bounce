@@ -26,6 +26,12 @@ jobs:
             - name: build client app
               working-directory: ./client
               run: npm run build
+            - name: run client
+              working-directory: ./client
+              run: npm run dev
+            - name: run server
+              working-directory: ./server
+              run: npm start
             - name: run unit tests
               working-directory: ./client
               run: npm run test
