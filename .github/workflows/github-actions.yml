@@ -21,7 +21,7 @@ jobs:
               working-directory: ./client
               run: npm install
             - name: install server modules
-              working-directory: ./client
+              working-directory: ./server
               run: npm install
             - name: build client app
               working-directory: ./client
@@ -30,8 +30,10 @@ jobs:
               working-directory: ./client
               run: npm run test
             - name: Install Playwright
+              working-directory: ./client
               run: npx playwright install
             - name: Install Playwright browsers
+              working-directory: ./client
               run: npx playwright install --with-deps
             - name: run e2e tests
               working-directory: ./client
