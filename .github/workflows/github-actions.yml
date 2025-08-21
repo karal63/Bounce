@@ -17,9 +17,22 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{matrix.node-version}}
+
             - name: install dependencies
               working-directory: ./client
               run: npm ci
+
+            - name: Run unit tests
+              working-directory: ./client
+              run: npm test
+
+            # - name: Install playwright browsers
+            #   working-directory: ./client
+            #   run: npx playwright install --with-deps
+
+            # - name: Run e2e tests
+            #   working-directory: ./client
+            #   run: npm run test:e2e
 
             - name: build app
               working-directory: ./client

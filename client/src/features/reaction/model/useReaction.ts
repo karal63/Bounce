@@ -2,7 +2,7 @@ import type { Reaction } from "@/shared/types/Reaction";
 import { apiAddReaction } from "../api/addReaction";
 import { apiHandleClick } from "../api/handleClick";
 import type { MessageWithName } from "@/shared/types/Message";
-import { apiGetAllReactions } from "../api/getAllReaction";
+import { apiGetAllReactions } from "../api/getAllReactions";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 

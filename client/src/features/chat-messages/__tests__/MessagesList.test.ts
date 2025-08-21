@@ -29,6 +29,12 @@ vi.mock("socket.io-client", () => {
     return { io: vi.fn(() => mockSocket), mockSocket };
 });
 
+vi.mock("@/features/reaction/api/getAllReactions", () => ({
+    apiGetAllReactions: vi.fn().mockResolvedValue({
+        data: [],
+    }),
+}));
+
 import { mount } from "@vue/test-utils";
 import MessagesList from "../ui/MessagesList.vue";
 import { createPinia, setActivePinia } from "pinia";
@@ -37,12 +43,6 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { mockSocket } from "socket.io-client";
 import type { MessageWithName } from "@/shared/types/Message";
 import type { Attachment } from "@/shared/types/Attachment";
-
-vi.mock("@/features/reaction/api/getAllReactions", () => ({
-    apiGetAllReactions: vi.fn().mockResolvedValue({
-        data: [],
-    }),
-}));
 
 describe("MessagesList", () => {
     beforeEach(async () => {
