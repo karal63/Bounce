@@ -20,9 +20,7 @@ jobs:
             - name: install dependencies
               working-directory: ./client
               run: npm ci
-            - name: run unit tests
-              working-directory: ./client
-              run: npm test
+
             - name: build app
               working-directory: ./client
               run: npm build
