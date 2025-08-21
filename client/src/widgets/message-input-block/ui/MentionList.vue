@@ -27,7 +27,7 @@ const emit = defineEmits<{
                 @click="emit('mention', mention.name)"
                 class="flex items-center gap-2 hover:bg-mainHoverOnGray transition-all cursor-pointer rounded-md py-1 px-2"
             >
-                <UserAvatar size="30" />
+                <UserAvatar alt="avatar" :src="mention.avatarUrl" size="30" />
                 <p>{{ mention.name }}</p>
             </li>
         </ul>

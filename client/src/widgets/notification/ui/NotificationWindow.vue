@@ -6,7 +6,6 @@ import { useNotificationStore } from "../model/store";
 import { useSocket } from "@/shared/config/useSocketStore";
 import type { MessageWithName } from "@/shared/types/Message";
 import ModalTransition from "@/shared/ui/ModalTransition.vue";
-import { measureMemory } from "vm";
 import { getGroupById } from "@/shared/lib/helpers/getGroupById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 

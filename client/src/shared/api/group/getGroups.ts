@@ -3,7 +3,7 @@ import type { Group } from "@/shared/types/Group";
 import type { AxiosResponse } from "axios";
 
 export const apiGetGroups = async (
-    userId: number
+    userId: string
 ): Promise<AxiosResponse<Group[]>> => {
     const groups = await axiosInstance.get(`${API_URL}/groups/${userId}`);
     return groups;

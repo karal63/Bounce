@@ -4,7 +4,7 @@ import type { AxiosResponse } from "axios";
 
 export const apiCreateGroup = async (
     name: string,
-    ownerId: number,
+    ownerId: string,
     description: string
 ): Promise<AxiosResponse<Group>> => {
     const newGroup = await axiosInstance.post(`${API_URL}/create-group`, {

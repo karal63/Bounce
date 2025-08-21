@@ -1,4 +1,3 @@
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { createPinia, setActivePinia } from "pinia";
 

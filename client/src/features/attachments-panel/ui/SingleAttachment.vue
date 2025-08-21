@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Attachment } from "@/shared/types/Attachment";
+import type { AttachmentToUpload } from "@/shared/types/Attachment";
 import { useAttachmentsStore } from "../model/attachmentsStore";
 import { ref } from "vue";
 import { useHover } from "@/shared/lib/hooks/useHover";
 import { Icon } from "@iconify/vue";
 
 defineProps<{
-    attachment: Attachment;
+    attachment: AttachmentToUpload;
     index: number;
 }>();
 

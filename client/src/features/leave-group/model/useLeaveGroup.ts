@@ -4,7 +4,7 @@ import { apiLeaveGroup } from "../api/leaveGroup";
 export const useLeaveGroup = () => {
     const currentChatStore = useCurrentChatStore();
 
-    const leaveGroup = async (groupId: number) => {
+    const leaveGroup = async (groupId: string) => {
         try {
             await apiLeaveGroup(groupId);
             currentChatStore.groups = currentChatStore.groups.filter(

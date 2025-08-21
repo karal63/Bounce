@@ -7,7 +7,7 @@ const appRouter: Router = createRouter({
     routes,
 });
 
-appRouter.beforeEach((to, from, next) => {
+appRouter.beforeEach((to, _, next) => {
     const auth = useSessionStore();
     if (to.meta.requiresAuth && !auth.isAuthenticated) {
         next("/login");

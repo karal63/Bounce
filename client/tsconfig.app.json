@@ -19,5 +19,11 @@
             "@/*": ["src/*"]
         }
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "images.d.ts"]
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "images.d.ts",
+        "global.d.ts"
+    ]
 }

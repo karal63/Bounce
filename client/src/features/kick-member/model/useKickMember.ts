@@ -3,7 +3,7 @@ import { useKickMemberStore } from "./kickMemberStore";
 
 export const useKickMember = () => {
     const kickMemberStore = useKickMemberStore();
-    const kickMember = async (memberId: number | undefined) => {
+    const kickMember = async (memberId: string | undefined) => {
         try {
             if (!memberId) return;
             await apiKickMember(memberId);

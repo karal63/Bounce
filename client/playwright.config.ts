@@ -6,7 +6,7 @@ export default defineConfig({
     testMatch: "**/*.e2e.ts",
 
     use: {
-        headless: false,
+        headless: true,
         baseURL: "http://localhost:5173",
     },
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { computed, watchEffect } from "vue";
+import { computed } from "vue";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useShareModalStore } from "@/features/group-share-link";
 import { useUiStore } from "@/shared/model/uiStore";
