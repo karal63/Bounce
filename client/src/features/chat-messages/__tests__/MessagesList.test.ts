@@ -39,11 +39,9 @@ import type { MessageWithName } from "@/shared/types/Message";
 import type { Attachment } from "@/shared/types/Attachment";
 
 vi.mock("@/features/reaction/api/getAllReactions", () => ({
-    apiGetAllReactions: vi.fn(() =>
-        Promise.resolve({
-            data: [],
-        })
-    ),
+    apiGetAllReactions: vi.fn().mockResolvedValue({
+        data: [],
+    }),
 }));
 
 describe("MessagesList", () => {
