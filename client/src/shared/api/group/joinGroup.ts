@@ -4,7 +4,7 @@ import type { AxiosResponse } from "axios";
 
 export const apiJoinGroup = async (
     link: string,
-    userId: number
+    userId: string
 ): Promise<AxiosResponse<Group>> => {
     const group = await axiosInstance.post(`${API_URL}/join-group/${link}`, {
         userId,

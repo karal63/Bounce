@@ -81,10 +81,10 @@ describe("MessagesList", () => {
             "newMessage",
             ({
                 newMessage,
-                attachments,
-            }: {
+            }: // attachments,
+            {
                 newMessage: MessageWithName;
-                attachments: Attachment[];
+                attachments?: Attachment[];
             }) => {
                 currentChatStore.messages.push(newMessage);
             }

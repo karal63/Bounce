@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onUnmounted, ref, watch } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import { Icon } from "@iconify/vue";
 import type { ReadyMessage } from "@/shared/types/Message";
 

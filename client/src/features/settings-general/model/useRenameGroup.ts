@@ -1,7 +1,7 @@
 import { apiRenameGroup } from "../api/renameGroup";
 
 export const useRenameGroup = () => {
-    const renameGroup = async (prevGroupId: number, newGroupName: string) => {
+    const renameGroup = async (prevGroupId: string, newGroupName: string) => {
         try {
             await apiRenameGroup(prevGroupId, newGroupName);
         } catch (error) {

@@ -4,7 +4,7 @@ import type { MemberWithName } from "@/shared/types/Member";
 
 export const getAllMembers = async (
     senderId: string,
-    groupId: number
+    groupId: string
 ): Promise<AxiosResponse<MemberWithName[]>> => {
     const members = await axiosInstance.post(`${API_URL}/members/${groupId}`, {
         senderId,

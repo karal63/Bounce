@@ -23,6 +23,7 @@ describe("SingleMessage", () => {
                     name: "mocked_userName",
                     replyToMessageId: "mocked_messageId",
                 },
+                pos: null,
             },
         });
         expect(wrapper.find("[data-testid=single-message]").exists()).toBe(

@@ -4,7 +4,7 @@ import { useBanMemberStore } from "./banMemberStore";
 export const useBanMember = () => {
     const banMemberStore = useBanMemberStore();
     const banMember = async (
-        memberId: number | undefined,
+        memberId: string | undefined,
         banReason: string
     ) => {
         try {

@@ -10,7 +10,7 @@ const sessionStore = useSessionStore();
 const deleteGroupStore = useDeleteGroupStore();
 const { leaveGroup } = useLeaveGroup();
 
-const props = defineProps<{
+defineProps<{
     context: ContextGroup;
 }>();
 

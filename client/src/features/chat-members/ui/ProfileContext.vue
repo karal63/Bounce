@@ -4,9 +4,10 @@ import { useMemberStore } from "../model/memberStore";
 import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
 import { ref } from "vue";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import type { MemberWithName } from "@/shared/types/Member";
 
 defineProps<{
-    memberContext: Context;
+    memberContext: Context<MemberWithName>;
 }>();
 const emit = defineEmits<{
     (event: "closeContext"): void;
@@ -29,7 +30,11 @@ useClickOutside(contextRef, () => emit("closeContext"));
         }"
     >
         <div class="flex justify-between w-full">
-            <UserAvatar size="48" />
+            <UserAvatar
+                alt="avatar"
+                :src="memberContext.user?.avatarUrl"
+                size="48"
+            />
 
             <div>
                 <button

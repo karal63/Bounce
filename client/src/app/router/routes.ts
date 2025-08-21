@@ -45,7 +45,7 @@ export const routes: RouteRecordRaw[] = [
                 path: "/chat/settings",
                 component: Settings,
                 meta: { requiresAuth: true },
-                beforeEnter: (to, from, next) => {
+                beforeEnter: (_to, _from, next) => {
                     const store = useCurrentChatStore();
                     if (!store.hasPermissions || !store.currentRoom) {
                         next("/chat");
