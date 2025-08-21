@@ -29,6 +29,8 @@ jobs:
             - name: run unit tests
               working-directory: ./client
               run: npm run test
+            - name: Install Playwright
+              run: npx playwright install
             - name: Install Playwright browsers
               run: npx playwright install --with-deps
             - name: run e2e tests
