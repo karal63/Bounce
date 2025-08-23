@@ -64,7 +64,7 @@ onUnmounted(() => {
     <ModalTransition>
         <div
             v-show="notificationStore.notification.isVisible"
-            class="absolute bottom-5 right-5 bg-mainGray border border-mainHoverOnGray px-4 py-2 w-[300px] rounded-md"
+            class="absolute bottom-5 right-5 bg-mainGray border border-mainHoverOnGray shadow-xl shadow-purple-400 px-4 py-2 w-[300px] rounded-md"
         >
             <div class="flex">
                 <div class="w-[22%]">
