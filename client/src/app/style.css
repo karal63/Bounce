@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer base {
+    * {
+        color: white;
+    }
+}
+
 @theme {
     --font-display: "Poppins", "sans-serif";
     --font-logo2: "Red Hat Display", sans-serif;
