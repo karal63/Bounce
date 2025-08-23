@@ -3,7 +3,7 @@ import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { useBanReasonStore } from "../model/badReasonStore";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
-import Button from "@/shared/ui/Button.vue";
+import Button from "@/shared/ui/Button/Button.vue";
 
 const banReasonStore = useBanReasonStore();
 const sessionStore = useSessionStore();
