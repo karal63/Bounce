@@ -3,10 +3,15 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import NotificationWindow from "./NotificationWindow.vue";
 import { createPinia, setActivePinia } from "pinia";
 import { useNotificationStore } from "../model/store";
+import { watch } from "vue";
 
 const meta = {
     component: NotificationWindow,
-    parameters: { backgrounds: { default: "dark" } },
+    argTypes: {
+        isVisible: {
+            control: "boolean",
+        },
+    },
 } satisfies Meta<typeof NotificationWindow>;
 
 export default meta;
@@ -30,10 +35,18 @@ export const Primary: Story = {
                 },
             });
 
+            watch(
+                () => args,
+                () => {
+                    notificationStore.notification.isVisible = args.isVisible;
+                },
+                { deep: true }
+            );
+
             return { args };
         },
         template: '<NotificationWindow v-bind="args" />',
     }),
 };
 
-// mock store state to show notification
+// create boolean selector for show/hide notification
