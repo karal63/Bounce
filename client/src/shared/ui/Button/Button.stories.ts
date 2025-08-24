@@ -4,6 +4,13 @@ import Button from "./Button.vue";
 
 const meta = {
     component: Button,
+    argTypes: {
+        color: {
+            options: ["red", "purple"],
+            control: "select",
+        },
+        onCallback: { action: "callback fired" },
+    },
 } satisfies Meta<typeof Button>;
 
 export default meta;
