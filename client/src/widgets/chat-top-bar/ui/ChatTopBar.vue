@@ -115,6 +115,26 @@ const showShareLinkModal = () => {
                 v-if="
                     route.path.startsWith('/chat') &&
                     !route.path.startsWith('/chat/settings') &&
+                    currentChatStore.currentRoom.type === 'direct'
+                "
+                class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
+            >
+                <Icon icon="proicons:call" />
+            </button>
+            <button
+                v-if="
+                    route.path.startsWith('/chat') &&
+                    !route.path.startsWith('/chat/settings') &&
+                    currentChatStore.currentRoom.type === 'direct'
+                "
+                class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
+            >
+                <Icon icon="weui:video-call-outlined" />
+            </button>
+            <button
+                v-if="
+                    route.path.startsWith('/chat') &&
+                    !route.path.startsWith('/chat/settings') &&
                     currentChatStore.currentRoom.type === 'group'
                 "
                 @click="showShareLinkModal"
