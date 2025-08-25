@@ -5,7 +5,7 @@ import { useMemberStore } from "@/features/chat-members";
 import { useBanMember } from "../model/useBanMember";
 import ModalInput from "@/shared/ui/ModalInput.vue";
 import { ref } from "vue";
-import Button from "@/shared/ui/Button.vue";
+import Button from "@/shared/ui/Button/Button.vue";
 
 const badMemberStore = useBanMemberStore();
 const memberStore = useMemberStore();

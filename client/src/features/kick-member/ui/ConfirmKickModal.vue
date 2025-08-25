@@ -3,7 +3,7 @@ import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { useKickMemberStore } from "../model/kickMemberStore";
 import { useMemberStore } from "@/features/chat-members";
 import { useKickMember } from "../model/useKickMember";
-import Button from "@/shared/ui/Button.vue";
+import Button from "@/shared/ui/Button/Button.vue";
 import { getGroupById } from "@/shared/lib/helpers/getGroupById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 const kickMemberStore = useKickMemberStore();

@@ -5,7 +5,7 @@ import { onMounted, ref } from "vue";
 import { useGetBannedUsers } from "../model/useGetBannedUsers";
 import SingleUser from "./SingleUser.vue";
 import UserContext from "./UserContext.vue";
-import Button from "@/shared/ui/Button.vue";
+import Button from "@/shared/ui/Button/Button.vue";
 import { useSettingsMembersStore } from "../model/store";
 
 const { getBannedUsers } = useGetBannedUsers();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getGroupById } from "@/shared/lib/helpers/getGroupById";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import Button from "@/shared/ui/Button.vue";
+import Button from "@/shared/ui/Button/Button.vue";
 import Input from "@/shared/ui/Input.vue";
 import { ref } from "vue";
 import { useRenameGroup } from "../model/useRenameGroup";
