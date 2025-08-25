@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import NotificationWindow from "./NotificationWindow.vue";
 import { createPinia, setActivePinia } from "pinia";
 import { useNotificationStore } from "../model/store";
-import { watch } from "vue";
 
 const meta = {
     component: NotificationWindow,
