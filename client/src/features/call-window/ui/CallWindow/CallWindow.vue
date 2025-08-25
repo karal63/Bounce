@@ -24,7 +24,7 @@ const currentChatStore = useCurrentChatStore();
             <div class="h-full flex-center">
                 <div class="flex-col items-center">
                     <UserAvatar size="125" alt="user" />
-                    <p class="mt-3 text-green-400">4.10min</p>
+                    <p class="mt-3 text-green-400">Connecting...</p>
                 </div>
             </div>
 
