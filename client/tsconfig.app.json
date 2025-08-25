@@ -24,6 +24,7 @@
         "src/**/*.tsx",
         "src/**/*.vue",
         "images.d.ts",
-        "global.d.ts"
+        "global.d.ts",
+        "shims-vue.d.ts"
     ]
 }

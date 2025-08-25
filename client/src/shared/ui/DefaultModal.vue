@@ -34,7 +34,7 @@ useClickOutside(modalRef, () => emit("closeModal"));
         <ModalTransition name="zoom-fade">
             <div
                 v-show="showContent"
-                class="pb-3 px-4 transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl flex flex-col gap-3"
+                class="relative pb-3 px-4 transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl flex flex-col gap-3"
                 :style="{
                     width: `${sizeX ?? '400'}px`,
                     height: `${sizeY ?? '300'}px`,

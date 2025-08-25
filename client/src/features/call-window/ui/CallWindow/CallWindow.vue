@@ -11,7 +11,7 @@ const currentChatStore = useCurrentChatStore();
 
 <template>
     <ModalTransition
-        v-if="currentChatStore.currentRoom.type === 'direct'"
+        v-if="currentChatStore.currentRoom.type !== 'group'"
         v-show="callStore.call.isCalling"
     >
         <div
