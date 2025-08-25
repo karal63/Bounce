@@ -13,6 +13,8 @@ const notificationStore = useNotificationStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
+let notificationTimeout: ReturnType<typeof setTimeout> | null = null;
+
 const getValidMessage = computed(() => {
     return notificationStore.notification.message.length > 30
         ? notificationStore.notification.message.slice(0, 20) + "..."
@@ -23,7 +25,8 @@ watch(
     () => notificationStore.notification.isVisible,
     () => {
         if (notificationStore.notification.isVisible) {
-            setTimeout(() => {
+            if (notificationTimeout) clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => {
                 notificationStore.notification.isVisible = false;
             }, 5000);
         }
