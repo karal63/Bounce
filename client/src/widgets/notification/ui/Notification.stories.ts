@@ -7,11 +7,6 @@ import { watch } from "vue";
 
 const meta = {
     component: NotificationWindow,
-    argTypes: {
-        isVisible: {
-            control: "boolean",
-        },
-    },
 } satisfies Meta<typeof NotificationWindow>;
 
 export default meta;
@@ -30,18 +25,10 @@ export const Primary: Story = {
                     message:
                         "Hello World paalore adaoskda loremasd are asdasd cu eq 21 qdwqda dsasc",
                     name: "Leo",
-                    senderAvatar: null,
-                    senderId: null,
+                    senderAvatar: "",
+                    senderId: "",
                 },
             });
-
-            watch(
-                () => args,
-                () => {
-                    notificationStore.notification.isVisible = args.isVisible;
-                },
-                { deep: true }
-            );
 
             return { args };
         },
