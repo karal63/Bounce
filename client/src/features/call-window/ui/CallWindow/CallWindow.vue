@@ -12,7 +12,7 @@ const currentChatStore = useCurrentChatStore();
 <template>
     <ModalTransition
         v-if="currentChatStore.currentRoom.type === 'direct'"
-        v-show="callStore.isCalling"
+        v-show="callStore.call.isCalling"
     >
         <div
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
@@ -23,8 +23,12 @@ const currentChatStore = useCurrentChatStore();
             <!-- else -->
             <div class="h-full flex-center">
                 <div class="flex-col items-center">
-                    <UserAvatar size="125" alt="user" />
-                    <p class="mt-3 text-green-400">Connecting...</p>
+                    <UserAvatar
+                        size="125"
+                        alt="user"
+                        class="border-4 border-purple-500 drop-shadow-2xl drop-shadow-purple-900"
+                    />
+                    <p class="mt-5 text-green-400">Connecting...</p>
                 </div>
             </div>
 
@@ -33,7 +37,13 @@ const currentChatStore = useCurrentChatStore();
                 class="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-mainDarkBg/20 px-4 py-2 rounded-full flex items-center gap-4"
             >
                 <button
-                    class="w-13 h-13 rounded-full text-3xl flex-center cursor-pointer hover:bg-mainHoverOnGray transition-all"
+                    @click="callStore.toggleMute"
+                    class="w-13 h-13 rounded-full text-3xl flex-center cursor-pointer transition-all"
+                    :class="
+                        callStore.call.isMuted
+                            ? 'bg-purple-500'
+                            : 'hover:bg-mainHoverOnGray'
+                    "
                 >
                     <Icon icon="quill:mute" />
                 </button>

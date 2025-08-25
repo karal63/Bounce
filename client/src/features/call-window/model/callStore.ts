@@ -2,15 +2,28 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useCallStore = defineStore("call", () => {
-    const isCalling = ref(false);
+    const call = ref({
+        isCalling: false,
+        isMuted: false,
+    });
 
     const callUser = () => {
-        isCalling.value = true;
+        call.value = {
+            isCalling: true,
+            isMuted: false,
+        };
     };
 
     const dropCall = () => {
-        isCalling.value = false;
+        call.value = {
+            isCalling: false,
+            isMuted: false,
+        };
     };
 
-    return { isCalling, callUser, dropCall };
+    const toggleMute = () => {
+        call.value.isMuted = !call.value.isMuted;
+    };
+
+    return { call, callUser, dropCall, toggleMute };
 });

@@ -19,7 +19,7 @@ export const Primary: Story = {
             const callStore = useCallStore();
             const currentChatStore = useCurrentChatStore();
 
-            callStore.isCalling = true;
+            callStore.call.isCalling = true;
             currentChatStore.currentRoom.type = "direct";
 
             return { args };
