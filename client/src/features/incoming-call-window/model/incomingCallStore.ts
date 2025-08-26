@@ -37,6 +37,11 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             isCalling: true,
             to: incomingCall.value.callingUserId,
         };
+        socket.emit("call:accept", {
+            from: sessionStore.user?.id,
+            to: incomingCall.value.callingUserId,
+        });
+        callStore.setStatus("00:00");
         incomingCall.value.isCalling = false;
     };
 

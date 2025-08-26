@@ -8,6 +8,8 @@ export const useCallStore = defineStore("call", () => {
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
 
+    const callStatus = ref("Connecting...");
+
     const call = ref<Call>({
         from: sessionStore.user?.id,
         to: null,
@@ -39,5 +41,9 @@ export const useCallStore = defineStore("call", () => {
         call.value.isMuted = !call.value.isMuted;
     };
 
-    return { call, callUser, dropCall, toggleMute };
+    const setStatus = (value: string) => {
+        callStatus.value = value;
+    };
+
+    return { call, callUser, dropCall, toggleMute, callStatus, setStatus };
 });

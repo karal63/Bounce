@@ -7,17 +7,14 @@ import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { findMessagedUserById } from "@/shared/lib/helpers";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { onMounted, onUnmounted } from "vue";
-import { ref } from "vue";
 
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
-const callStatus = ref("Connecting...");
-
 const endCall = ({ from }: { from: string }) => {
     if (from !== callStore.call.to) return;
-    callStatus.value = "Canceled";
+    callStore.setStatus("Canceled");
     setTimeout(() => {
         callStore.call = {
             ...callStore.call,
@@ -25,16 +22,25 @@ const endCall = ({ from }: { from: string }) => {
             to: null,
             isMuted: false,
         };
-        callStatus.value = "Connecting...";
+        callStore.setStatus("Connecting...");
     }, 1000);
+};
+
+const acceptCall = ({ from }: { from: string }) => {
+    if (callStore.call.to !== from) return;
+    callStore.setStatus("00:00");
+
+    // create timer here
 };
 
 onMounted(() => {
     socket.on("call:end", endCall);
+    socket.on("call:accept", acceptCall);
 });
 
 onUnmounted(() => {
     socket.off("call:end", endCall);
+    socket.off("call:accept", acceptCall);
 });
 </script>
 
@@ -69,7 +75,9 @@ onUnmounted(() => {
                         }}
                     </p>
 
-                    <p class="mt-3 text-green-400">{{ callStatus }}</p>
+                    <p class="mt-3 text-green-400">
+                        {{ callStore.callStatus }}
+                    </p>
                 </div>
             </div>
 

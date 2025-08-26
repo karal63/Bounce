@@ -8,4 +8,8 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
     socket.on("call:end", ({ from, to }) => {
         socket.to(userSocketMap.get(to)).emit("call:end", { from, to });
     });
+
+    socket.on("call:accept", ({ from, to }) => {
+        socket.to(userSocketMap.get(to)).emit("call:accept", { from, to });
+    });
 };
