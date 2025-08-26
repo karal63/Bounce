@@ -11,8 +11,12 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
         callingUserId: null,
     });
 
-    const decline = () => {
-        incomingCall.value.isCalling = false;
+    const decline = (from: string) => {
+        if (incomingCall.value.callingUserId !== from) return;
+        incomingCall.value = {
+            isCalling: false,
+            callingUserId: null,
+        };
     };
 
     const accept = () => {

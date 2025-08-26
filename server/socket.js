@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { instrument } = require("@socket.io/admin-ui");
 const redisClient = require("./redisClient");
+const callHandlers = require("./sockets/call");
 require("dotenv").config();
 
 const app = express();
@@ -69,12 +70,6 @@ io.on("connection", (socket) => {
             .emit("user-typing:update", { user, typing: false });
     });
 
-    socket.on("set:incoming-call", (call) => {
-        socket
-            .to(userSocketMap.get(call.to))
-            .emit("get:incoming-call", call.from);
-    });
-
     socket.on("disconnect", async () => {
         console.log("A user disconnected: ", socket.id);
         if (userId) {
@@ -83,6 +78,8 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("status:update", { userId, online: false });
         await redisClient.sRem("online-users", userId);
     });
+
+    callHandlers(io, socket, userSocketMap);
 });
 
 instrument(io, {

@@ -15,7 +15,7 @@ export const useCallStore = defineStore("call", () => {
         isMuted: false,
     });
 
-    const callUser = (userId: string) => {
+    const callUser = (userId: string | null) => {
         call.value = {
             ...call.value,
             to: userId,
@@ -26,6 +26,7 @@ export const useCallStore = defineStore("call", () => {
     };
 
     const dropCall = () => {
+        socket.emit("call:end", { from: call.value.from, to: call.value.to });
         call.value = {
             ...call.value,
             to: null,

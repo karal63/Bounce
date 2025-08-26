@@ -17,12 +17,18 @@ const getIncomingCall = (fromId: string) => {
     };
 };
 
+const cancelCall = () => {
+    incomingCallStore.decline();
+};
+
 onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);
+    socket.on("call:end", cancelCall);
 });
 
 onUnmounted(() => {
     socket.off("get:incoming-call", getIncomingCall);
+    socket.off("call:end", cancelCall);
 });
 </script>
 
