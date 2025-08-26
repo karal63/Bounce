@@ -5,9 +5,37 @@ import { Icon } from "@iconify/vue";
 import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { findMessagedUserById } from "@/shared/lib/helpers";
+import { useSocket } from "@/shared/config/useSocketStore";
+import { onMounted, onUnmounted } from "vue";
+import { ref } from "vue";
 
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
+const { socket } = useSocket();
+
+const callStatus = ref("Connecting...");
+
+const endCall = ({ from }: { from: string }) => {
+    if (from !== callStore.call.to) return;
+    callStatus.value = "Canceled";
+    setTimeout(() => {
+        callStore.call = {
+            ...callStore.call,
+            isCalling: false,
+            to: null,
+            isMuted: false,
+        };
+        callStatus.value = "Connecting...";
+    }, 1000);
+};
+
+onMounted(() => {
+    socket.on("call:end", endCall);
+});
+
+onUnmounted(() => {
+    socket.off("call:end", endCall);
+});
 </script>
 
 <template>
@@ -41,7 +69,7 @@ const currentChatStore = useCurrentChatStore();
                         }}
                     </p>
 
-                    <p class="mt-3 text-green-400">Connecting...</p>
+                    <p class="mt-3 text-green-400">{{ callStatus }}</p>
                 </div>
             </div>
 

@@ -6,6 +6,6 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
     });
 
     socket.on("call:end", ({ from, to }) => {
-        socket.to(userSocketMap.get(to)).emit("call:end", from);
+        socket.to(userSocketMap.get(to)).emit("call:end", { from, to });
     });
 };
