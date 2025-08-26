@@ -69,6 +69,12 @@ io.on("connection", (socket) => {
             .emit("user-typing:update", { user, typing: false });
     });
 
+    socket.on("set:incoming-call", (call) => {
+        socket
+            .to(userSocketMap.get(call.to))
+            .emit("get:incoming-call", call.from);
+    });
+
     socket.on("disconnect", async () => {
         console.log("A user disconnected: ", socket.id);
         if (userId) {

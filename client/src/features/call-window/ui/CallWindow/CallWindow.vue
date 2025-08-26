@@ -4,6 +4,7 @@ import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { Icon } from "@iconify/vue";
 import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { findMessagedUserById } from "@/shared/lib/helpers";
 
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
@@ -24,11 +25,23 @@ const currentChatStore = useCurrentChatStore();
             <div class="h-full flex-center">
                 <div class="flex-col items-center">
                     <UserAvatar
+                        v-if="callStore.call.to"
                         size="125"
                         alt="user"
+                        :src="
+                            findMessagedUserById(callStore.call.to)?.avatarUrl
+                        "
                         class="border-4 border-purple-500 drop-shadow-2xl drop-shadow-purple-900"
                     />
-                    <p class="mt-5 text-green-400">Connecting...</p>
+
+                    <p v-if="callStore.call.to" class="text-xl mt-8">
+                        {{
+                            findMessagedUserById(callStore.call.to)
+                                ?.otherUserName ?? "error: could not get name"
+                        }}
+                    </p>
+
+                    <p class="mt-3 text-green-400">Connecting...</p>
                 </div>
             </div>
 

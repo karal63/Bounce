@@ -2,14 +2,38 @@
 import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { Icon } from "@iconify/vue";
 import { useInclomingCallStore } from "../../model/incomingCallStore";
+import { onMounted, onUnmounted } from "vue";
+import { useSocket } from "@/shared/config/useSocketStore";
+import { findMessagedUserById } from "@/shared/lib/helpers";
 
+const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
+
+const getIncomingCall = (fromId: string) => {
+    incomingCallStore.incomingCall = {
+        ...incomingCallStore.incomingCall,
+        isCalling: true,
+        callingUserId: fromId,
+    };
+};
+
+onMounted(() => {
+    socket.on("get:incoming-call", getIncomingCall);
+});
+
+onUnmounted(() => {
+    socket.off("get:incoming-call", getIncomingCall);
+});
 </script>
 
 <template>
     <DefaultModal
         v-show="incomingCallStore.incomingCall.isCalling"
-        event="Leo calling"
+        v-if="incomingCallStore.incomingCall.callingUserId"
+        :event="
+            findMessagedUserById(incomingCallStore.incomingCall.callingUserId)
+                ?.otherUserName + ' calling'
+        "
         size-x="400"
         size-y="150"
         :store-state="incomingCallStore.incomingCall.isCalling"
