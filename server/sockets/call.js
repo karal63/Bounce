@@ -12,4 +12,23 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
     socket.on("call:accept", ({ from, to }) => {
         socket.to(userSocketMap.get(to)).emit("call:accept", { from, to });
     });
+
+    // fix broadcast
+
+    socket.on("webrtc:offer", ({ offer }) => {
+        console.log("webrtc:offer");
+        socket.broadcast.emit("webrtc:offer", { offer });
+    });
+
+    socket.on("webrtc:answer", ({ answer }) => {
+        console.log("webrtc:answer");
+
+        socket.broadcast.emit("webrtc:answer", { answer });
+    });
+
+    socket.on("webrtc:candidate", ({ candidate }) => {
+        console.log("webrtc:candidate");
+
+        socket.broadcast.emit("webrtc:candidate", { candidate });
+    });
 };

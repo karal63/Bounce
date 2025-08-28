@@ -9,6 +9,8 @@ export const useCallStore = defineStore("call", () => {
     const sessionStore = useSessionStore();
 
     const callStatus = ref("Connecting...");
+    const localStream = ref<MediaStream | null>(null);
+    const remoteStream = ref<MediaStream | null>(null);
 
     const call = ref<Call>({
         from: sessionStore.user?.id,
@@ -45,5 +47,14 @@ export const useCallStore = defineStore("call", () => {
         callStatus.value = value;
     };
 
-    return { call, callUser, dropCall, toggleMute, callStatus, setStatus };
+    return {
+        call,
+        callUser,
+        dropCall,
+        toggleMute,
+        callStatus,
+        setStatus,
+        localStream,
+        remoteStream,
+    };
 });

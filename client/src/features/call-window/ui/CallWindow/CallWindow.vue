@@ -6,11 +6,21 @@ import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { findMessagedUserById } from "@/shared/lib/helpers";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import { watch } from "vue";
+import {
+    handleAnswer,
+    handleCandidate,
+    handleOffer,
+    startLocalStream,
+} from "../../lib/rtc";
 
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
+
+const localVideo = ref<HTMLVideoElement | null>(null);
+const remoteVideo = ref<HTMLVideoElement | null>(null);
 
 const endCall = ({ from }: { from: string }) => {
     if (from !== callStore.call.to) return;
@@ -36,12 +46,60 @@ const acceptCall = ({ from }: { from: string }) => {
 onMounted(() => {
     socket.on("call:end", endCall);
     socket.on("call:accept", acceptCall);
+
+    socket.on("webrtc:offer", ({ offer }) => handleOffer(offer));
+    socket.on("webrtc:answer", ({ answer }) => handleAnswer(answer));
+    socket.on("webrtc:candidate", ({ candidate }) =>
+        handleCandidate(candidate)
+    );
 });
 
 onUnmounted(() => {
     socket.off("call:end", endCall);
     socket.off("call:accept", acceptCall);
 });
+
+// Start local media when call begins
+watch(
+    () => callStore.call.isCalling,
+    (isCalling) => {
+        if (isCalling) startLocalStream(localVideo);
+    }
+);
+
+// Make sure elements pick up streams and actually play
+onMounted(async () => {
+    if (localVideo.value && callStore.localStream) {
+        localVideo.value.srcObject = callStore.localStream;
+        localVideo.value.muted = true;
+        localVideo.value.playsInline = true;
+        try {
+            await localVideo.value.play();
+        } catch {}
+    }
+    if (remoteVideo.value && callStore.remoteStream) {
+        remoteVideo.value.srcObject = callStore.remoteStream;
+        remoteVideo.value.playsInline = true;
+        try {
+            await remoteVideo.value.play();
+        } catch {}
+    }
+});
+
+// React when remote stream reference changes
+watch(
+    () => callStore.remoteStream,
+    async (stream) => {
+        if (remoteVideo.value && stream) {
+            remoteVideo.value.srcObject = stream;
+            remoteVideo.value.playsInline = true;
+            try {
+                await remoteVideo.value.play();
+            } catch {}
+        }
+    },
+    { immediate: true } // no need for deep
+);
 </script>
 
 <template>
@@ -53,7 +111,22 @@ onUnmounted(() => {
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
         >
             <!-- if video show it -->
-            <!-- <div class="h-full w-full"></div> -->
+            <!-- <div>
+                <video
+                    ref="localVideo"
+                    autoplay
+                    playsinline
+                    muted
+                    class="w-60 h-40 bg-black"
+                ></video>
+                123
+            </div> -->
+            <video
+                ref="remoteVideo"
+                autoplay
+                playsinline
+                class="w-full h-full bg-black"
+            ></video>
 
             <!-- else -->
             <div class="h-full flex-center">
