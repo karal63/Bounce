@@ -3,14 +3,14 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useCall } from "../@";
 
 export const useCallStore = defineStore("call", () => {
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
+    const { callUser } = useCall();
 
     const callStatus = ref("Connecting...");
-    const localStream = ref<MediaStream | null>(null);
-    const remoteStream = ref<MediaStream | null>(null);
 
     const call = ref<Call>({
         from: sessionStore.user?.id,
@@ -19,7 +19,7 @@ export const useCallStore = defineStore("call", () => {
         isMuted: false,
     });
 
-    const callUser = (userId: string | null) => {
+    const handleCall = (userId: string | null) => {
         call.value = {
             ...call.value,
             to: userId,
@@ -27,6 +27,9 @@ export const useCallStore = defineStore("call", () => {
             isMuted: false,
         };
         socket.emit("set:incoming-call", call.value);
+
+        if (!call.value.to) return;
+        callUser(call.value.to);
     };
 
     const dropCall = () => {
@@ -39,6 +42,20 @@ export const useCallStore = defineStore("call", () => {
         };
     };
 
+    const callEnd = ({ from }: { from: string }) => {
+        if (from !== call.value.to) return;
+        setStatus("Canceled");
+        setTimeout(() => {
+            call.value = {
+                ...call.value,
+                isCalling: false,
+                to: null,
+                isMuted: false,
+            };
+            setStatus("Connecting...");
+        }, 1000);
+    };
+
     const toggleMute = () => {
         call.value.isMuted = !call.value.isMuted;
     };
@@ -49,12 +66,11 @@ export const useCallStore = defineStore("call", () => {
 
     return {
         call,
-        callUser,
+        handleCall,
         dropCall,
         toggleMute,
         callStatus,
         setStatus,
-        localStream,
-        remoteStream,
+        callEnd,
     };
 });

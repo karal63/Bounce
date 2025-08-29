@@ -15,20 +15,21 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
 
     // fix broadcast
 
-    socket.on("webrtc:offer", ({ offer }) => {
-        console.log("webrtc:offer");
-        socket.broadcast.emit("webrtc:offer", { offer });
+    socket.on("webrtc:offer", ({ offer, to }) => {
+        socket.to(userSocketMap.get(to)).emit("webrtc:offer", { offer });
     });
 
-    socket.on("webrtc:answer", ({ answer }) => {
-        console.log("webrtc:answer");
+    socket.on("webrtc:answer", ({ answer, to }) => {
+        console.log("answer: ", to);
 
         socket.broadcast.emit("webrtc:answer", { answer });
     });
 
-    socket.on("webrtc:candidate", ({ candidate }) => {
-        console.log("webrtc:candidate");
+    socket.on("webrtc:candidate", ({ candidate, to }) => {
+        console.log(to);
 
-        socket.broadcast.emit("webrtc:candidate", { candidate });
+        socket
+            .to(userSocketMap.get(to))
+            .emit("webrtc:candidate", { candidate });
     });
 };

@@ -119,7 +119,7 @@ const showShareLinkModal = () => {
                     !route.path.startsWith('/chat/settings') &&
                     currentChatStore.currentRoom.type === 'direct'
                 "
-                @click="callStore.callUser(currentChatStore.currentRoom.id)"
+                @click="callStore.handleCall(currentChatStore.currentRoom.id)"
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >
                 <Icon icon="proicons:call" />

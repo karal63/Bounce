@@ -1,105 +1,45 @@
 <script setup lang="ts">
 import ModalTransition from "@/shared/ui/ModalTransition.vue";
-import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { Icon } from "@iconify/vue";
 import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { findMessagedUserById } from "@/shared/lib/helpers";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { watch } from "vue";
-import {
-    handleAnswer,
-    handleCandidate,
-    handleOffer,
-    startLocalStream,
-} from "../../lib/rtc";
+import { useCall } from "../../lib/useCall";
 
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
-const localVideo = ref<HTMLVideoElement | null>(null);
-const remoteVideo = ref<HTMLVideoElement | null>(null);
-
-const endCall = ({ from }: { from: string }) => {
-    if (from !== callStore.call.to) return;
-    callStore.setStatus("Canceled");
-    setTimeout(() => {
-        callStore.call = {
-            ...callStore.call,
-            isCalling: false,
-            to: null,
-            isMuted: false,
-        };
-        callStore.setStatus("Connecting...");
-    }, 1000);
-};
+const { localVideo, remoteVideo, startLocalStream } = useCall();
 
 const acceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
     callStore.setStatus("00:00");
-
-    // create timer here
 };
 
+watch(
+    () => callStore.call.isCalling,
+    () => {
+        if (callStore.call.isCalling) {
+            startLocalStream();
+        }
+    }
+);
+
 onMounted(() => {
-    socket.on("call:end", endCall);
+    socket.on("call:end", ({ from }) => callStore.callEnd(from));
     socket.on("call:accept", acceptCall);
 
-    socket.on("webrtc:offer", ({ offer }) => handleOffer(offer));
-    socket.on("webrtc:answer", ({ answer }) => handleAnswer(answer));
-    socket.on("webrtc:candidate", ({ candidate }) =>
-        handleCandidate(candidate)
-    );
+    socket.on("webrtc:answer", ({ answer }) => console.log(answer));
+    socket.on("webrtc:candidate", ({ candidate }) => console.log(candidate));
 });
 
 onUnmounted(() => {
-    socket.off("call:end", endCall);
+    socket.off("call:end", ({ from }) => callStore.callEnd(from));
     socket.off("call:accept", acceptCall);
 });
-
-// Start local media when call begins
-watch(
-    () => callStore.call.isCalling,
-    (isCalling) => {
-        if (isCalling) startLocalStream(localVideo);
-    }
-);
-
-// Make sure elements pick up streams and actually play
-onMounted(async () => {
-    if (localVideo.value && callStore.localStream) {
-        localVideo.value.srcObject = callStore.localStream;
-        localVideo.value.muted = true;
-        localVideo.value.playsInline = true;
-        try {
-            await localVideo.value.play();
-        } catch {}
-    }
-    if (remoteVideo.value && callStore.remoteStream) {
-        remoteVideo.value.srcObject = callStore.remoteStream;
-        remoteVideo.value.playsInline = true;
-        try {
-            await remoteVideo.value.play();
-        } catch {}
-    }
-});
-
-// React when remote stream reference changes
-watch(
-    () => callStore.remoteStream,
-    async (stream) => {
-        if (remoteVideo.value && stream) {
-            remoteVideo.value.srcObject = stream;
-            remoteVideo.value.playsInline = true;
-            try {
-                await remoteVideo.value.play();
-            } catch {}
-        }
-    },
-    { immediate: true } // no need for deep
-);
 </script>
 
 <template>
@@ -111,25 +51,26 @@ watch(
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
         >
             <!-- if video show it -->
-            <!-- <div>
+            <div
+                class="absolute right-4 bottom-30 w-60 h-40 bg-black rounded-xl overflow-hidden flex-center"
+            >
                 <video
                     ref="localVideo"
                     autoplay
                     playsinline
                     muted
-                    class="w-60 h-40 bg-black"
+                    class="w-60 h-45"
                 ></video>
-                123
-            </div> -->
+            </div>
             <video
                 ref="remoteVideo"
                 autoplay
                 playsinline
-                class="w-full h-full bg-black"
+                class="w-full h-full"
             ></video>
 
             <!-- else -->
-            <div class="h-full flex-center">
+            <!-- <div class="h-full flex-center">
                 <div class="flex-col items-center">
                     <UserAvatar
                         v-if="callStore.call.to"
@@ -152,7 +93,7 @@ watch(
                         {{ callStore.callStatus }}
                     </p>
                 </div>
-            </div>
+            </div> -->
 
             <!-- buttons panel -->
             <div
