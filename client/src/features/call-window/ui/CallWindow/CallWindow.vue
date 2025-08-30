@@ -11,7 +11,6 @@ import { useCall } from "../../lib/useCall";
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
-
 const { startLocalStream, localVideo, remoteVideo } = useCall();
 
 const acceptCall = ({ from }: { from: string }) => {

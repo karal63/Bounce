@@ -3,15 +3,15 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useCall } from "../@";
 
 export const useCallStore = defineStore("call", () => {
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
-    const { callUser } = useCall();
 
     let pc = ref<RTCPeerConnection | null>(null);
     let localStream = ref<MediaStream | null>(null);
+    let remoteStream = ref<MediaStream | null>(null);
+
     const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 
     const callStatus = ref("Connecting...");
@@ -33,7 +33,6 @@ export const useCallStore = defineStore("call", () => {
         socket.emit("set:incoming-call", call.value);
 
         if (!call.value.to) return;
-        callUser();
     };
 
     const dropCall = () => {
@@ -78,6 +77,7 @@ export const useCallStore = defineStore("call", () => {
         callEnd,
         pc,
         localStream,
+        remoteStream,
         pendingCandidates,
     };
 });
