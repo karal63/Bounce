@@ -27,7 +27,7 @@ onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);
     socket.on("call:end", callCanceled);
 
-    socket.on("webrtc:offer", ({ offer }) => handleOffer(offer));
+    socket.on("offer", ({ offer }) => handleOffer(offer));
 });
 
 onUnmounted(() => {

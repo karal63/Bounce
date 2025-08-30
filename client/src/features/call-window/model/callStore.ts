@@ -10,6 +10,10 @@ export const useCallStore = defineStore("call", () => {
     const sessionStore = useSessionStore();
     const { callUser } = useCall();
 
+    let pc = ref<RTCPeerConnection | null>(null);
+    let localStream = ref<MediaStream | null>(null);
+    const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
+
     const callStatus = ref("Connecting...");
 
     const call = ref<Call>({
@@ -29,7 +33,7 @@ export const useCallStore = defineStore("call", () => {
         socket.emit("set:incoming-call", call.value);
 
         if (!call.value.to) return;
-        callUser(call.value.to);
+        callUser();
     };
 
     const dropCall = () => {
@@ -72,5 +76,8 @@ export const useCallStore = defineStore("call", () => {
         callStatus,
         setStatus,
         callEnd,
+        pc,
+        localStream,
+        pendingCandidates,
     };
 });

@@ -12,7 +12,7 @@ const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 
-const { localVideo, remoteVideo, startLocalStream } = useCall();
+const { startLocalStream, localVideo, remoteVideo } = useCall();
 
 const acceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
@@ -32,8 +32,8 @@ onMounted(() => {
     socket.on("call:end", ({ from }) => callStore.callEnd(from));
     socket.on("call:accept", acceptCall);
 
-    socket.on("webrtc:answer", ({ answer }) => console.log(answer));
-    socket.on("webrtc:candidate", ({ candidate }) => console.log(candidate));
+    socket.on("answer", ({ answer }) => console.log(answer));
+    socket.on("candidate", ({ candidate }) => console.log(candidate));
 });
 
 onUnmounted(() => {
@@ -52,7 +52,7 @@ onUnmounted(() => {
         >
             <!-- if video show it -->
             <div
-                class="absolute right-4 bottom-30 w-60 h-40 bg-black rounded-xl overflow-hidden flex-center"
+                class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
             >
                 <video
                     ref="localVideo"
@@ -66,7 +66,7 @@ onUnmounted(() => {
                 ref="remoteVideo"
                 autoplay
                 playsinline
-                class="w-full h-full"
+                class="w-full h-full bg-black"
             ></video>
 
             <!-- else -->
