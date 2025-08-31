@@ -1,5 +1,5 @@
 import type { IncomingCall } from "@/entities/call/model/types";
-import { useCallStore } from "@/features/call-window/@";
+import { useCall, useCallStore } from "@/features/call-window/@";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";

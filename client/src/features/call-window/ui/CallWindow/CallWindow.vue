@@ -11,7 +11,13 @@ import { useCall } from "../../lib/useCall";
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
-const { startLocalStream, localVideo, remoteVideo } = useCall();
+const {
+    startLocalStream,
+    localVideo,
+    remoteVideo,
+    handleAnswer,
+    handleCandidate,
+} = useCall();
 
 const acceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
@@ -22,6 +28,7 @@ watch(
     () => callStore.call.isCalling,
     () => {
         if (callStore.call.isCalling) {
+            console.log("calling");
             startLocalStream();
         }
     }
@@ -31,8 +38,8 @@ onMounted(() => {
     socket.on("call:end", ({ from }) => callStore.callEnd(from));
     socket.on("call:accept", acceptCall);
 
-    socket.on("answer", ({ answer }) => console.log(answer));
-    socket.on("candidate", ({ candidate }) => console.log(candidate));
+    socket.on("answer", ({ answer }) => handleAnswer(answer));
+    socket.on("candidate", ({ candidate }) => handleCandidate(candidate));
 });
 
 onUnmounted(() => {

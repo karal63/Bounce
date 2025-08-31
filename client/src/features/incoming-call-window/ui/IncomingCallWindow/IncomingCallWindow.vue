@@ -5,9 +5,12 @@ import { useInclomingCallStore } from "../../model/incomingCallStore";
 import { onMounted, onUnmounted } from "vue";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { findMessagedUserById } from "@/shared/lib/helpers";
+import { useCall } from "@/features/call-window/@";
 
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
+
+const { handleOffer } = useCall();
 
 const getIncomingCall = (fromId: string) => {
     incomingCallStore.incomingCall = {
@@ -24,6 +27,8 @@ const callCanceled = ({ from }: { from: string }) => {
 onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);
     socket.on("call:end", callCanceled);
+
+    socket.on("offer", ({ offer }) => handleOffer(offer));
 });
 
 onUnmounted(() => {
