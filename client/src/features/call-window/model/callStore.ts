@@ -3,7 +3,6 @@ import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useCall } from "../lib/useCall";
 
 export const useCallStore = defineStore("call", () => {
     const { socket } = useSocket();

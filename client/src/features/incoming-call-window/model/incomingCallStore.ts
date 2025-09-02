@@ -1,5 +1,5 @@
 import type { IncomingCall } from "@/entities/call/model/types";
-import { useCall, useCallStore } from "@/features/call-window/@";
+import { useCallStore } from "@/features/call-window/@";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
@@ -44,7 +44,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             to: incomingCall.value.callingUserId,
         });
         callStore.setStatus("00:00");
-        incomingCall.value.isCalling = false;
+        // incomingCall.value.isCalling = false;
     };
 
     return { incomingCall, callCanceled, decline, accept };

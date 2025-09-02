@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IncomingCallWindow } from "@/features/incoming-call-window";
 import { Sidebar } from "@/widgets/sidebar";
 </script>
 
@@ -8,8 +7,6 @@ import { Sidebar } from "@/widgets/sidebar";
         <div class="flex h-full w-[1450px] py-5">
             <Sidebar />
             <router-view />
-
-            <IncomingCallWindow />
         </div>
     </div>
 </template>
