@@ -13,19 +13,11 @@ import { findMessagedUserById } from "@/shared/lib/helpers";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { useCall } from "../../lib/useCall";
 
-const servers = {
-    iceServers: [
-        {
-            urls: "stun:stun.l.google.com:19302",
-        },
-    ],
-};
-
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
-const { endCall, startLocalStream } = useCall();
+const { endCall, startLocalStream, createPeerConnection } = useCall();
 
 const pc = ref<RTCPeerConnection | null>(null);
 const localVideo = ref<HTMLVideoElement | null>(null);
@@ -57,32 +49,10 @@ const drop = () => {
 
 const createOffer = async () => {
     await startLocalStream(localStream, localVideo);
+    await createPeerConnection(pc, remoteVideo, localStream);
 
-    pc.value = new RTCPeerConnection(servers);
-
-    pc.value.onicecandidate = (event) => {
-        if (event.candidate) {
-            socket.emit("webrtc:candidate", {
-                candidate: event.candidate,
-                to: callStore.call.to,
-            });
-        }
-    };
-
-    pc.value.ontrack = (event) => {
-        if (remoteVideo.value) {
-            remoteVideo.value.srcObject = event.streams[0];
-        }
-    };
-
-    if (localStream.value) {
-        localStream.value
-            .getTracks()
-            .forEach((t) => pc.value?.addTrack(t, localStream.value!));
-    }
-
-    const offer = await pc.value.createOffer();
-    await pc.value.setLocalDescription(offer);
+    const offer = await pc.value?.createOffer();
+    await pc.value?.setLocalDescription(offer);
 
     socket.emit("webrtc:offer", { offer, to: callStore.call.to });
     return pc.value;
@@ -107,36 +77,14 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
 
 const handleOffer = async () => {
     await startLocalStream(localStream, localVideo);
+    await createPeerConnection(pc, remoteVideo, localStream);
 
-    pc.value = new RTCPeerConnection(servers);
-
-    pc.value.onicecandidate = (event) => {
-        if (event.candidate) {
-            socket.emit("webrtc:candidate", {
-                candidate: event.candidate,
-                to: incomingCallStore.incomingCall.callingUserId,
-            });
-        }
-    };
-
-    pc.value.ontrack = (event) => {
-        if (remoteVideo.value) {
-            remoteVideo.value.srcObject = event.streams[0];
-        }
-    };
-
-    if (localStream.value) {
-        localStream.value
-            .getTracks()
-            .forEach((t) => pc.value?.addTrack(t, localStream.value!));
-    }
-
-    await pc.value.setRemoteDescription(
+    await pc.value?.setRemoteDescription(
         new RTCSessionDescription(incomingCallStore.offer)
     );
 
-    const answer = await pc.value.createAnswer();
-    await pc.value.setLocalDescription(answer);
+    const answer = await pc.value?.createAnswer();
+    await pc.value?.setLocalDescription(answer);
 
     socket.emit("webrtc:answer", {
         answer,
@@ -144,7 +92,7 @@ const handleOffer = async () => {
     });
 
     for (const c of pendingCandidates.value) {
-        await pc.value.addIceCandidate(new RTCIceCandidate(c));
+        await pc.value?.addIceCandidate(new RTCIceCandidate(c));
     }
     pendingCandidates.value.length = 0;
 };

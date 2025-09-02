@@ -1,6 +1,19 @@
+import { useInclomingCallStore } from "@/features/incoming-call-window/@";
+import { useSocket } from "@/shared/config/useSocketStore";
 import type { Ref } from "vue";
 
+const servers = {
+    iceServers: [
+        {
+            urls: "stun:stun.l.google.com:19302",
+        },
+    ],
+};
+
 export const useCall = () => {
+    const { socket } = useSocket();
+    const incomingCallStore = useInclomingCallStore();
+
     const startLocalStream = async (
         localStream: Ref<MediaStream | null>,
         localVideo: Ref<HTMLVideoElement | null>
@@ -11,6 +24,35 @@ export const useCall = () => {
         });
         if (!localVideo.value) return;
         localVideo.value.srcObject = localStream.value;
+    };
+
+    const createPeerConnection = async (
+        pc: Ref<RTCPeerConnection | null>,
+        remoteVideo: Ref<HTMLVideoElement | null>,
+        localStream: Ref<MediaStream | null>
+    ) => {
+        pc.value = new RTCPeerConnection(servers);
+
+        pc.value.onicecandidate = (event) => {
+            if (event.candidate) {
+                socket.emit("webrtc:candidate", {
+                    candidate: event.candidate,
+                    to: incomingCallStore.incomingCall.callingUserId,
+                });
+            }
+        };
+
+        pc.value.ontrack = (event) => {
+            if (remoteVideo.value) {
+                remoteVideo.value.srcObject = event.streams[0];
+            }
+        };
+
+        if (localStream.value) {
+            localStream.value
+                .getTracks()
+                .forEach((t) => pc.value?.addTrack(t, localStream.value!));
+        }
     };
 
     const endCall = (
@@ -29,5 +71,5 @@ export const useCall = () => {
         pendingCandidates.value = [];
     };
 
-    return { startLocalStream, endCall };
+    return { startLocalStream, endCall, createPeerConnection };
 };
