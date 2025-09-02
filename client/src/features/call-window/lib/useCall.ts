@@ -1,6 +1,7 @@
 import { useInclomingCallStore } from "@/features/incoming-call-window/@";
 import { useSocket } from "@/shared/config/useSocketStore";
 import type { Ref } from "vue";
+import { useCallStore } from "../@";
 
 const servers = {
     iceServers: [
@@ -13,13 +14,16 @@ const servers = {
 export const useCall = () => {
     const { socket } = useSocket();
     const incomingCallStore = useInclomingCallStore();
+    const callStore = useCallStore();
 
     const startLocalStream = async (
         localStream: Ref<MediaStream | null>,
         localVideo: Ref<HTMLVideoElement | null>
     ) => {
         localStream.value = await navigator.mediaDevices.getUserMedia({
-            video: true,
+            video:
+                incomingCallStore.incomingCall.type === "video" ||
+                callStore.call.type === "video",
             audio: true,
         });
         if (!localVideo.value) return;

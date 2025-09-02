@@ -119,7 +119,12 @@ const showShareLinkModal = () => {
                     !route.path.startsWith('/chat/settings') &&
                     currentChatStore.currentRoom.type === 'direct'
                 "
-                @click="callStore.handleCall(currentChatStore.currentRoom.id)"
+                @click="
+                    callStore.handleCall(
+                        currentChatStore.currentRoom.id,
+                        'voice'
+                    )
+                "
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >
                 <Icon icon="proicons:call" />
@@ -129,6 +134,12 @@ const showShareLinkModal = () => {
                     route.path.startsWith('/chat') &&
                     !route.path.startsWith('/chat/settings') &&
                     currentChatStore.currentRoom.type === 'direct'
+                "
+                @click="
+                    callStore.handleCall(
+                        currentChatStore.currentRoom.id,
+                        'video'
+                    )
                 "
                 class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
             >

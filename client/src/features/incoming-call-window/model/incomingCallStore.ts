@@ -13,6 +13,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
     const incomingCall = ref<IncomingCall>({
         isCalling: false,
         callingUserId: null,
+        type: "voice",
     });
     const offer = ref();
 
@@ -21,6 +22,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
         incomingCall.value = {
             isCalling: false,
             callingUserId: null,
+            type: "voice",
         };
     };
 
@@ -39,6 +41,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             ...callStore.call,
             isCalling: true,
             to: incomingCall.value.callingUserId,
+            type: incomingCall.value.type,
         };
         socket.emit("call:accept", {
             from: sessionStore.user?.id,

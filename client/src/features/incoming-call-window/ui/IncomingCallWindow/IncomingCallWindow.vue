@@ -9,11 +9,18 @@ import { findMessagedUserById } from "@/shared/lib/helpers";
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
 
-const getIncomingCall = (fromId: string) => {
+const getIncomingCall = ({
+    from,
+    type,
+}: {
+    from: string;
+    type: "voice" | "video";
+}) => {
     incomingCallStore.incomingCall = {
         ...incomingCallStore.incomingCall,
         isCalling: true,
-        callingUserId: fromId,
+        callingUserId: from,
+        type,
     };
 };
 

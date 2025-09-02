@@ -22,19 +22,19 @@ export const useCallStore = defineStore("call", () => {
         to: null,
         isCalling: false,
         isMuted: false,
+        type: "voice",
     });
 
     // === call user
-    const handleCall = (userId: string | null) => {
+    const handleCall = (userId: string | null, type: "voice" | "video") => {
         call.value = {
             ...call.value,
             to: userId,
             isCalling: true,
             isMuted: false,
+            type,
         };
         socket.emit("set:incoming-call", call.value);
-
-        if (!call.value.to) return;
     };
 
     // === caller hangs out

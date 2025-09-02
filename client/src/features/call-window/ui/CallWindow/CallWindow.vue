@@ -157,24 +157,27 @@ watch(
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
         >
             <!-- if video show it -->
-            <div
-                class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
-            >
+
+            <div v-if="callStore.call.type === 'video'">
+                <div
+                    class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
+                >
+                    <video
+                        ref="localVideo"
+                        autoplay
+                        muted
+                        playsinline
+                        class="w-60 h-45"
+                    ></video>
+                </div>
                 <video
-                    ref="localVideo"
+                    v-show="callStore.callStatus === '00:00'"
+                    ref="remoteVideo"
                     autoplay
-                    muted
                     playsinline
-                    class="w-60 h-45"
+                    class="w-full h-full bg-black"
                 ></video>
             </div>
-            <video
-                v-show="callStore.callStatus === '00:00'"
-                ref="remoteVideo"
-                autoplay
-                playsinline
-                class="w-full h-full bg-black"
-            ></video>
 
             <!-- else -->
             <div class="h-full flex-center">

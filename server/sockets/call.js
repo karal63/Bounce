@@ -2,7 +2,7 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
     socket.on("set:incoming-call", (call) => {
         socket
             .to(userSocketMap.get(call.to))
-            .emit("get:incoming-call", call.from);
+            .emit("get:incoming-call", { from: call.from, type: call.type });
     });
 
     socket.on("call:end", ({ from, to }) => {
