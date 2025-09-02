@@ -5,29 +5,9 @@ import { useInclomingCallStore } from "../../model/incomingCallStore";
 import { onMounted, onUnmounted } from "vue";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { findMessagedUserById } from "@/shared/lib/helpers";
-import { ref } from "vue";
-
-const servers = {
-    iceServers: [
-        {
-            urls: "stun:stun.l.google.com:19302",
-        },
-    ],
-};
 
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
-
-let pc = ref<RTCPeerConnection | null>(null);
-
-const props = defineProps<{
-    localVideo: HTMLVideoElement | null;
-    remoteVideo: HTMLVideoElement | null;
-}>();
-
-const localStream = ref<MediaStream | null>(null);
-const remoteStream = ref<MediaStream | null>(null);
-const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 
 const getIncomingCall = (fromId: string) => {
     incomingCallStore.incomingCall = {
@@ -41,71 +21,14 @@ const callCanceled = ({ from }: { from: string }) => {
     incomingCallStore.callCanceled(from);
 };
 
-const handleOffer = async (offer: RTCSessionDescriptionInit) => {
-    localStream.value = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-    });
-    if (!props.localVideo) return;
-    props.localVideo.srcObject = localStream.value;
-
-    pc.value = new RTCPeerConnection(servers);
-
-    pc.value.onicecandidate = (event) => {
-        if (event.candidate) {
-            socket.emit("webrtc:candidate", {
-                candidate: event.candidate,
-                to: incomingCallStore.incomingCall.callingUserId,
-            });
-        }
-    };
-
-    pc.value.ontrack = (event) => {
-        if (props.remoteVideo) {
-            remoteStream.value = event.streams[0];
-            props.remoteVideo.srcObject = remoteStream.value;
-        }
-    };
-
-    if (localStream.value) {
-        localStream.value
-            .getTracks()
-            .forEach((t) => pc.value?.addTrack(t, localStream.value!));
-    }
-
-    await pc.value.setRemoteDescription(new RTCSessionDescription(offer));
-
-    const answer = await pc.value.createAnswer();
-    await pc.value.setLocalDescription(answer);
-
-    socket.emit("webrtc:answer", {
-        answer,
-        to: incomingCallStore.incomingCall.callingUserId,
-    });
-
-    for (const c of pendingCandidates.value) {
-        await pc.value.addIceCandidate(new RTCIceCandidate(c));
-    }
-    pendingCandidates.value.length = 0;
-
-    incomingCallStore.accept();
-};
-
 onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);
     socket.on("call:end", callCanceled);
-
-    socket.on("webrtc:offer", ({ offer }) => {
-        handleOffer(offer);
-    });
 });
 
 onUnmounted(() => {
     socket.off("get:incoming-call", getIncomingCall);
     socket.off("call:end", callCanceled);
-    socket.off("webrtc:offer", ({ offer }) => {
-        handleOffer(offer);
-    });
 });
 </script>
 

@@ -2,11 +2,13 @@ import type { Call } from "@/entities/call";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
+import { useCall } from "../lib/useCall";
 
 export const useCallStore = defineStore("call", () => {
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
+    const { endCall } = useCall();
 
     let localStream = ref<MediaStream | null>(null);
     let remoteStream = ref<MediaStream | null>(null);
@@ -36,7 +38,13 @@ export const useCallStore = defineStore("call", () => {
     };
 
     // === caller hangs out
-    const dropCall = () => {
+    const dropCall = (
+        pc: Ref<RTCPeerConnection | null>,
+        localStream: Ref<MediaStream | null>,
+        localVideo: Ref<HTMLVideoElement | null>,
+        remoteVideo: Ref<HTMLVideoElement | null>,
+        pendingCandidates: Ref<RTCIceCandidateInit[]>
+    ) => {
         socket.emit("call:end", { from: call.value.from, to: call.value.to });
         call.value = {
             ...call.value,
@@ -44,6 +52,8 @@ export const useCallStore = defineStore("call", () => {
             isCalling: false,
             isMuted: false,
         };
+
+        endCall(pc, localStream, localVideo, remoteVideo, pendingCandidates);
     };
 
     // socket to close call

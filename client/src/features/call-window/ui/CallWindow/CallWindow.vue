@@ -11,6 +11,7 @@ import { ref } from "vue";
 import { IncomingCallWindow } from "@/features/incoming-call-window";
 import { findMessagedUserById } from "@/shared/lib/helpers";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import { useCall } from "../../lib/useCall";
 
 const servers = {
     iceServers: [
@@ -24,6 +25,7 @@ const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
+const { endCall } = useCall();
 
 const pc = ref<RTCPeerConnection | null>(null);
 const localVideo = ref<HTMLVideoElement | null>(null);
@@ -34,6 +36,25 @@ const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 const acceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
     callStore.setStatus("00:00");
+};
+
+// === from emit
+const hangUp = ({ from }: { from: string }) => {
+    console.log(pc.value, localStream.value, pendingCandidates.value);
+    callStore.callEnd(from);
+    endCall(pc, localStream, localVideo, remoteVideo, pendingCandidates);
+    console.log(localStream.value);
+};
+
+// === hang up button
+const drop = () => {
+    callStore.dropCall(
+        pc,
+        localStream,
+        localVideo,
+        remoteVideo,
+        pendingCandidates
+    );
 };
 
 const startLocalStream = async () => {
@@ -93,6 +114,55 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
     }
 };
 
+const handleOffer = async (offer: RTCSessionDescriptionInit) => {
+    localStream.value = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+    });
+    if (!localVideo.value) return;
+    localVideo.value.srcObject = localStream.value;
+
+    pc.value = new RTCPeerConnection(servers);
+
+    pc.value.onicecandidate = (event) => {
+        if (event.candidate) {
+            socket.emit("webrtc:candidate", {
+                candidate: event.candidate,
+                to: incomingCallStore.incomingCall.callingUserId,
+            });
+        }
+    };
+
+    pc.value.ontrack = (event) => {
+        if (remoteVideo.value) {
+            remoteVideo.value.srcObject = event.streams[0];
+        }
+    };
+
+    if (localStream.value) {
+        localStream.value
+            .getTracks()
+            .forEach((t) => pc.value?.addTrack(t, localStream.value!));
+    }
+
+    await pc.value.setRemoteDescription(new RTCSessionDescription(offer));
+
+    const answer = await pc.value.createAnswer();
+    await pc.value.setLocalDescription(answer);
+
+    socket.emit("webrtc:answer", {
+        answer,
+        to: incomingCallStore.incomingCall.callingUserId,
+    });
+
+    for (const c of pendingCandidates.value) {
+        await pc.value.addIceCandidate(new RTCIceCandidate(c));
+    }
+    pendingCandidates.value.length = 0;
+
+    incomingCallStore.accept();
+};
+
 watch(
     () => callStore.call.isCalling,
     async () => {
@@ -108,9 +178,12 @@ watch(
 );
 
 onMounted(() => {
-    socket.on("call:end", ({ from }) => callStore.callEnd(from));
+    socket.on("call:end", hangUp);
     socket.on("call:accept", acceptCall);
 
+    socket.on("webrtc:offer", ({ offer }) => {
+        handleOffer(offer);
+    });
     socket.on("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
     });
@@ -123,6 +196,9 @@ onUnmounted(() => {
     socket.off("call:end", ({ from }) => callStore.callEnd(from));
     socket.off("call:accept", acceptCall);
 
+    socket.off("webrtc:offer", ({ offer }) => {
+        handleOffer(offer);
+    });
     socket.off("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
     });
@@ -148,7 +224,6 @@ onUnmounted(() => {
                     ref="localVideo"
                     autoplay
                     playsinline
-                    muted
                     class="w-60 h-45"
                 ></video>
             </div>
@@ -202,7 +277,7 @@ onUnmounted(() => {
                 </button>
 
                 <button
-                    @click="callStore.dropCall"
+                    @click="drop"
                     class="bg-red-500 w-13 h-13 rounded-full text-4xl flex-center cursor-pointer"
                 >
                     <Icon icon="fluent:call-end-16-regular" />
@@ -211,7 +286,7 @@ onUnmounted(() => {
 
             <!-- close call button -->
             <button
-                @click="callStore.dropCall"
+                @click="drop"
                 class="absolute right-4 top-4 rounded-full text-3xl flex-center cursor-pointer"
             >
                 <Icon icon="ic:round-close" />

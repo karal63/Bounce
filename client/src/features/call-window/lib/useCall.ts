@@ -5,7 +5,6 @@ export const useCall = () => {
         localStream: MediaStream,
         localVideo: Ref<HTMLVideoElement>
     ) => {
-        console.log(localStream, localVideo);
         localStream = await navigator.mediaDevices.getUserMedia({
             video: true,
             audio: true,
@@ -14,5 +13,21 @@ export const useCall = () => {
         localVideo.value.srcObject = localStream;
     };
 
-    return { startLocalStream };
+    const endCall = (
+        pc: Ref<RTCPeerConnection | null>,
+        localStream: Ref<MediaStream | null>,
+        localVideo: Ref<HTMLVideoElement | null>,
+        remoteVideo: Ref<HTMLVideoElement | null>,
+        pendingCandidates: Ref<RTCIceCandidateInit[]>
+    ) => {
+        if (!localStream.value || !remoteVideo.value) return;
+        localStream.value.getTracks().forEach((track) => track.stop());
+        pc.value?.close();
+        pc.value = null;
+        localVideo.value = null;
+        remoteVideo.value.srcObject = null;
+        pendingCandidates.value = [];
+    };
+
+    return { startLocalStream, endCall };
 };
