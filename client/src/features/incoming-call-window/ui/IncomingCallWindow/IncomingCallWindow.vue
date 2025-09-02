@@ -24,11 +24,21 @@ const callCanceled = ({ from }: { from: string }) => {
 onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);
     socket.on("call:end", callCanceled);
+
+    socket.on("webrtc:offer", ({ offer }) => {
+        incomingCallStore.offer = offer;
+    });
 });
+
+// wrong function setOffer, should work on accept
 
 onUnmounted(() => {
     socket.off("get:incoming-call", getIncomingCall);
     socket.off("call:end", callCanceled);
+
+    socket.off("webrtc:offer", ({ offer }) => {
+        incomingCallStore.setOffer(offer);
+    });
 });
 </script>
 

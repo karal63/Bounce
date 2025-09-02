@@ -114,7 +114,7 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
     }
 };
 
-const handleOffer = async (offer: RTCSessionDescriptionInit) => {
+const handleOffer = async () => {
     localStream.value = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
@@ -145,7 +145,9 @@ const handleOffer = async (offer: RTCSessionDescriptionInit) => {
             .forEach((t) => pc.value?.addTrack(t, localStream.value!));
     }
 
-    await pc.value.setRemoteDescription(new RTCSessionDescription(offer));
+    await pc.value.setRemoteDescription(
+        new RTCSessionDescription(incomingCallStore.offer)
+    );
 
     const answer = await pc.value.createAnswer();
     await pc.value.setLocalDescription(answer);
@@ -159,8 +161,6 @@ const handleOffer = async (offer: RTCSessionDescriptionInit) => {
         await pc.value.addIceCandidate(new RTCIceCandidate(c));
     }
     pendingCandidates.value.length = 0;
-
-    incomingCallStore.accept();
 };
 
 watch(
@@ -181,9 +181,6 @@ onMounted(() => {
     socket.on("call:end", hangUp);
     socket.on("call:accept", acceptCall);
 
-    socket.on("webrtc:offer", ({ offer }) => {
-        handleOffer(offer);
-    });
     socket.on("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
     });
@@ -196,9 +193,6 @@ onUnmounted(() => {
     socket.off("call:end", ({ from }) => callStore.callEnd(from));
     socket.off("call:accept", acceptCall);
 
-    socket.off("webrtc:offer", ({ offer }) => {
-        handleOffer(offer);
-    });
     socket.off("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
     });
@@ -206,6 +200,19 @@ onUnmounted(() => {
         handleCandidate(candidate);
     });
 });
+
+watch(
+    () => callStore.callStatus,
+    () => {
+        if (
+            callStore.callStatus === "00:00" &&
+            incomingCallStore.incomingCall.callingUserId
+        ) {
+            console.log("123");
+            handleOffer();
+        }
+    }
+);
 </script>
 
 <template>
@@ -223,11 +230,13 @@ onUnmounted(() => {
                 <video
                     ref="localVideo"
                     autoplay
+                    muted
                     playsinline
                     class="w-60 h-45"
                 ></video>
             </div>
             <video
+                v-show="callStore.callStatus === '00:00'"
                 ref="remoteVideo"
                 autoplay
                 playsinline

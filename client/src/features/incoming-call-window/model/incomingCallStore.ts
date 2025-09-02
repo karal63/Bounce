@@ -14,6 +14,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
         isCalling: false,
         callingUserId: null,
     });
+    const offer = ref();
 
     const callCanceled = (from?: string) => {
         if (from && incomingCall.value.callingUserId !== from) return;
@@ -47,5 +48,9 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
         incomingCall.value.isCalling = false;
     };
 
-    return { incomingCall, callCanceled, decline, accept };
+    const setOffer = (newOffer: RTCSessionDescriptionInit) => {
+        offer.value = newOffer;
+    };
+
+    return { incomingCall, callCanceled, decline, accept, offer, setOffer };
 });
