@@ -2,9 +2,10 @@
 import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { Icon } from "@iconify/vue";
 import { useInclomingCallStore } from "../../model/incomingCallStore";
-import { onMounted, onUnmounted, watch } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { findMessagedUserById } from "@/shared/lib/helpers";
+import { ref } from "vue";
 
 const servers = {
     iceServers: [
@@ -17,16 +18,16 @@ const servers = {
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
 
-let pc: RTCPeerConnection | null = null;
+let pc = ref<RTCPeerConnection | null>(null);
 
 const props = defineProps<{
     localVideo: HTMLVideoElement | null;
     remoteVideo: HTMLVideoElement | null;
 }>();
 
-let localStream: MediaStream | null = null;
-let remoteStream: MediaStream | null = null;
-const pendingCandidates: RTCIceCandidateInit[] = [];
+const localStream = ref<MediaStream | null>(null);
+const remoteStream = ref<MediaStream | null>(null);
+const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 
 const getIncomingCall = (fromId: string) => {
     incomingCallStore.incomingCall = {
@@ -41,68 +42,59 @@ const callCanceled = ({ from }: { from: string }) => {
 };
 
 const handleOffer = async (offer: RTCSessionDescriptionInit) => {
-    localStream = await navigator.mediaDevices.getUserMedia({
+    localStream.value = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
     });
     console.log(0);
     if (!props.localVideo) return;
-    props.localVideo.srcObject = localStream;
+    props.localVideo.srcObject = localStream.value;
 
     console.log(1);
 
-    pc = new RTCPeerConnection(servers);
+    pc.value = new RTCPeerConnection(servers);
 
-    pc.onicecandidate = (event) => {
-        console.log("new candidate");
+    pc.value.onicecandidate = (event) => {
         if (event.candidate) {
             socket.emit("candidate", { candidate: event.candidate });
         }
     };
 
-    pc.ontrack = (event) => {
-        remoteStream = event.streams[0];
-        attachRemoteStream();
+    pc.value.ontrack = (event) => {
+        if (props.remoteVideo) {
+            remoteStream.value = event.streams[0];
+            props.remoteVideo.srcObject = remoteStream.value;
+        }
     };
 
     console.log(2);
 
-    if (localStream) {
-        // check if exists, this might be the issue for no media in answer
-        console.log(localStream);
-        localStream.getTracks().forEach((t) => pc?.addTrack(t, localStream!));
+    if (localStream.value) {
+        localStream.value
+            .getTracks()
+            .forEach((t) => pc.value?.addTrack(t, localStream.value!));
     }
 
-    await pc?.setRemoteDescription(new RTCSessionDescription(offer));
+    await pc.value.setRemoteDescription(new RTCSessionDescription(offer));
 
     console.log(3);
 
-    const answer = await pc?.createAnswer();
-    await pc?.setLocalDescription(answer);
+    const answer = await pc.value.createAnswer();
+    await pc.value.setLocalDescription(answer);
 
     socket.emit("answer", { answer });
 
     console.log(4);
 
-    for (const c of pendingCandidates) {
-        await pc!.addIceCandidate(new RTCIceCandidate(c));
+    for (const c of pendingCandidates.value) {
+        await pc.value.addIceCandidate(new RTCIceCandidate(c));
     }
-    pendingCandidates.length = 0;
+    pendingCandidates.value.length = 0;
 
     console.log(5);
 
     incomingCallStore.accept();
 };
-
-const attachRemoteStream = () => {
-    if (props.remoteVideo && remoteStream) {
-        props.remoteVideo.srcObject = remoteStream;
-    }
-};
-
-// onMounted(() => {
-//     watch(remoteVideo, () => attachRemoteStream());
-// });
 
 onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);

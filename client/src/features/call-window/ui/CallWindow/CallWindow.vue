@@ -21,15 +21,13 @@ const servers = {
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
-
 const incomingCallStore = useInclomingCallStore();
 
-let pc: RTCPeerConnection | null = null;
-
+const pc = ref<RTCPeerConnection | null>(null);
 const localVideo = ref<HTMLVideoElement | null>(null);
 const remoteVideo = ref<HTMLVideoElement | null>(null);
-let localStream: MediaStream | null = null;
-const pendingCandidates: RTCIceCandidateInit[] = [];
+const localStream = ref<MediaStream | null>(null);
+const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 
 const acceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
@@ -37,62 +35,58 @@ const acceptCall = ({ from }: { from: string }) => {
 };
 
 const startLocalStream = async () => {
-    localStream = await navigator.mediaDevices.getUserMedia({
+    localStream.value = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
     });
     if (!localVideo.value) return;
-    localVideo.value.srcObject = localStream;
+    localVideo.value.srcObject = localStream.value;
 };
 
 const createOffer = async () => {
-    pc = new RTCPeerConnection(servers);
+    pc.value = new RTCPeerConnection(servers);
 
-    pc.onicecandidate = (event) => {
-        console.log("new candidate");
+    pc.value.onicecandidate = (event) => {
         if (event.candidate) {
             socket.emit("candidate", { candidate: event.candidate });
         }
     };
 
-    pc.ontrack = (event) => {
-        console.log("new video");
-        console.log(remoteVideo.value);
+    pc.value.ontrack = (event) => {
         if (remoteVideo.value) {
             remoteVideo.value.srcObject = event.streams[0];
         }
     };
 
-    if (localStream) {
-        localStream.getTracks().forEach((t) => pc?.addTrack(t, localStream!));
+    if (localStream.value) {
+        localStream.value
+            .getTracks()
+            .forEach((t) => pc.value?.addTrack(t, localStream.value!));
     }
 
-    const offer = await pc?.createOffer();
-    await pc?.setLocalDescription(offer);
+    const offer = await pc.value.createOffer();
+    await pc.value.setLocalDescription(offer);
 
     socket.emit("offer", { offer });
-
-    return pc;
+    return pc.value;
 };
 
 const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
-    await pc?.setRemoteDescription(new RTCSessionDescription(answer));
+    await pc.value?.setRemoteDescription(new RTCSessionDescription(answer));
 
-    for (const c of pendingCandidates) {
-        await pc?.addIceCandidate(new RTCIceCandidate(c));
+    for (const c of pendingCandidates.value) {
+        await pc.value?.addIceCandidate(new RTCIceCandidate(c));
     }
-    pendingCandidates.length = 0;
+    pendingCandidates.value.length = 0;
 };
 
 const handleCandidate = async (candidate: RTCIceCandidateInit) => {
-    if (pc?.remoteDescription) {
-        await pc.addIceCandidate(new RTCIceCandidate(candidate));
+    if (pc.value?.remoteDescription) {
+        await pc.value.addIceCandidate(new RTCIceCandidate(candidate));
     } else {
-        pendingCandidates.push(candidate);
+        pendingCandidates.value.push(candidate);
     }
 };
-
-// i think i am close but i am missing something, on caller no ontrack fired, on callee no remoteVideo
 
 watch(
     () => callStore.call.isCalling,
