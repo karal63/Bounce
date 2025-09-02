@@ -108,10 +108,10 @@ onMounted(() => {
     socket.on("call:end", ({ from }) => callStore.callEnd(from));
     socket.on("call:accept", acceptCall);
 
-    socket.on("answer", ({ answer }) => {
+    socket.on("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
     });
-    socket.on("candidate", ({ candidate }) => {
+    socket.on("webrtc:candidate", ({ candidate }) => {
         handleCandidate(candidate);
     });
 });
@@ -119,6 +119,13 @@ onMounted(() => {
 onUnmounted(() => {
     socket.off("call:end", ({ from }) => callStore.callEnd(from));
     socket.off("call:accept", acceptCall);
+
+    socket.off("webrtc:answer", ({ answer }) => {
+        handleAnswer(answer);
+    });
+    socket.off("webrtc:candidate", ({ candidate }) => {
+        handleCandidate(candidate);
+    });
 });
 </script>
 
