@@ -25,7 +25,7 @@ const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
-const { endCall } = useCall();
+const { endCall, startLocalStream } = useCall();
 
 const pc = ref<RTCPeerConnection | null>(null);
 const localVideo = ref<HTMLVideoElement | null>(null);
@@ -40,10 +40,8 @@ const acceptCall = ({ from }: { from: string }) => {
 
 // === from emit
 const hangUp = ({ from }: { from: string }) => {
-    console.log(pc.value, localStream.value, pendingCandidates.value);
     callStore.callEnd(from);
     endCall(pc, localStream, localVideo, remoteVideo, pendingCandidates);
-    console.log(localStream.value);
 };
 
 // === hang up button
@@ -57,16 +55,9 @@ const drop = () => {
     );
 };
 
-const startLocalStream = async () => {
-    localStream.value = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-    });
-    if (!localVideo.value) return;
-    localVideo.value.srcObject = localStream.value;
-};
-
 const createOffer = async () => {
+    await startLocalStream(localStream, localVideo);
+
     pc.value = new RTCPeerConnection(servers);
 
     pc.value.onicecandidate = (event) => {
@@ -115,12 +106,7 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
 };
 
 const handleOffer = async () => {
-    localStream.value = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-    });
-    if (!localVideo.value) return;
-    localVideo.value.srcObject = localStream.value;
+    await startLocalStream(localStream, localVideo);
 
     pc.value = new RTCPeerConnection(servers);
 
@@ -171,7 +157,6 @@ watch(
             !incomingCallStore.incomingCall.callingUserId
         ) {
             console.log("you are caller");
-            await startLocalStream();
             await createOffer();
         }
     }
@@ -271,7 +256,7 @@ watch(
 
             <!-- buttons panel -->
             <div
-                class="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-mainDarkBg/20 px-4 py-2 rounded-full flex items-center gap-4"
+                class="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-mainDarkBg/50 px-4 py-2 rounded-full flex items-center gap-4"
             >
                 <button
                     @click="callStore.toggleMute"

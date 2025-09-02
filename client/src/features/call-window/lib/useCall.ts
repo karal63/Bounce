@@ -2,15 +2,15 @@ import type { Ref } from "vue";
 
 export const useCall = () => {
     const startLocalStream = async (
-        localStream: MediaStream,
-        localVideo: Ref<HTMLVideoElement>
+        localStream: Ref<MediaStream | null>,
+        localVideo: Ref<HTMLVideoElement | null>
     ) => {
-        localStream = await navigator.mediaDevices.getUserMedia({
+        localStream.value = await navigator.mediaDevices.getUserMedia({
             video: true,
             audio: true,
         });
         if (!localVideo.value) return;
-        localVideo.value.srcObject = localStream;
+        localVideo.value.srcObject = localStream.value;
     };
 
     const endCall = (
