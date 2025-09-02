@@ -9,6 +9,8 @@ import { watch } from "vue";
 import { useInclomingCallStore } from "@/features/incoming-call-window/@";
 import { ref } from "vue";
 import { IncomingCallWindow } from "@/features/incoming-call-window";
+import { findMessagedUserById } from "@/shared/lib/helpers";
+import UserAvatar from "@/shared/ui/UserAvatar.vue";
 
 const servers = {
     iceServers: [
@@ -148,7 +150,7 @@ onUnmounted(() => {
             ></video>
 
             <!-- else -->
-            <!-- <div class="h-full flex-center">
+            <div class="h-full flex-center">
                 <div class="flex-col items-center">
                     <UserAvatar
                         v-if="callStore.call.to"
@@ -171,7 +173,7 @@ onUnmounted(() => {
                         {{ callStore.callStatus }}
                     </p>
                 </div>
-            </div> -->
+            </div>
 
             <!-- buttons panel -->
             <div

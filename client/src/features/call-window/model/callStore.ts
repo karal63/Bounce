@@ -22,6 +22,7 @@ export const useCallStore = defineStore("call", () => {
         isMuted: false,
     });
 
+    // === call user
     const handleCall = (userId: string | null) => {
         call.value = {
             ...call.value,
@@ -34,6 +35,7 @@ export const useCallStore = defineStore("call", () => {
         if (!call.value.to) return;
     };
 
+    // === caller hangs out
     const dropCall = () => {
         socket.emit("call:end", { from: call.value.from, to: call.value.to });
         call.value = {
@@ -44,7 +46,8 @@ export const useCallStore = defineStore("call", () => {
         };
     };
 
-    const callEnd = ({ from }: { from: string }) => {
+    // socket to close call
+    const callEnd = (from: string) => {
         if (from !== call.value.to) return;
         setStatus("Canceled");
         setTimeout(() => {

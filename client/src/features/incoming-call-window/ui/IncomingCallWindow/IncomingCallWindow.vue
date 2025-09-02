@@ -46,11 +46,8 @@ const handleOffer = async (offer: RTCSessionDescriptionInit) => {
         video: true,
         audio: true,
     });
-    console.log(0);
     if (!props.localVideo) return;
     props.localVideo.srcObject = localStream.value;
-
-    console.log(1);
 
     pc.value = new RTCPeerConnection(servers);
 
@@ -67,8 +64,6 @@ const handleOffer = async (offer: RTCSessionDescriptionInit) => {
         }
     };
 
-    console.log(2);
-
     if (localStream.value) {
         localStream.value
             .getTracks()
@@ -77,21 +72,15 @@ const handleOffer = async (offer: RTCSessionDescriptionInit) => {
 
     await pc.value.setRemoteDescription(new RTCSessionDescription(offer));
 
-    console.log(3);
-
     const answer = await pc.value.createAnswer();
     await pc.value.setLocalDescription(answer);
 
     socket.emit("answer", { answer });
 
-    console.log(4);
-
     for (const c of pendingCandidates.value) {
         await pc.value.addIceCandidate(new RTCIceCandidate(c));
     }
     pendingCandidates.value.length = 0;
-
-    console.log(5);
 
     incomingCallStore.accept();
 };
@@ -101,7 +90,6 @@ onMounted(() => {
     socket.on("call:end", callCanceled);
 
     socket.on("offer", ({ offer }) => {
-        console.log("wow, offer just came out");
         handleOffer(offer);
     });
 });
