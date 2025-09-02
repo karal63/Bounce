@@ -50,7 +50,10 @@ const createOffer = async () => {
 
     pc.value.onicecandidate = (event) => {
         if (event.candidate) {
-            socket.emit("candidate", { candidate: event.candidate });
+            socket.emit("webrtc:candidate", {
+                candidate: event.candidate,
+                to: callStore.call.to,
+            });
         }
     };
 
@@ -69,7 +72,7 @@ const createOffer = async () => {
     const offer = await pc.value.createOffer();
     await pc.value.setLocalDescription(offer);
 
-    socket.emit("offer", { offer });
+    socket.emit("webrtc:offer", { offer, to: callStore.call.to });
     return pc.value;
 };
 

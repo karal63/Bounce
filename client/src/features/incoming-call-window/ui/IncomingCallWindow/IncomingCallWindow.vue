@@ -53,7 +53,10 @@ const handleOffer = async (offer: RTCSessionDescriptionInit) => {
 
     pc.value.onicecandidate = (event) => {
         if (event.candidate) {
-            socket.emit("candidate", { candidate: event.candidate });
+            socket.emit("webrtc:candidate", {
+                candidate: event.candidate,
+                to: incomingCallStore.incomingCall.callingUserId,
+            });
         }
     };
 
@@ -75,7 +78,10 @@ const handleOffer = async (offer: RTCSessionDescriptionInit) => {
     const answer = await pc.value.createAnswer();
     await pc.value.setLocalDescription(answer);
 
-    socket.emit("answer", { answer });
+    socket.emit("webrtc:answer", {
+        answer,
+        to: incomingCallStore.incomingCall.callingUserId,
+    });
 
     for (const c of pendingCandidates.value) {
         await pc.value.addIceCandidate(new RTCIceCandidate(c));
