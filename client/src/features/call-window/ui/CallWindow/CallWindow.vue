@@ -91,12 +91,13 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
 watch(
     () => callStore.call.isCalling,
     async () => {
-        if (callStore.call.isCalling) {
-            if (!incomingCallStore.incomingCall.isCalling) {
-                console.log("you are caller");
-                await startLocalStream();
-                await createOffer();
-            }
+        if (
+            callStore.call.isCalling &&
+            !incomingCallStore.incomingCall.callingUserId
+        ) {
+            console.log("you are caller");
+            await startLocalStream();
+            await createOffer();
         }
     }
 );

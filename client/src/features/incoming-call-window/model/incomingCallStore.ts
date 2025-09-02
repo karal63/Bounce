@@ -44,7 +44,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             to: incomingCall.value.callingUserId,
         });
         callStore.setStatus("00:00");
-        // incomingCall.value.isCalling = false;
+        incomingCall.value.isCalling = false;
     };
 
     return { incomingCall, callCanceled, decline, accept };
