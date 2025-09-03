@@ -64,6 +64,9 @@ const drop = () => {
 };
 
 const createOffer = async () => {
+    console.log("offer created");
+    console.log(localStream.value);
+    console.log(pc.value);
     await startLocalStream(localStream, localVideo);
     await createPeerConnection(pc, remoteVideo, localStream, remoteVoice);
 

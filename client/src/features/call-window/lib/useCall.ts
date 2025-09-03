@@ -79,7 +79,9 @@ export const useCall = () => {
     ) => {
         if (!localStream.value) return;
         console.log("clean up media states");
+
         localStream.value.getTracks().forEach((track) => track.stop());
+        localStream.value = null;
 
         pc.value?.close();
         pc.value = null;
