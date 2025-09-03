@@ -26,14 +26,21 @@ export const useCall = () => {
                 callStore.call.type === "video",
             audio: true,
         });
-        if (!localVideo.value) return;
-        localVideo.value.srcObject = localStream.value;
+
+        if (localVideo.value) {
+            localVideo.value.srcObject = localStream.value;
+        }
+
+        // if (remoteVoice.value) {
+        //     remoteVoice.value.srcObject = localStream.value;
+        // }
     };
 
     const createPeerConnection = async (
         pc: Ref<RTCPeerConnection | null>,
         remoteVideo: Ref<HTMLVideoElement | null>,
-        localStream: Ref<MediaStream | null>
+        localStream: Ref<MediaStream | null>,
+        remoteVoice: Ref<HTMLAudioElement | null>
     ) => {
         pc.value = new RTCPeerConnection(servers);
 
@@ -41,14 +48,19 @@ export const useCall = () => {
             if (event.candidate) {
                 socket.emit("webrtc:candidate", {
                     candidate: event.candidate,
-                    to: incomingCallStore.incomingCall.callingUserId,
+                    to: callStore.call.to,
                 });
             }
         };
 
         pc.value.ontrack = (event) => {
+            console.log("setting");
+
             if (remoteVideo.value) {
                 remoteVideo.value.srcObject = event.streams[0];
+            }
+            if (remoteVoice.value) {
+                remoteVoice.value.srcObject = event.streams[0];
             }
         };
 
@@ -63,15 +75,27 @@ export const useCall = () => {
         pc: Ref<RTCPeerConnection | null>,
         localStream: Ref<MediaStream | null>,
         localVideo: Ref<HTMLVideoElement | null>,
+        remoteVoice: Ref<HTMLAudioElement | null>,
         remoteVideo: Ref<HTMLVideoElement | null>,
         pendingCandidates: Ref<RTCIceCandidateInit[]>
     ) => {
-        if (!localStream.value || !remoteVideo.value) return;
+        if (!localStream.value) return;
+        console.log("clean up media states");
         localStream.value.getTracks().forEach((track) => track.stop());
+
         pc.value?.close();
         pc.value = null;
-        localVideo.value = null;
-        remoteVideo.value.srcObject = null;
+
+        if (remoteVideo.value) {
+            remoteVideo.value.srcObject = null;
+            localVideo.value = null;
+        }
+
+        if (remoteVoice.value) {
+            remoteVoice.value.srcObject = null;
+            remoteVoice.value = null;
+        }
+
         pendingCandidates.value = [];
     };
 

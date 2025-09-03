@@ -24,6 +24,7 @@ const localVideo = ref<HTMLVideoElement | null>(null);
 const remoteVideo = ref<HTMLVideoElement | null>(null);
 const localStream = ref<MediaStream | null>(null);
 const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
+const remoteVoice = ref<HTMLAudioElement | null>(null);
 
 const acceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
@@ -33,7 +34,14 @@ const acceptCall = ({ from }: { from: string }) => {
 // === from emit
 const hangUp = ({ from }: { from: string }) => {
     callStore.callEnd(from);
-    endCall(pc, localStream, localVideo, remoteVideo, pendingCandidates);
+    endCall(
+        pc,
+        localStream,
+        localVideo,
+        remoteVoice,
+        remoteVideo,
+        pendingCandidates
+    );
 };
 
 // === hang up button
@@ -42,6 +50,7 @@ const drop = () => {
         pc,
         localStream,
         localVideo,
+        remoteVoice,
         remoteVideo,
         pendingCandidates
     );
@@ -49,7 +58,7 @@ const drop = () => {
 
 const createOffer = async () => {
     await startLocalStream(localStream, localVideo);
-    await createPeerConnection(pc, remoteVideo, localStream);
+    await createPeerConnection(pc, remoteVideo, localStream, remoteVoice);
 
     const offer = await pc.value?.createOffer();
     await pc.value?.setLocalDescription(offer);
@@ -77,7 +86,7 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
 
 const handleOffer = async () => {
     await startLocalStream(localStream, localVideo);
-    await createPeerConnection(pc, remoteVideo, localStream);
+    await createPeerConnection(pc, remoteVideo, localStream, remoteVoice);
 
     await pc.value?.setRemoteDescription(
         new RTCSessionDescription(incomingCallStore.offer)
@@ -178,6 +187,14 @@ watch(
                     class="w-full h-full bg-black"
                 ></video>
             </div>
+
+            <!-- you hear your own voice -->
+            <audio
+                ref="remoteVoice"
+                v-if="callStore.call.type === 'voice'"
+                autoplay
+                playsinline
+            ></audio>
 
             <!-- else -->
             <div class="h-full flex-center">

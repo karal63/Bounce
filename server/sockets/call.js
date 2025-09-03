@@ -24,7 +24,7 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
     });
 
     socket.on("webrtc:candidate", ({ candidate, to }) => {
-        console.log(to);
+        console.log("to: ", to);
         socket
             .to(userSocketMap.get(to))
             .emit("webrtc:candidate", { candidate });

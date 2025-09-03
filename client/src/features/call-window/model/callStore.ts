@@ -42,9 +42,11 @@ export const useCallStore = defineStore("call", () => {
         pc: Ref<RTCPeerConnection | null>,
         localStream: Ref<MediaStream | null>,
         localVideo: Ref<HTMLVideoElement | null>,
+        remoteVoice: Ref<HTMLAudioElement | null>,
         remoteVideo: Ref<HTMLVideoElement | null>,
         pendingCandidates: Ref<RTCIceCandidateInit[]>
     ) => {
+        console.log("clicked hang up button");
         socket.emit("call:end", { from: call.value.from, to: call.value.to });
         call.value = {
             ...call.value,
@@ -53,12 +55,21 @@ export const useCallStore = defineStore("call", () => {
             isMuted: false,
         };
 
-        endCall(pc, localStream, localVideo, remoteVideo, pendingCandidates);
+        endCall(
+            pc,
+            localStream,
+            localVideo,
+            remoteVoice,
+            remoteVideo,
+            pendingCandidates
+        );
     };
 
     // socket to close call
     const callEnd = (from: string) => {
+        console.log("socket | user hanged up | method");
         if (from !== call.value.to) return;
+
         setStatus("Canceled");
         setTimeout(() => {
             call.value = {
