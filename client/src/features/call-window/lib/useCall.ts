@@ -54,8 +54,6 @@ export const useCall = () => {
         };
 
         pc.value.ontrack = (event) => {
-            console.log("setting");
-
             if (remoteVideo.value) {
                 remoteVideo.value.srcObject = event.streams[0];
             }

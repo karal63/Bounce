@@ -24,13 +24,9 @@ const getIncomingCall = ({
     };
 };
 
-const callCanceled = ({ from }: { from: string }) => {
-    incomingCallStore.callCanceled(from);
-};
-
 onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);
-    socket.on("call:end", callCanceled);
+    socket.on("call:end", ({ from }) => incomingCallStore.callCanceled(from));
 
     socket.on("webrtc:offer", ({ offer }) => {
         incomingCallStore.offer = offer;
@@ -41,7 +37,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     socket.off("get:incoming-call", getIncomingCall);
-    socket.off("call:end", callCanceled);
+    socket.off("call:end", ({ from }) => incomingCallStore.callCanceled(from));
 
     socket.off("webrtc:offer", ({ offer }) => {
         incomingCallStore.setOffer(offer);

@@ -26,14 +26,17 @@ const localStream = ref<MediaStream | null>(null);
 const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 const remoteVoice = ref<HTMLAudioElement | null>(null);
 
-const acceptCall = ({ from }: { from: string }) => {
+const onAcceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
     callStore.setStatus("00:00");
 };
 
-// === from emit
-const hangUp = ({ from }: { from: string }) => {
+// === fires when other user hangs up
+const onHangUp = ({ from }: { from: string }) => {
+    // creates timeout and closes call window
     callStore.callEnd(from);
+
+    // clean up media files
     endCall(
         pc,
         localStream,
@@ -46,7 +49,11 @@ const hangUp = ({ from }: { from: string }) => {
 
 // === hang up button
 const drop = () => {
-    callStore.dropCall(
+    // emits to other user that call was ended
+    callStore.dropCall();
+
+    // clean up media files
+    endCall(
         pc,
         localStream,
         localVideo,
@@ -113,15 +120,14 @@ watch(
             callStore.call.isCalling &&
             !incomingCallStore.incomingCall.callingUserId
         ) {
-            console.log("you are caller");
             await createOffer();
         }
     }
 );
 
 onMounted(() => {
-    socket.on("call:end", hangUp);
-    socket.on("call:accept", acceptCall);
+    socket.on("call:end", onHangUp);
+    socket.on("call:accept", onAcceptCall);
 
     socket.on("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
@@ -132,8 +138,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    socket.off("call:end", ({ from }) => callStore.callEnd(from));
-    socket.off("call:accept", acceptCall);
+    socket.off("call:end", onHangUp);
+    socket.off("call:accept", onAcceptCall);
 
     socket.off("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
@@ -150,7 +156,6 @@ watch(
             callStore.callStatus === "00:00" &&
             incomingCallStore.incomingCall.callingUserId
         ) {
-            console.log("123");
             handleOffer();
         }
     }
