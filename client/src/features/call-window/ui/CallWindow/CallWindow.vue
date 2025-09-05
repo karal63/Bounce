@@ -67,7 +67,6 @@ const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
     }
     pendingCandidates.value.length = 0;
     callStore.setStatus(true, "00:00");
-    console.log(callStore.callStatus);
 };
 
 const handleCandidate = async (candidate: RTCIceCandidateInit) => {
@@ -107,6 +106,7 @@ watch(
             callStore.call.isCalling &&
             !incomingCallStore.incomingCall.callingUserId
         ) {
+            console.log(pc.value);
             await createOffer();
         }
     }
@@ -157,40 +157,48 @@ watch(
         <div
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
         >
-            <div
-                class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
-            >
-                <video
-                    ref="localVideo"
-                    autoplay
-                    muted
-                    playsinline
-                    class="w-60 h-45"
-                ></video>
-            </div>
-
-            <div v-if="callStore.callStatus.isCalling">
-                <div v-if="callStore.call.type === 'video'">
+            <div v-if="callStore.call.type === 'video'">
+                <div
+                    class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
+                >
                     <video
-                        v-show="callStore.callStatus.isCalling === true"
-                        ref="remoteVideo"
+                        ref="localVideo"
                         autoplay
+                        muted
                         playsinline
-                        class="w-full h-full bg-black"
+                        class="w-60 h-45"
                     ></video>
                 </div>
 
-                <!-- you hear your own voice -->
-                <audio
-                    ref="remoteVoice"
-                    v-if="callStore.call.type === 'voice'"
+                <video
+                    v-if="callStore.callStatus.isCalling"
+                    ref="remoteVideo"
                     autoplay
                     playsinline
-                ></audio>
+                    class="w-full h-full bg-black"
+                ></video>
             </div>
 
+            <!-- you hear your own voice -->
+            <audio
+                ref="remoteVoice"
+                v-if="
+                    callStore.call.type === 'voice' &&
+                    callStore.callStatus.isCalling
+                "
+                autoplay
+                playsinline
+            ></audio>
+
             <!-- else -->
-            <div v-else class="h-full flex-center">
+            <div
+                v-if="
+                    (callStore.callStatus.isCalling &&
+                        callStore.call.type === 'voice') ||
+                    !callStore.callStatus.isCalling
+                "
+                class="h-full flex-center"
+            >
                 <div class="flex-col items-center">
                     <UserAvatar
                         v-if="callStore.call.to"
