@@ -1,21 +1,21 @@
 import type { Call } from "@/entities/call";
+import { useInclomingCallStore } from "@/features/incoming-call-window/@";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
-import { ref, type Ref } from "vue";
-import { useCall } from "../lib/useCall";
+import { ref } from "vue";
 
 export const useCallStore = defineStore("call", () => {
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
-    const { endCall } = useCall();
-
-    let localStream = ref<MediaStream | null>(null);
-    let remoteStream = ref<MediaStream | null>(null);
+    const incomingCallStore = useInclomingCallStore();
 
     const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 
-    const callStatus = ref("Connecting...");
+    const callStatus = ref({
+        isCalling: false,
+        status: "Connecting...",
+    });
 
     const call = ref<Call>({
         from: sessionStore.user?.id,
@@ -40,19 +40,23 @@ export const useCallStore = defineStore("call", () => {
     // === caller hangs out
     const dropCall = () => {
         socket.emit("call:end", { from: call.value.from, to: call.value.to });
+        incomingCallStore.callCanceled();
         call.value = {
             ...call.value,
             to: null,
             isCalling: false,
             isMuted: false,
         };
+
+        setStatus(false, "Connecting...");
     };
 
     // socket to close call
     const callEnd = (from: string) => {
         if (from !== call.value.to) return;
+        incomingCallStore.callCanceled();
 
-        setStatus("Canceled");
+        setStatus(false, "Canceled");
         setTimeout(() => {
             call.value = {
                 ...call.value,
@@ -60,7 +64,7 @@ export const useCallStore = defineStore("call", () => {
                 to: null,
                 isMuted: false,
             };
-            setStatus("Connecting...");
+            setStatus(false, "Connecting...");
         }, 1000);
     };
 
@@ -68,8 +72,11 @@ export const useCallStore = defineStore("call", () => {
         call.value.isMuted = !call.value.isMuted;
     };
 
-    const setStatus = (value: string) => {
-        callStatus.value = value;
+    const setStatus = (isCalling: boolean, value: string) => {
+        callStatus.value = {
+            isCalling,
+            status: value,
+        };
     };
 
     return {
@@ -80,8 +87,6 @@ export const useCallStore = defineStore("call", () => {
         callStatus,
         setStatus,
         callEnd,
-        localStream,
-        remoteStream,
         pendingCandidates,
     };
 });

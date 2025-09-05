@@ -72,13 +72,11 @@ export const useCall = () => {
     const endCall = (
         pc: Ref<RTCPeerConnection | null>,
         localStream: Ref<MediaStream | null>,
-        localVideo: Ref<HTMLVideoElement | null>,
         remoteVoice: Ref<HTMLAudioElement | null>,
         remoteVideo: Ref<HTMLVideoElement | null>,
         pendingCandidates: Ref<RTCIceCandidateInit[]>
     ) => {
         if (!localStream.value) return;
-        console.log("clean up media states");
 
         localStream.value.getTracks().forEach((track) => track.stop());
         localStream.value = null;
@@ -88,13 +86,13 @@ export const useCall = () => {
 
         if (remoteVideo.value) {
             remoteVideo.value.srcObject = null;
-            localVideo.value = null;
         }
 
         if (remoteVoice.value) {
             remoteVoice.value.srcObject = null;
-            remoteVoice.value = null;
         }
+
+        incomingCallStore.offer = null;
 
         pendingCandidates.value = [];
     };

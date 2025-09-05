@@ -19,6 +19,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
 
     const callCanceled = (from?: string) => {
         if (from && incomingCall.value.callingUserId !== from) return;
+
         incomingCall.value = {
             isCalling: false,
             callingUserId: null,
@@ -47,7 +48,12 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             from: sessionStore.user?.id,
             to: incomingCall.value.callingUserId,
         });
-        callStore.setStatus("00:00");
+
+        // callStore.setStatus(true, "00:00");
+        callStore.callStatus.isCalling = true;
+        callStore.callStatus.status = "00:00";
+
+        console.log(incomingCall.value.callingUserId);
         incomingCall.value.isCalling = false;
     };
 

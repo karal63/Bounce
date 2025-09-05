@@ -16,6 +16,7 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
     // fix broadcast
 
     socket.on("webrtc:offer", ({ offer, to }) => {
+        console.log("offer sent");
         socket.to(userSocketMap.get(to)).emit("webrtc:offer", { offer });
     });
 
@@ -24,7 +25,6 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
     });
 
     socket.on("webrtc:candidate", ({ candidate, to }) => {
-        console.log("to: ", to);
         socket
             .to(userSocketMap.get(to))
             .emit("webrtc:candidate", { candidate });
