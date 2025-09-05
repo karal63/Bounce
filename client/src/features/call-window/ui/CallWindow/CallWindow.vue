@@ -4,7 +4,7 @@ import { Icon } from "@iconify/vue";
 import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
+import { onMounted, onUnmounted, watch } from "vue";
 import { useInclomingCallStore } from "@/features/incoming-call-window/@";
 import { ref } from "vue";
 import { IncomingCallWindow } from "@/features/incoming-call-window";
@@ -106,7 +106,6 @@ watch(
             callStore.call.isCalling &&
             !incomingCallStore.incomingCall.callingUserId
         ) {
-            console.log(pc.value);
             await createOffer();
         }
     }
@@ -143,6 +142,17 @@ watch(
             callStore.call.isCalling &&
             incomingCallStore.incomingCall.callingUserId
         ) {
+            // future multi call feature / if receiver clicked accept on a new call it will end previous
+
+            // console.log(pc.value);
+            // console.log(callStore.call.from);
+            // endCall(
+            //     pc,
+            //     localStream,
+            //     remoteVoice,
+            //     remoteVideo,
+            //     pendingCandidates
+            // );
             handleOffer();
         }
     }

@@ -1,6 +1,5 @@
 import type { IncomingCall } from "@/entities/call/model/types";
 import { useCallStore } from "@/features/call-window/@";
-import { useCall } from "@/features/call-window/lib/useCall";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
@@ -10,7 +9,6 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
     const callStore = useCallStore();
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
-    const { endCall } = useCall();
 
     const incomingCall = ref<IncomingCall>({
         isCalling: false,
@@ -27,6 +25,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             callingUserId: null,
             type: "voice",
         };
+        offer.value = null;
     };
 
     const decline = () => {
