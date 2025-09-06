@@ -6,6 +6,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import IncomingCallSound from "@/shared/assets/incomingCallSound.mp3";
+// fix .mp3 file import
+// reset sound time when start playing
 
 export const useInclomingCallStore = defineStore("incomingCall", () => {
     const callStore = useCallStore();

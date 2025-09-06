@@ -24,7 +24,9 @@ const getIncomingCall = ({
         socket.emit("call:busy", { to: from });
         return;
     }
+    incomingCallStore.incomingCallSound.currentTime = 0;
     incomingCallStore.incomingCallSound.loop = true;
+    incomingCallStore.incomingCallSound.volume = 0.5;
     incomingCallStore.incomingCallSound.play();
 
     incomingCallStore.incomingCall = {

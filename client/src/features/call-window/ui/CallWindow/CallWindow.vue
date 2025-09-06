@@ -4,7 +4,7 @@ import { Icon } from "@iconify/vue";
 import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { onMounted, onUnmounted, watch } from "vue";
+import { onMounted, onUnmounted, watch, type Ref } from "vue";
 import { useInclomingCallStore } from "@/features/incoming-call-window/@";
 import { ref } from "vue";
 import { IncomingCallWindow } from "@/features/incoming-call-window";
@@ -29,6 +29,17 @@ const remoteVoice = ref<HTMLAudioElement | null>(null);
 const waitingRingTone = ref<HTMLAudioElement>(new Audio(WaitingSound));
 const acceptedCallSound = ref<HTMLAudioElement>(new Audio(AcceptedCallSound));
 
+const pauseSound = (state: Ref<HTMLAudioElement>) => {
+    state.value.pause();
+};
+
+const playSound = (state: Ref<HTMLAudioElement>, loop: boolean) => {
+    state.value.currentTime = 0;
+    state.value.loop = loop;
+    state.value.volume = 0.5;
+    state.value.play();
+};
+
 const onAcceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
     // callStore.setStatus(true, "00:00");
@@ -38,7 +49,7 @@ const onAcceptCall = ({ from }: { from: string }) => {
 const onHangUp = ({ from }: { from: string }) => {
     if (from !== callStore.call.to) return;
     callStore.callEnd();
-    waitingRingTone.value.pause();
+    pauseSound(waitingRingTone);
 
     // clean up media files
     endCall(pc, localStream, remoteVoice, remoteVideo, pendingCandidates);
@@ -48,7 +59,7 @@ const onHangUp = ({ from }: { from: string }) => {
 const drop = () => {
     // emits to other user that call was ended
     callStore.dropCall();
-    waitingRingTone.value.pause();
+    pauseSound(waitingRingTone);
 
     // clean up media files
     endCall(pc, localStream, remoteVoice, remoteVideo, pendingCandidates);
@@ -71,9 +82,8 @@ const createOffer = async () => {
 };
 
 const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
-    waitingRingTone.value?.pause();
-    acceptedCallSound.value.volume = 0.5;
-    acceptedCallSound.value.play();
+    pauseSound(waitingRingTone);
+    playSound(acceptedCallSound, false);
 
     await pc.value?.setRemoteDescription(new RTCSessionDescription(answer));
 
@@ -121,9 +131,7 @@ watch(
             callStore.call.isCalling &&
             !incomingCallStore.incomingCall.callingUserId
         ) {
-            waitingRingTone.value.loop = true;
-            waitingRingTone.value.volume = 0.5;
-            waitingRingTone.value.play();
+            playSound(waitingRingTone, true);
             await createOffer();
         }
     }
