@@ -7,7 +7,6 @@ import { findMessagedUserById } from "@/shared/lib/helpers";
 import { useCallStore } from "@/features/call-window/@";
 import ModalTransition from "@/shared/ui/ModalTransition.vue";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
-import { ref } from "vue";
 
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
