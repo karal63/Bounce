@@ -11,6 +11,8 @@ import { IncomingCallWindow } from "@/features/incoming-call-window";
 import { findMessagedUserById } from "@/shared/lib/helpers";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
 import { useCall } from "../../lib/useCall";
+import ringTone from "@/shared/assets/ring-tone.mp3";
+import acceptedCallSound from "@/shared/assets/acceptedCallSound.mp3";
 
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
@@ -24,6 +26,7 @@ const remoteVideo = ref<HTMLVideoElement | null>(null);
 const localStream = ref<MediaStream | null>(null);
 const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 const remoteVoice = ref<HTMLAudioElement | null>(null);
+const waitingRingTone = ref<HTMLAudioElement>();
 
 const onAcceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
@@ -34,6 +37,7 @@ const onAcceptCall = ({ from }: { from: string }) => {
 const onHangUp = ({ from }: { from: string }) => {
     if (from !== callStore.call.to) return;
     callStore.callEnd();
+    waitingRingTone.value?.pause();
 
     // clean up media files
     endCall(pc, localStream, remoteVoice, remoteVideo, pendingCandidates);
@@ -43,6 +47,7 @@ const onHangUp = ({ from }: { from: string }) => {
 const drop = () => {
     // emits to other user that call was ended
     callStore.dropCall();
+    waitingRingTone.value?.pause();
 
     // clean up media files
     endCall(pc, localStream, remoteVoice, remoteVideo, pendingCandidates);
@@ -65,6 +70,11 @@ const createOffer = async () => {
 };
 
 const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
+    waitingRingTone.value?.pause();
+    waitingRingTone.value = new Audio(acceptedCallSound);
+    waitingRingTone.value.volume = 0.5;
+    waitingRingTone.value.play();
+
     await pc.value?.setRemoteDescription(new RTCSessionDescription(answer));
 
     for (const c of pendingCandidates.value) {
@@ -111,6 +121,10 @@ watch(
             callStore.call.isCalling &&
             !incomingCallStore.incomingCall.callingUserId
         ) {
+            waitingRingTone.value = new Audio(ringTone);
+            waitingRingTone.value.loop = true;
+            waitingRingTone.value.volume = 0.5;
+            waitingRingTone.value.play();
             await createOffer();
         }
     }
@@ -142,8 +156,6 @@ onUnmounted(() => {
     });
 });
 
-// if both users talking and someone calls to one of them and hangs up users stop hearing each other
-
 watch(
     () => callStore.call.isCalling,
     () => {
@@ -151,18 +163,6 @@ watch(
             callStore.call.isCalling &&
             incomingCallStore.incomingCall.callingUserId
         ) {
-            // future multi call feature / if receiver clicked accept on a new call it will end previous
-
-            // console.log(pc.value);
-            // console.log(callStore.call.from);
-            // endCall(
-            //     pc,
-            //     localStream,
-            //     remoteVoice,
-            //     remoteVideo,
-            //     pendingCandidates
-            // );
-
             handleOffer();
         }
     }
