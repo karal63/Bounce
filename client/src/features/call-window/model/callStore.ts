@@ -23,6 +23,7 @@ export const useCallStore = defineStore("call", () => {
         isCalling: false,
         isMuted: false,
         type: "voice",
+        durationSec: 0,
     });
 
     // === call user
@@ -46,6 +47,7 @@ export const useCallStore = defineStore("call", () => {
             to: null,
             isCalling: false,
             isMuted: false,
+            durationSec: 0,
         };
 
         setStatus(false, "Connecting...");
@@ -62,6 +64,7 @@ export const useCallStore = defineStore("call", () => {
                 isCalling: false,
                 to: null,
                 isMuted: false,
+                durationSec: 0,
             };
             setStatus(false, "Connecting...");
         }, 1000);

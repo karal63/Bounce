@@ -45,8 +45,6 @@ onMounted(() => {
     });
 });
 
-// wrong function setOffer, should work on accept
-
 onUnmounted(() => {
     socket.off("get:incoming-call", getIncomingCall);
     socket.off("call:end", ({ from }) => incomingCallStore.callCanceled(from));

@@ -4,6 +4,7 @@ export type Call = {
     isCalling: boolean;
     isMuted: boolean;
     type: "voice" | "video";
+    durationSec: number;
 };
 
 export type IncomingCall = {

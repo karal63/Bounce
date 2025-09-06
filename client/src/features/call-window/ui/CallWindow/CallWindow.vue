@@ -4,7 +4,7 @@ import { Icon } from "@iconify/vue";
 import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
 import { useSocket } from "@/shared/config/useSocketStore";
-import { onMounted, onUnmounted, watch, type Ref } from "vue";
+import { computed, onMounted, onUnmounted, watch, type Ref } from "vue";
 import { useInclomingCallStore } from "@/features/incoming-call-window/@";
 import { ref } from "vue";
 import { IncomingCallWindow } from "@/features/incoming-call-window";
@@ -28,6 +28,7 @@ const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 const remoteVoice = ref<HTMLAudioElement | null>(null);
 const waitingRingTone = ref<HTMLAudioElement>(new Audio(WaitingSound));
 const acceptedCallSound = ref<HTMLAudioElement>(new Audio(AcceptedCallSound));
+const callTime = ref();
 
 const pauseSound = (state: Ref<HTMLAudioElement>) => {
     state.value.pause();
@@ -42,12 +43,17 @@ const playSound = (state: Ref<HTMLAudioElement>, loop: boolean) => {
 
 const onAcceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
-    // callStore.setStatus(true, "00:00");
+    startCallTime();
+    callStore.setStatus(true, "00:00");
 };
 
 // === fires when other user hangs up
 const onHangUp = ({ from }: { from: string }) => {
     if (from !== callStore.call.to) return;
+    if (callTime.value) {
+        clearInterval(callTime.value);
+    }
+
     callStore.callEnd();
     pauseSound(waitingRingTone);
 
@@ -57,6 +63,7 @@ const onHangUp = ({ from }: { from: string }) => {
 
 // === hang up button
 const drop = () => {
+    clearInterval(callTime.value);
     // emits to other user that call was ended
     callStore.dropCall();
     pauseSound(waitingRingTone);
@@ -68,6 +75,12 @@ const drop = () => {
 const calleeIsBusy = () => {
     console.log("callee is busy");
     callStore.busyCall();
+};
+
+const startCallTime = () => {
+    callTime.value = setInterval(() => {
+        callStore.call.durationSec += 1;
+    }, 1000);
 };
 
 const createOffer = async () => {
@@ -91,7 +104,6 @@ const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
         await pc.value?.addIceCandidate(new RTCIceCandidate(c));
     }
     pendingCandidates.value.length = 0;
-    callStore.setStatus(true, "00:00");
 };
 
 const handleCandidate = async (candidate: RTCIceCandidateInit) => {
@@ -151,6 +163,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+    clearInterval(callTime.value);
+
     socket.off("call:end", onHangUp);
     socket.off("call:accept", onAcceptCall);
     socket.off("call:busy", calleeIsBusy);
@@ -170,10 +184,28 @@ watch(
             callStore.call.isCalling &&
             incomingCallStore.incomingCall.callingUserId
         ) {
+            startCallTime();
             handleOffer();
         }
     }
 );
+
+const formattedCallDuration = computed(() => {
+    console.log(callStore.call.durationSec);
+    if (!callStore.callStatus.isCalling) {
+        return callStore.callStatus.status;
+    }
+
+    const totalSec = callStore.call.durationSec;
+    const hours = Math.floor(totalSec / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+        2,
+        "0"
+    )}:${String(seconds).padStart(2, "0")}`;
+});
 </script>
 
 <template>
@@ -245,7 +277,7 @@ watch(
                     </p>
 
                     <p class="mt-3 text-green-400">
-                        {{ callStore.callStatus.status }}
+                        {{ formattedCallDuration }}
                     </p>
                 </div>
             </div>
