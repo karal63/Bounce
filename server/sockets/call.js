@@ -13,8 +13,11 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
         socket.to(userSocketMap.get(to)).emit("call:accept", { from, to });
     });
 
-    // fix broadcast
+    socket.on("call:busy", ({ to }) => {
+        socket.to(userSocketMap.get(to)).emit("call:busy");
+    });
 
+    // webrtc
     socket.on("webrtc:offer", ({ offer, to }) => {
         socket.to(userSocketMap.get(to)).emit("webrtc:offer", { offer });
     });

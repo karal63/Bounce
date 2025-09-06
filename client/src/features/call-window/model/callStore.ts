@@ -78,6 +78,20 @@ export const useCallStore = defineStore("call", () => {
         };
     };
 
+    // socket to close call
+    const busyCall = () => {
+        setStatus(false, "Busy");
+        setTimeout(() => {
+            call.value = {
+                ...call.value,
+                isCalling: false,
+                to: null,
+                isMuted: false,
+            };
+            setStatus(false, "Connecting...");
+        }, 2000);
+    };
+
     return {
         call,
         handleCall,
@@ -87,5 +101,6 @@ export const useCallStore = defineStore("call", () => {
         setStatus,
         callEnd,
         pendingCandidates,
+        busyCall,
     };
 });

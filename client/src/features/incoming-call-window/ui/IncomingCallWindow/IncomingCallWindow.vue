@@ -18,7 +18,10 @@ const getIncomingCall = ({
     from: string;
     type: "voice" | "video";
 }) => {
-    if (callStore.call.isCalling) return;
+    if (callStore.call.isCalling) {
+        socket.emit("call:busy", { to: from });
+        return;
+    }
     incomingCallStore.incomingCall = {
         ...incomingCallStore.incomingCall,
         isCalling: true,

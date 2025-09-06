@@ -48,6 +48,11 @@ const drop = () => {
     endCall(pc, localStream, remoteVoice, remoteVideo, pendingCandidates);
 };
 
+const calleeIsBusy = () => {
+    console.log("callee is busy");
+    callStore.busyCall();
+};
+
 const createOffer = async () => {
     await startLocalStream(localStream, localVideo);
     await createPeerConnection(pc, remoteVideo, localStream, remoteVoice);
@@ -114,6 +119,7 @@ watch(
 onMounted(() => {
     socket.on("call:end", onHangUp);
     socket.on("call:accept", onAcceptCall);
+    socket.on("call:busy", calleeIsBusy);
 
     socket.on("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
@@ -126,6 +132,7 @@ onMounted(() => {
 onUnmounted(() => {
     socket.off("call:end", onHangUp);
     socket.off("call:accept", onAcceptCall);
+    socket.off("call:busy", calleeIsBusy);
 
     socket.off("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
