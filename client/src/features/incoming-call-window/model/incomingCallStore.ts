@@ -5,6 +5,8 @@ import { useSessionStore } from "@/shared/session/model/sessionStore";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+import IncomingCallSound from "@/shared/assets/incomingCallSound.mp3";
+
 export const useInclomingCallStore = defineStore("incomingCall", () => {
     const callStore = useCallStore();
     const { socket } = useSocket();
@@ -16,9 +18,13 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
         type: "voice",
     });
     const offer = ref();
+    const incomingCallSound = ref<HTMLAudioElement>(
+        new Audio(IncomingCallSound)
+    );
 
     const callCanceled = (from?: string) => {
         if (from && incomingCall.value.callingUserId !== from) return;
+        incomingCallSound.value.pause();
 
         incomingCall.value = {
             isCalling: false,
@@ -30,6 +36,8 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
     };
 
     const decline = () => {
+        incomingCallSound.value.pause();
+
         socket.emit("call:end", {
             from: sessionStore.user?.id,
             to: incomingCall.value.callingUserId,
@@ -39,6 +47,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
 
     const accept = () => {
         if (!incomingCall.value.callingUserId) return;
+        incomingCallSound.value.pause();
 
         callStore.call = {
             ...callStore.call,
@@ -61,5 +70,13 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
         offer.value = newOffer;
     };
 
-    return { incomingCall, callCanceled, decline, accept, offer, setOffer };
+    return {
+        incomingCall,
+        callCanceled,
+        decline,
+        accept,
+        offer,
+        setOffer,
+        incomingCallSound,
+    };
 });

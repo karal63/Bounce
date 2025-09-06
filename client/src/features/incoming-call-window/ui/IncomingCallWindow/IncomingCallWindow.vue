@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DefaultModal from "@/shared/ui/DefaultModal.vue";
 import { Icon } from "@iconify/vue";
 import { useInclomingCallStore } from "../../model/incomingCallStore";
 import { onMounted, onUnmounted } from "vue";
@@ -8,6 +7,7 @@ import { findMessagedUserById } from "@/shared/lib/helpers";
 import { useCallStore } from "@/features/call-window/@";
 import ModalTransition from "@/shared/ui/ModalTransition.vue";
 import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import { ref } from "vue";
 
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
@@ -24,6 +24,9 @@ const getIncomingCall = ({
         socket.emit("call:busy", { to: from });
         return;
     }
+    incomingCallStore.incomingCallSound.loop = true;
+    incomingCallStore.incomingCallSound.play();
+
     incomingCallStore.incomingCall = {
         ...incomingCallStore.incomingCall,
         isCalling: true,
