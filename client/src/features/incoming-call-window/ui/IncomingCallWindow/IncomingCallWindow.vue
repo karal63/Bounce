@@ -5,9 +5,11 @@ import { useInclomingCallStore } from "../../model/incomingCallStore";
 import { onMounted, onUnmounted } from "vue";
 import { useSocket } from "@/shared/config/useSocketStore";
 import { findMessagedUserById } from "@/shared/lib/helpers";
+import { useCallStore } from "@/features/call-window/@";
 
 const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
+const callStore = useCallStore();
 
 const getIncomingCall = ({
     from,
@@ -16,6 +18,7 @@ const getIncomingCall = ({
     from: string;
     type: "voice" | "video";
 }) => {
+    if (callStore.call.isCalling) return;
     incomingCallStore.incomingCall = {
         ...incomingCallStore.incomingCall,
         isCalling: true,

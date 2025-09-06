@@ -52,8 +52,7 @@ export const useCallStore = defineStore("call", () => {
     };
 
     // socket to close call
-    const callEnd = (from: string) => {
-        if (from !== call.value.to) return;
+    const callEnd = () => {
         incomingCallStore.callCanceled();
 
         setStatus(false, "Canceled");

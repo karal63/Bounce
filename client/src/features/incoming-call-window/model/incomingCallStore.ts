@@ -25,6 +25,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             callingUserId: null,
             type: "voice",
         };
+
         offer.value = null;
     };
 

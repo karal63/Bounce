@@ -32,8 +32,8 @@ const onAcceptCall = ({ from }: { from: string }) => {
 
 // === fires when other user hangs up
 const onHangUp = ({ from }: { from: string }) => {
-    // creates timeout and closes call window
-    callStore.callEnd(from);
+    if (from !== callStore.call.to) return;
+    callStore.callEnd();
 
     // clean up media files
     endCall(pc, localStream, remoteVoice, remoteVideo, pendingCandidates);
@@ -135,6 +135,8 @@ onUnmounted(() => {
     });
 });
 
+// if both users talking and someone calls to one of them and hangs up users stop hearing each other
+
 watch(
     () => callStore.call.isCalling,
     () => {
@@ -153,6 +155,7 @@ watch(
             //     remoteVideo,
             //     pendingCandidates
             // );
+
             handleOffer();
         }
     }
