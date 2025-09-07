@@ -213,7 +213,6 @@ const toggleMic = async () => {
 };
 
 const toggleCamera = async () => {
-    // fix bug when user toggles own camera and it turns to white rectangle
     // video toggle button doesnt work in voice call
     if (!localStream.value) return;
     callStore.call.cameraEnabled = !callStore.call.cameraEnabled;
@@ -229,7 +228,7 @@ const toggleCamera = async () => {
         <div
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
         >
-            <div v-if="callStore.call.type === 'video'">
+            <div class="h-full" v-if="callStore.call.type === 'video'">
                 <div
                     v-show="callStore.call.cameraEnabled"
                     class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
