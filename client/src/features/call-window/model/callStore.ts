@@ -21,7 +21,8 @@ export const useCallStore = defineStore("call", () => {
         from: sessionStore.user?.id,
         to: null,
         isCalling: false,
-        isMuted: false,
+        micNotMuted: true,
+        videoNotHidden: true,
         type: "voice",
         durationSec: 0,
     });
@@ -32,7 +33,8 @@ export const useCallStore = defineStore("call", () => {
             ...call.value,
             to: userId,
             isCalling: true,
-            isMuted: false,
+            micNotMuted: true,
+            videoNotHidden: true,
             type,
         };
         socket.emit("set:incoming-call", call.value);
@@ -46,7 +48,8 @@ export const useCallStore = defineStore("call", () => {
             ...call.value,
             to: null,
             isCalling: false,
-            isMuted: false,
+            micNotMuted: true,
+            videoNotHidden: true,
             durationSec: 0,
         };
 
@@ -63,15 +66,12 @@ export const useCallStore = defineStore("call", () => {
                 ...call.value,
                 isCalling: false,
                 to: null,
-                isMuted: false,
+                micNotMuted: true,
+                videoNotHidden: true,
                 durationSec: 0,
             };
             setStatus(false, "Connecting...");
         }, 1000);
-    };
-
-    const toggleMute = () => {
-        call.value.isMuted = !call.value.isMuted;
     };
 
     const setStatus = (isCalling: boolean, value: string) => {
@@ -89,7 +89,8 @@ export const useCallStore = defineStore("call", () => {
                 ...call.value,
                 isCalling: false,
                 to: null,
-                isMuted: false,
+                micNotMuted: true,
+                videoNotHidden: true,
             };
             setStatus(false, "Connecting...");
         }, 2000);
@@ -99,7 +100,6 @@ export const useCallStore = defineStore("call", () => {
         call,
         handleCall,
         dropCall,
-        toggleMute,
         callStatus,
         setStatus,
         callEnd,

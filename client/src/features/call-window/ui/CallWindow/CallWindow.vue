@@ -73,7 +73,6 @@ const drop = () => {
 };
 
 const calleeIsBusy = () => {
-    console.log("callee is busy");
     callStore.busyCall();
 };
 
@@ -191,7 +190,6 @@ watch(
 );
 
 const formattedCallDuration = computed(() => {
-    console.log(callStore.call.durationSec);
     if (!callStore.callStatus.isCalling) {
         return callStore.callStatus.status;
     }
@@ -206,6 +204,13 @@ const formattedCallDuration = computed(() => {
         "0"
     )}:${String(seconds).padStart(2, "0")}`;
 });
+
+// now work on mute button
+const toggleMic = async () => {
+    if (!localStream.value) return;
+    callStore.call.micNotMuted = !callStore.call.micNotMuted;
+    localStream.value.getTracks()[0].enabled = callStore.call.micNotMuted;
+};
 </script>
 
 <template>
@@ -287,15 +292,27 @@ const formattedCallDuration = computed(() => {
                 class="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-mainDarkBg/50 px-4 py-2 rounded-full flex items-center gap-4"
             >
                 <button
-                    @click="callStore.toggleMute"
+                    @click="toggleMic"
                     class="w-13 h-13 rounded-full text-3xl flex-center cursor-pointer transition-all"
                     :class="
-                        callStore.call.isMuted
+                        !callStore.call.micNotMuted
                             ? 'bg-purple-500'
                             : 'hover:bg-mainHoverOnGray'
                     "
                 >
                     <Icon icon="quill:mute" />
+                </button>
+
+                <button
+                    @click="toggleMic"
+                    class="w-13 h-13 rounded-full text-3xl flex-center cursor-pointer transition-all"
+                    :class="
+                        !callStore.call.micNotMuted
+                            ? 'bg-purple-500'
+                            : 'hover:bg-mainHoverOnGray'
+                    "
+                >
+                    <Icon icon="weui:video-call-outlined" />
                 </button>
 
                 <button
