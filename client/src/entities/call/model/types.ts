@@ -2,8 +2,8 @@ export type Call = {
     from: string | null | undefined;
     to: string | null;
     isCalling: boolean;
-    micNotMuted: boolean;
-    videoNotHidden: boolean;
+    micEnabled: boolean;
+    cameraEnabled: boolean;
     type: "voice" | "video";
     durationSec: number;
 };

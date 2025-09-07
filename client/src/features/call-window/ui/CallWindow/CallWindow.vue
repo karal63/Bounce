@@ -208,15 +208,16 @@ const formattedCallDuration = computed(() => {
 // now work on mute button
 const toggleMic = async () => {
     if (!localStream.value) return;
-    callStore.call.micNotMuted = !callStore.call.micNotMuted;
-    localStream.value.getTracks()[0].enabled = callStore.call.micNotMuted;
+    callStore.call.micEnabled = !callStore.call.micEnabled;
+    localStream.value.getTracks()[0].enabled = callStore.call.micEnabled;
 };
 
 const toggleCamera = async () => {
     // fix bug when user toggles own camera and it turns to white rectangle
+    // video toggle button doesnt work in voice call
     if (!localStream.value) return;
-    callStore.call.videoNotHidden = !callStore.call.videoNotHidden;
-    localStream.value.getTracks()[1].enabled = callStore.call.videoNotHidden;
+    callStore.call.cameraEnabled = !callStore.call.cameraEnabled;
+    localStream.value.getTracks()[1].enabled = callStore.call.cameraEnabled;
 };
 </script>
 
@@ -230,7 +231,7 @@ const toggleCamera = async () => {
         >
             <div v-if="callStore.call.type === 'video'">
                 <div
-                    v-if="callStore.call.videoNotHidden"
+                    v-show="callStore.call.cameraEnabled"
                     class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
                 >
                     <video
@@ -303,24 +304,36 @@ const toggleCamera = async () => {
                     @click="toggleMic"
                     class="w-13 h-13 rounded-full text-3xl flex-center cursor-pointer transition-all"
                     :class="
-                        !callStore.call.micNotMuted
+                        !callStore.call.micEnabled
                             ? 'bg-purple-500'
                             : 'hover:bg-mainHoverOnGray'
                     "
                 >
-                    <Icon icon="quill:mute" />
+                    <Icon
+                        :icon="
+                            callStore.call.micEnabled
+                                ? 'fluent:speaker-2-32-regular'
+                                : 'quill:mute'
+                        "
+                    />
                 </button>
 
                 <button
                     @click="toggleCamera"
                     class="w-13 h-13 rounded-full text-3xl flex-center cursor-pointer transition-all"
                     :class="
-                        !callStore.call.videoNotHidden
+                        callStore.call.cameraEnabled
                             ? 'bg-purple-500'
                             : 'hover:bg-mainHoverOnGray'
                     "
                 >
-                    <Icon icon="weui:video-call-outlined" />
+                    <Icon
+                        :icon="
+                            callStore.call.cameraEnabled
+                                ? 'fluent:video-28-regular'
+                                : 'fluent:video-off-48-regular'
+                        "
+                    />
                 </button>
 
                 <button

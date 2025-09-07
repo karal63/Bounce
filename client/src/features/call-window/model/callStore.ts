@@ -21,8 +21,8 @@ export const useCallStore = defineStore("call", () => {
         from: sessionStore.user?.id,
         to: null,
         isCalling: false,
-        micNotMuted: true,
-        videoNotHidden: true,
+        micEnabled: true,
+        cameraEnabled: true,
         type: "voice",
         durationSec: 0,
     });
@@ -33,8 +33,8 @@ export const useCallStore = defineStore("call", () => {
             ...call.value,
             to: userId,
             isCalling: true,
-            micNotMuted: true,
-            videoNotHidden: true,
+            micEnabled: true,
+            cameraEnabled: type === "video",
             type,
         };
         socket.emit("set:incoming-call", call.value);
@@ -48,8 +48,8 @@ export const useCallStore = defineStore("call", () => {
             ...call.value,
             to: null,
             isCalling: false,
-            micNotMuted: true,
-            videoNotHidden: true,
+            micEnabled: true,
+            cameraEnabled: true,
             durationSec: 0,
         };
 
@@ -66,8 +66,8 @@ export const useCallStore = defineStore("call", () => {
                 ...call.value,
                 isCalling: false,
                 to: null,
-                micNotMuted: true,
-                videoNotHidden: true,
+                micEnabled: true,
+                cameraEnabled: true,
                 durationSec: 0,
             };
             setStatus(false, "Connecting...");
@@ -89,8 +89,8 @@ export const useCallStore = defineStore("call", () => {
                 ...call.value,
                 isCalling: false,
                 to: null,
-                micNotMuted: true,
-                videoNotHidden: true,
+                micEnabled: true,
+                cameraEnabled: true,
             };
             setStatus(false, "Connecting...");
         }, 2000);
