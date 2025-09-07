@@ -211,6 +211,13 @@ const toggleMic = async () => {
     callStore.call.micNotMuted = !callStore.call.micNotMuted;
     localStream.value.getTracks()[0].enabled = callStore.call.micNotMuted;
 };
+
+const toggleCamera = async () => {
+    // fix bug when user toggles own camera and it turns to white rectangle
+    if (!localStream.value) return;
+    callStore.call.videoNotHidden = !callStore.call.videoNotHidden;
+    localStream.value.getTracks()[1].enabled = callStore.call.videoNotHidden;
+};
 </script>
 
 <template>
@@ -223,6 +230,7 @@ const toggleMic = async () => {
         >
             <div v-if="callStore.call.type === 'video'">
                 <div
+                    v-if="callStore.call.videoNotHidden"
                     class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
                 >
                     <video
@@ -304,10 +312,10 @@ const toggleMic = async () => {
                 </button>
 
                 <button
-                    @click="toggleMic"
+                    @click="toggleCamera"
                     class="w-13 h-13 rounded-full text-3xl flex-center cursor-pointer transition-all"
                     :class="
-                        !callStore.call.micNotMuted
+                        !callStore.call.videoNotHidden
                             ? 'bg-purple-500'
                             : 'hover:bg-mainHoverOnGray'
                     "
