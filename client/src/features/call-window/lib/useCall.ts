@@ -30,10 +30,6 @@ export const useCall = () => {
         if (localVideo.value) {
             localVideo.value.srcObject = localStream.value;
         }
-
-        // if (remoteVoice.value) {
-        //     remoteVoice.value.srcObject = localStream.value;
-        // }
     };
 
     const createPeerConnection = async (

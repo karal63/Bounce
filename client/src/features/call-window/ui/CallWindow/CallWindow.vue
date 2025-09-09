@@ -29,6 +29,7 @@ const remoteVoice = ref<HTMLAudioElement | null>(null);
 const waitingRingTone = ref<HTMLAudioElement>(new Audio(WaitingSound));
 const acceptedCallSound = ref<HTMLAudioElement>(new Audio(AcceptedCallSound));
 const callTime = ref();
+const videoStream = ref<MediaStream | null>(null);
 
 const pauseSound = (state: Ref<HTMLAudioElement>) => {
     state.value.pause();
@@ -213,13 +214,54 @@ const toggleMic = async () => {
 };
 
 const toggleCamera = async () => {
-    // video toggle button doesnt work in voice call
-    if (!localStream.value) return;
-    callStore.call.cameraEnabled = !callStore.call.cameraEnabled;
-    localStream.value.getTracks()[1].enabled = callStore.call.cameraEnabled;
+    if (!localStream.value || !pc.value) return;
+
+    const hasVideo = localStream.value.getVideoTracks().length > 0;
+
+    if (!hasVideo) {
+        // No video track yet → request it
+        const videoStream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+        });
+        const videoTrack = videoStream.getVideoTracks()[0];
+
+        if (videoTrack) {
+            localStream.value.addTrack(videoTrack);
+
+            // Update peer connection if already in call
+            const sender = pc.value
+                .getSenders()
+                .find((s) => s.track?.kind === "video");
+            if (sender) {
+                sender.replaceTrack(videoTrack);
+            } else {
+                pc.value.addTrack(videoTrack, localStream.value);
+            }
+        }
+        callStore.call.cameraEnabled = true;
+    } else {
+        // Already has a video track → toggle enable/disable
+        const videoTrack = localStream.value.getVideoTracks()[0];
+        videoTrack.enabled = !videoTrack.enabled;
+        callStore.call.cameraEnabled = videoTrack.enabled;
+
+        // If fully disabling (not just mute), you may also want to stop/remove it:
+        if (!videoTrack.enabled) {
+            videoTrack.stop();
+            localStream.value.removeTrack(videoTrack);
+
+            const sender = pc.value
+                .getSenders()
+                .find((s) => s.track?.kind === "video");
+            if (sender) {
+                sender.replaceTrack(null);
+            }
+        }
+    }
 };
 </script>
 
+<!-- v-if="callStore.call.type === 'video'" -->
 <template>
     <ModalTransition
         v-if="currentChatStore.currentRoom.type !== 'group'"
@@ -228,7 +270,7 @@ const toggleCamera = async () => {
         <div
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
         >
-            <div class="h-full" v-if="callStore.call.type === 'video'">
+            <div class="h-full">
                 <div
                     v-show="callStore.call.cameraEnabled"
                     class="absolute right-4 bottom-30 w-60 h-40 bg-white rounded-xl overflow-hidden flex-center"
