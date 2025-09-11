@@ -31,4 +31,8 @@ module.exports = function callHandlers(io, socket, userSocketMap) {
             .to(userSocketMap.get(to))
             .emit("webrtc:candidate", { candidate });
     });
+
+    socket.on("webrtc:renegotiate", ({ offer, to }) => {
+        socket.to(userSocketMap.get(to)).emit("webrtc:renegotiate", { offer });
+    });
 };

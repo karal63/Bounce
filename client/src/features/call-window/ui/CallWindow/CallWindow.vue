@@ -115,6 +115,7 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
 };
 
 const handleOffer = async () => {
+    console.log("new offer");
     await startLocalStream(localStream, localVideo);
     await createPeerConnection(pc, remoteVideo, localStream, remoteVoice);
 
@@ -134,6 +135,23 @@ const handleOffer = async () => {
         await pc.value?.addIceCandidate(new RTCIceCandidate(c));
     }
     pendingCandidates.value.length = 0;
+};
+
+const handleRenegotiate = async ({
+    offer,
+}: {
+    offer: RTCSessionDescriptionInit;
+}) => {
+    if (!pc.value) return;
+
+    await pc.value.setRemoteDescription(offer);
+    const answer = await pc.value.createAnswer();
+    await pc.value.setLocalDescription(answer);
+    socket.emit("webrtc:answer", {
+        answer,
+        to: callStore.call.to,
+    });
+    console.log("renegotiation");
 };
 
 watch(
@@ -160,6 +178,8 @@ onMounted(() => {
     socket.on("webrtc:candidate", ({ candidate }) => {
         handleCandidate(candidate);
     });
+
+    socket.on("webrtc:renegotiate", handleRenegotiate);
 });
 
 onUnmounted(() => {
@@ -175,10 +195,11 @@ onUnmounted(() => {
     socket.off("webrtc:candidate", ({ candidate }) => {
         handleCandidate(candidate);
     });
+    socket.off("webrtc:renegotiate", handleRenegotiate);
 });
 
 watch(
-    () => callStore.call.isCalling,
+    () => [callStore.call.isCalling, incomingCallStore.offer],
     () => {
         if (
             callStore.call.isCalling &&
@@ -187,7 +208,8 @@ watch(
             startCallTime();
             handleOffer();
         }
-    }
+    },
+    { deep: true }
 );
 
 const formattedCallDuration = computed(() => {
@@ -217,6 +239,7 @@ const toggleCamera = async () => {
     if (!localStream.value || !pc.value) return;
 
     const hasVideo = localStream.value.getVideoTracks().length > 0;
+    console.log(hasVideo);
 
     if (!hasVideo) {
         // No video track yet → request it
@@ -234,11 +257,16 @@ const toggleCamera = async () => {
                 .find((s) => s.track?.kind === "video");
             if (sender) {
                 sender.replaceTrack(videoTrack);
+                console.log("sender exists");
             } else {
                 pc.value.addTrack(videoTrack, localStream.value);
+                console.log("sender doesnt exists");
+                renegotiate();
             }
         }
         callStore.call.cameraEnabled = true;
+
+        // // emit to callee with new offer
     } else {
         // Already has a video track → toggle enable/disable
         const videoTrack = localStream.value.getVideoTracks()[0];
@@ -246,18 +274,25 @@ const toggleCamera = async () => {
         callStore.call.cameraEnabled = videoTrack.enabled;
 
         // If fully disabling (not just mute), you may also want to stop/remove it:
-        if (!videoTrack.enabled) {
-            videoTrack.stop();
-            localStream.value.removeTrack(videoTrack);
+        // if (!videoTrack.enabled) {
+        //     videoTrack.stop();
+        //     localStream.value.removeTrack(videoTrack);
 
-            const sender = pc.value
-                .getSenders()
-                .find((s) => s.track?.kind === "video");
-            if (sender) {
-                sender.replaceTrack(null);
-            }
-        }
+        //     const sender = pc.value
+        //         .getSenders()
+        //         .find((s) => s.track?.kind === "video");
+        //     if (sender) {
+        //         sender.replaceTrack(null);
+        //     }
+        // }
     }
+};
+
+const renegotiate = async () => {
+    if (!pc.value) return;
+    const offer = await pc.value.createOffer();
+    await pc.value.setLocalDescription(offer);
+    socket.emit("webrtc:renegotiate", { offer, to: callStore.call.to });
 };
 </script>
 
