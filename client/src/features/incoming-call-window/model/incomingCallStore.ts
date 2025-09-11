@@ -55,6 +55,8 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             ...callStore.call,
             isCalling: true,
             to: incomingCall.value.callingUserId,
+            micEnabled: true,
+            cameraEnabled: incomingCall.value.type === "video",
             type: incomingCall.value.type,
         };
         socket.emit("call:accept", {

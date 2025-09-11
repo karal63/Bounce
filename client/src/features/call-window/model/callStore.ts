@@ -21,8 +21,8 @@ export const useCallStore = defineStore("call", () => {
         from: sessionStore.user?.id,
         to: null,
         isCalling: false,
-        micEnabled: true,
-        cameraEnabled: true,
+        micEnabled: false,
+        cameraEnabled: false,
         type: "voice",
         durationSec: 0,
     });
@@ -48,8 +48,8 @@ export const useCallStore = defineStore("call", () => {
             ...call.value,
             to: null,
             isCalling: false,
-            micEnabled: true,
-            cameraEnabled: true,
+            micEnabled: false,
+            cameraEnabled: false,
             durationSec: 0,
         };
 
@@ -66,8 +66,8 @@ export const useCallStore = defineStore("call", () => {
                 ...call.value,
                 isCalling: false,
                 to: null,
-                micEnabled: true,
-                cameraEnabled: true,
+                micEnabled: false,
+                cameraEnabled: false,
                 durationSec: 0,
             };
             setStatus(false, "Connecting...");
@@ -89,8 +89,8 @@ export const useCallStore = defineStore("call", () => {
                 ...call.value,
                 isCalling: false,
                 to: null,
-                micEnabled: true,
-                cameraEnabled: true,
+                micEnabled: false,
+                cameraEnabled: false,
             };
             setStatus(false, "Connecting...");
         }, 2000);
