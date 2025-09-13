@@ -29,7 +29,6 @@ const remoteVoice = ref<HTMLAudioElement | null>(null);
 const waitingRingTone = ref<HTMLAudioElement>(new Audio(WaitingSound));
 const acceptedCallSound = ref<HTMLAudioElement>(new Audio(AcceptedCallSound));
 const callTime = ref();
-const videoStream = ref<MediaStream | null>(null);
 
 const pauseSound = (state: Ref<HTMLAudioElement>) => {
     state.value.pause();
@@ -115,7 +114,6 @@ const handleCandidate = async (candidate: RTCIceCandidateInit) => {
 };
 
 const handleOffer = async () => {
-    console.log("new offer");
     await startLocalStream(localStream, localVideo);
     await createPeerConnection(pc, remoteVideo, localStream, remoteVoice);
 
@@ -151,7 +149,6 @@ const handleRenegotiate = async ({
         answer,
         to: callStore.call.to,
     });
-    console.log("renegotiation");
 };
 
 watch(
@@ -228,7 +225,6 @@ const formattedCallDuration = computed(() => {
     )}:${String(seconds).padStart(2, "0")}`;
 });
 
-// now work on mute button
 const toggleMic = async () => {
     if (!localStream.value) return;
     callStore.call.micEnabled = !callStore.call.micEnabled;
@@ -239,7 +235,6 @@ const toggleCamera = async () => {
     if (!localStream.value || !pc.value) return;
 
     const hasVideo = localStream.value.getVideoTracks().length > 0;
-    console.log(hasVideo);
 
     if (!hasVideo) {
         // No video track yet → request it
@@ -247,7 +242,6 @@ const toggleCamera = async () => {
             video: true,
         });
         const videoTrack = videoStream.getVideoTracks()[0];
-        console.log(videoTrack);
 
         if (videoTrack) {
             localStream.value.addTrack(videoTrack);
@@ -258,25 +252,19 @@ const toggleCamera = async () => {
                 .find((s) => s.track?.kind === "video");
             if (sender) {
                 sender.replaceTrack(videoTrack);
-                console.log("sender exists");
             } else {
                 pc.value.addTrack(videoTrack, localStream.value);
-                console.log("sender doesnt exists");
                 renegotiate();
             }
         }
         callStore.call.cameraEnabled = true;
-
-        // // emit to callee with new offer
     } else {
         // Already has a video track → toggle enable/disable
         const videoTrack = localStream.value.getVideoTracks()[0];
         videoTrack.enabled = !videoTrack.enabled;
         callStore.call.cameraEnabled = videoTrack.enabled;
 
-        // If fully disabling (not just mute), you may also want to stop/remove it:
         if (!videoTrack.enabled) {
-            console.log(await localStream.value.getVideoTracks());
             videoTrack.stop();
             localStream.value.removeTrack(videoTrack);
 
@@ -293,12 +281,6 @@ const toggleCamera = async () => {
     }
 };
 
-// ====
-// maybe i can still fix it, pay attention on detail:
-// when i call user enable, disable and enable camera it freezes for callee
-// but also localvideo turns into black, this might be the issue
-// ====
-
 const renegotiate = async () => {
     if (!pc.value) return;
     const offer = await pc.value.createOffer();
@@ -307,7 +289,6 @@ const renegotiate = async () => {
 };
 </script>
 
-<!-- v-if="callStore.call.type === 'video'" -->
 <template>
     <ModalTransition
         v-if="currentChatStore.currentRoom.type !== 'group'"
@@ -356,8 +337,8 @@ const renegotiate = async () => {
                 </div>
 
                 <video
-                    v-if="callStore.callStatus.isCalling"
                     ref="remoteVideo"
+                    v-if="callStore.callStatus.isCalling"
                     autoplay
                     playsinline
                     class="w-full h-full bg-black"
