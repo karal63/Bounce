@@ -66,10 +66,6 @@ const drop = () => {
     endCall(pc, localStream, remoteVoice, remoteVideo, pendingCandidates);
 };
 
-const calleeIsBusy = () => {
-    callStore.busyCall();
-};
-
 const startCallTime = () => {
     timeIntervalId.value = setInterval(() => {
         callStore.call.durationSec += 1;
@@ -253,7 +249,7 @@ watch(
 onMounted(() => {
     socket.on("call:end", onHangUp);
     socket.on("call:accept", onAcceptCall);
-    socket.on("call:busy", calleeIsBusy);
+    socket.on("call:busy", callStore.busyCall);
 
     socket.on("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);
@@ -270,7 +266,7 @@ onUnmounted(() => {
 
     socket.off("call:end", onHangUp);
     socket.off("call:accept", onAcceptCall);
-    socket.off("call:busy", calleeIsBusy);
+    socket.off("call:busy", callStore.busyCall);
 
     socket.off("webrtc:answer", ({ answer }) => {
         handleAnswer(answer);

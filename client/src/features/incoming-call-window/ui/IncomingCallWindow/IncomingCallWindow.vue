@@ -40,18 +40,16 @@ onMounted(() => {
     socket.on("get:incoming-call", getIncomingCall);
     socket.on("call:end", ({ from }) => incomingCallStore.callCanceled(from));
 
-    socket.on("webrtc:offer", ({ offer }) => {
-        incomingCallStore.offer = offer;
-    });
+    socket.on("webrtc:offer", ({ offer }) => incomingCallStore.setOffer(offer));
 });
 
 onUnmounted(() => {
     socket.off("get:incoming-call", getIncomingCall);
     socket.off("call:end", ({ from }) => incomingCallStore.callCanceled(from));
 
-    socket.off("webrtc:offer", ({ offer }) => {
-        incomingCallStore.setOffer(offer);
-    });
+    socket.off("webrtc:offer", ({ offer }) =>
+        incomingCallStore.setOffer(offer)
+    );
 });
 </script>
 
