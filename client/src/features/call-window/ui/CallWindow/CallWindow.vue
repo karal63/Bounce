@@ -1,24 +1,30 @@
 <script setup lang="ts">
-import ModalTransition from "@/shared/ui/ModalTransition.vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { Icon } from "@iconify/vue";
+// stores
 import { useCallStore } from "../../model/callStore";
 import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { useSocket } from "@/shared/config/useSocketStore";
-import { computed, onMounted, onUnmounted, watch, type Ref } from "vue";
 import { useInclomingCallStore } from "@/features/incoming-call-window/@";
-import { ref } from "vue";
-import { IncomingCallWindow } from "@/features/incoming-call-window";
-import { findMessagedUserById } from "@/shared/lib/helpers";
-import UserAvatar from "@/shared/ui/UserAvatar.vue";
+// hooks / helpers
+import { useSocket } from "@/shared/config/useSocketStore";
 import { useCall } from "../../lib/useCall";
+import { findMessagedUserById } from "@/shared/lib/helpers";
+// components
+import UserAvatar from "@/shared/ui/UserAvatar.vue";
+import ModalTransition from "@/shared/ui/ModalTransition.vue";
+import { IncomingCallWindow } from "@/features/incoming-call-window";
+// sounds
 import WaitingSound from "@/shared/assets/ring-tone.mp3";
 import AcceptedCallSound from "@/shared/assets/acceptedCallSound.mp3";
+import { useSound } from "@/shared/lib/hooks";
 
 const callStore = useCallStore();
 const currentChatStore = useCurrentChatStore();
-const { socket } = useSocket();
 const incomingCallStore = useInclomingCallStore();
+
+const { socket } = useSocket();
 const { endCall, startLocalStream, createPeerConnection } = useCall();
+const { pauseSound, playSound } = useSound();
 
 const pc = ref<RTCPeerConnection | null>(null);
 const localVideo = ref<HTMLVideoElement | null>(null);
@@ -28,18 +34,7 @@ const pendingCandidates = ref<RTCIceCandidateInit[]>([]);
 const remoteVoice = ref<HTMLAudioElement | null>(null);
 const waitingRingTone = ref<HTMLAudioElement>(new Audio(WaitingSound));
 const acceptedCallSound = ref<HTMLAudioElement>(new Audio(AcceptedCallSound));
-const callTime = ref();
-
-const pauseSound = (state: Ref<HTMLAudioElement>) => {
-    state.value.pause();
-};
-
-const playSound = (state: Ref<HTMLAudioElement>, loop: boolean) => {
-    state.value.currentTime = 0;
-    state.value.loop = loop;
-    state.value.volume = 0.5;
-    state.value.play();
-};
+const timeIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
 
 const onAcceptCall = ({ from }: { from: string }) => {
     if (callStore.call.to !== from) return;
@@ -50,9 +45,7 @@ const onAcceptCall = ({ from }: { from: string }) => {
 // === fires when other user hangs up
 const onHangUp = ({ from }: { from: string }) => {
     if (from !== callStore.call.to) return;
-    if (callTime.value) {
-        clearInterval(callTime.value);
-    }
+    if (timeIntervalId.value) clearInterval(timeIntervalId.value);
 
     callStore.callEnd();
     pauseSound(waitingRingTone);
@@ -63,7 +56,8 @@ const onHangUp = ({ from }: { from: string }) => {
 
 // === hang up button
 const drop = () => {
-    clearInterval(callTime.value);
+    if (timeIntervalId.value) clearInterval(timeIntervalId.value);
+
     // emits to other user that call was ended
     callStore.dropCall();
     pauseSound(waitingRingTone);
@@ -77,7 +71,7 @@ const calleeIsBusy = () => {
 };
 
 const startCallTime = () => {
-    callTime.value = setInterval(() => {
+    timeIntervalId.value = setInterval(() => {
         callStore.call.durationSec += 1;
     }, 1000);
 };
@@ -150,64 +144,6 @@ const handleRenegotiate = async ({
         to: callStore.call.to,
     });
 };
-
-watch(
-    () => callStore.call.isCalling,
-    async () => {
-        if (
-            callStore.call.isCalling &&
-            !incomingCallStore.incomingCall.callingUserId
-        ) {
-            playSound(waitingRingTone, true);
-            await createOffer();
-        }
-    }
-);
-
-onMounted(() => {
-    socket.on("call:end", onHangUp);
-    socket.on("call:accept", onAcceptCall);
-    socket.on("call:busy", calleeIsBusy);
-
-    socket.on("webrtc:answer", ({ answer }) => {
-        handleAnswer(answer);
-    });
-    socket.on("webrtc:candidate", ({ candidate }) => {
-        handleCandidate(candidate);
-    });
-
-    socket.on("webrtc:renegotiate", handleRenegotiate);
-});
-
-onUnmounted(() => {
-    clearInterval(callTime.value);
-
-    socket.off("call:end", onHangUp);
-    socket.off("call:accept", onAcceptCall);
-    socket.off("call:busy", calleeIsBusy);
-
-    socket.off("webrtc:answer", ({ answer }) => {
-        handleAnswer(answer);
-    });
-    socket.off("webrtc:candidate", ({ candidate }) => {
-        handleCandidate(candidate);
-    });
-    socket.off("webrtc:renegotiate", handleRenegotiate);
-});
-
-watch(
-    () => [callStore.call.isCalling, incomingCallStore.offer],
-    () => {
-        if (
-            callStore.call.isCalling &&
-            incomingCallStore.incomingCall.callingUserId
-        ) {
-            startCallTime();
-            handleOffer();
-        }
-    },
-    { deep: true }
-);
 
 const formattedCallDuration = computed(() => {
     if (!callStore.callStatus.isCalling) {
@@ -287,6 +223,63 @@ const renegotiate = async () => {
     await pc.value.setLocalDescription(offer);
     socket.emit("webrtc:renegotiate", { offer, to: callStore.call.to });
 };
+
+watch(
+    () => callStore.call.isCalling,
+    async () => {
+        if (
+            callStore.call.isCalling &&
+            !incomingCallStore.incomingCall.callingUserId
+        ) {
+            playSound(waitingRingTone, true);
+            await createOffer();
+        }
+    }
+);
+
+watch(
+    () => callStore.call.isCalling,
+    () => {
+        if (
+            callStore.call.isCalling &&
+            incomingCallStore.incomingCall.callingUserId
+        ) {
+            startCallTime();
+            handleOffer();
+        }
+    }
+);
+
+onMounted(() => {
+    socket.on("call:end", onHangUp);
+    socket.on("call:accept", onAcceptCall);
+    socket.on("call:busy", calleeIsBusy);
+
+    socket.on("webrtc:answer", ({ answer }) => {
+        handleAnswer(answer);
+    });
+    socket.on("webrtc:candidate", ({ candidate }) => {
+        handleCandidate(candidate);
+    });
+
+    socket.on("webrtc:renegotiate", handleRenegotiate);
+});
+
+onUnmounted(() => {
+    if (timeIntervalId.value) clearInterval(timeIntervalId.value);
+
+    socket.off("call:end", onHangUp);
+    socket.off("call:accept", onAcceptCall);
+    socket.off("call:busy", calleeIsBusy);
+
+    socket.off("webrtc:answer", ({ answer }) => {
+        handleAnswer(answer);
+    });
+    socket.off("webrtc:candidate", ({ candidate }) => {
+        handleCandidate(candidate);
+    });
+    socket.off("webrtc:renegotiate", handleRenegotiate);
+});
 </script>
 
 <template>
