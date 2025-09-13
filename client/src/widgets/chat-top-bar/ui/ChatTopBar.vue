@@ -10,6 +10,7 @@ import { findMessagedUserById } from "@/shared/lib/helpers";
 import { checkIfUserTyping } from "../lib/helpers/checkIfUserTyping";
 import { findMemberById } from "@/shared/lib/helpers/findMemberById";
 import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { useCallStore } from "@/features/call-window/@";
 
 const shareModalStore = useShareModalStore();
 const uiStore = useUiStore();
@@ -17,6 +18,7 @@ const route = useRoute();
 
 const currentChatStore = useCurrentChatStore();
 const sessionStore = useSessionStore();
+const callStore = useCallStore();
 
 const getGroupName = computed(() => {
     const room = currentChatStore.currentRoom;
@@ -111,6 +113,38 @@ const showShareLinkModal = () => {
             </div>
         </div>
         <div class="flex items-center gap-2">
+            <button
+                v-if="
+                    route.path.startsWith('/chat') &&
+                    !route.path.startsWith('/chat/settings') &&
+                    currentChatStore.currentRoom.type === 'direct'
+                "
+                @click="
+                    callStore.handleCall(
+                        currentChatStore.currentRoom.id,
+                        'voice'
+                    )
+                "
+                class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
+            >
+                <Icon icon="proicons:call" />
+            </button>
+            <button
+                v-if="
+                    route.path.startsWith('/chat') &&
+                    !route.path.startsWith('/chat/settings') &&
+                    currentChatStore.currentRoom.type === 'direct'
+                "
+                @click="
+                    callStore.handleCall(
+                        currentChatStore.currentRoom.id,
+                        'video'
+                    )
+                "
+                class="text-2xl w-10 h-10 flex-center hover:bg-mainHoverOnGray rounded-full transition-all cursor-pointer"
+            >
+                <Icon icon="weui:video-call-outlined" />
+            </button>
             <button
                 v-if="
                     route.path.startsWith('/chat') &&

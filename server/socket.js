@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { instrument } = require("@socket.io/admin-ui");
 const redisClient = require("./redisClient");
+const callHandlers = require("./sockets/call");
 require("dotenv").config();
 
 const app = express();
@@ -77,6 +78,8 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("status:update", { userId, online: false });
         await redisClient.sRem("online-users", userId);
     });
+
+    callHandlers(io, socket, userSocketMap);
 });
 
 instrument(io, {
