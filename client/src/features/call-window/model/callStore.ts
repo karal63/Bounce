@@ -26,6 +26,7 @@ export const useCallStore = defineStore("call", () => {
         type: "voice",
         durationSec: 0,
     });
+    const hasRemoteVideo = ref();
 
     // === call user
     const handleCall = (userId: string | null, type: "voice" | "video") => {
@@ -105,5 +106,6 @@ export const useCallStore = defineStore("call", () => {
         callEnd,
         pendingCandidates,
         busyCall,
+        hasRemoteVideo,
     };
 });

@@ -316,6 +316,31 @@ const renegotiate = async () => {
         <div
             class="absolute left-0 top-0 h-full w-full bg-mainGray/90 backdrop-blur-md"
         >
+            <div v-if="!callStore.hasRemoteVideo" class="h-full flex-center">
+                <div class="flex-col items-center">
+                    <UserAvatar
+                        v-if="callStore.call.to"
+                        size="125"
+                        alt="user"
+                        :src="
+                            findMessagedUserById(callStore.call.to)?.avatarUrl
+                        "
+                        class="border-4 border-purple-500 drop-shadow-2xl drop-shadow-purple-900"
+                    />
+
+                    <p v-if="callStore.call.to" class="text-xl mt-8">
+                        {{
+                            findMessagedUserById(callStore.call.to)
+                                ?.otherUserName ?? "error: could not get name"
+                        }}
+                    </p>
+
+                    <p class="mt-3 text-green-400">
+                        {{ formattedCallDuration }}
+                    </p>
+                </div>
+            </div>
+
             <div class="h-full">
                 <div
                     v-show="callStore.call.cameraEnabled"
@@ -351,37 +376,6 @@ const renegotiate = async () => {
             ></audio>
 
             <!-- else -->
-            <div
-                v-if="
-                    (callStore.callStatus.isCalling &&
-                        callStore.call.type === 'voice') ||
-                    !callStore.callStatus.isCalling
-                "
-                class="h-full flex-center"
-            >
-                <div class="flex-col items-center">
-                    <UserAvatar
-                        v-if="callStore.call.to"
-                        size="125"
-                        alt="user"
-                        :src="
-                            findMessagedUserById(callStore.call.to)?.avatarUrl
-                        "
-                        class="border-4 border-purple-500 drop-shadow-2xl drop-shadow-purple-900"
-                    />
-
-                    <p v-if="callStore.call.to" class="text-xl mt-8">
-                        {{
-                            findMessagedUserById(callStore.call.to)
-                                ?.otherUserName ?? "error: could not get name"
-                        }}
-                    </p>
-
-                    <p class="mt-3 text-green-400">
-                        {{ formattedCallDuration }}
-                    </p>
-                </div>
-            </div>
 
             <!-- buttons panel -->
             <div

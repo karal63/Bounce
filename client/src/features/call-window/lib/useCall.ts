@@ -50,11 +50,26 @@ export const useCall = () => {
         };
 
         pc.value.ontrack = (event) => {
+            console.log(event);
+
             if (remoteVideo.value) {
                 remoteVideo.value.srcObject = event.streams[0];
             }
             if (remoteVoice.value) {
                 remoteVoice.value.srcObject = event.streams[0];
+            }
+
+            // handling call screen
+            if (event.track.kind === "video") {
+                event.track.onunmute = () => {
+                    callStore.hasRemoteVideo = true;
+                };
+                event.track.onmute = () => {
+                    callStore.hasRemoteVideo = false;
+                };
+                event.track.onended = () => {
+                    callStore.hasRemoteVideo = false;
+                };
             }
         };
 
