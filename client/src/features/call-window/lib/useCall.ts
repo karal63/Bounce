@@ -26,7 +26,7 @@ export const useCall = () => {
                 callStore.call.type === "video",
             audio: true,
         });
-
+        console.log(localStream.value);
         if (localVideo.value) {
             localVideo.value.srcObject = localStream.value;
         }

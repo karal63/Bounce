@@ -247,6 +247,7 @@ const toggleCamera = async () => {
             video: true,
         });
         const videoTrack = videoStream.getVideoTracks()[0];
+        console.log(videoTrack);
 
         if (videoTrack) {
             localStream.value.addTrack(videoTrack);
@@ -274,19 +275,29 @@ const toggleCamera = async () => {
         callStore.call.cameraEnabled = videoTrack.enabled;
 
         // If fully disabling (not just mute), you may also want to stop/remove it:
-        // if (!videoTrack.enabled) {
-        //     videoTrack.stop();
-        //     localStream.value.removeTrack(videoTrack);
+        if (!videoTrack.enabled) {
+            console.log(await localStream.value.getVideoTracks());
+            videoTrack.stop();
+            localStream.value.removeTrack(videoTrack);
 
-        //     const sender = pc.value
-        //         .getSenders()
-        //         .find((s) => s.track?.kind === "video");
-        //     if (sender) {
-        //         sender.replaceTrack(null);
-        //     }
-        // }
+            // === this breaks app
+            // const sender = pc.value
+            //     .getSenders()
+            //     .find((s) => s.track?.kind === "video");
+            // console.log(sender);
+            // if (sender) {
+            //     console.log("replacing");
+            //     sender.replaceTrack(null);
+            // }
+        }
     }
 };
+
+// ====
+// maybe i can still fix it, pay attention on detail:
+// when i call user enable, disable and enable camera it freezes for callee
+// but also localvideo turns into black, this might be the issue
+// ====
 
 const renegotiate = async () => {
     if (!pc.value) return;
