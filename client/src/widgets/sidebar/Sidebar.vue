@@ -31,7 +31,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="min-w-[200px] max-w-[250px] h-full flex-col justify-between">
+    <div class="min-w-[225px] max-w-[250px] h-full flex-col justify-between">
         <div>
             <!-- logo -->
             <RouterLink
@@ -46,13 +46,26 @@ onMounted(async () => {
 
             <h1 class="text-xl font-light mt-10 mb-2 text-grayDull">Chats</h1>
 
-            <button
-                @click="modal.isModalOpen = true"
-                class="w-full bg-mainHoverDarkBg border border-mainBorder py-3 px-3 rounded-xl cursor-pointer gap-2 transition-all flex justify-between items-center"
-            >
-                Add Chat
-                <Icon icon="iconoir:plus" class="text-purple-400 text-2xl" />
-            </button>
+            <div class="relative">
+                <div
+                    class="absolute -inset-[3px] bg-gradient-to-tr from-purple-500 to-purple-800 rounded-lg z-0"
+                ></div>
+
+                <div
+                    class="absolute -inset-[1px] bg-gradient-to-tr from-purple-500 to-pink-800 blur-sm rounded-lg z-0"
+                ></div>
+
+                <button
+                    @click="modal.isModalOpen = true"
+                    class="relative w-full z-10 bg-mainHoverDarkBg rounded-lg py-3 px-3 cursor-pointer gap-2 transition-all flex justify-between items-center"
+                >
+                    Add Chat
+                    <Icon
+                        icon="iconoir:plus"
+                        class="text-purple-400 text-2xl"
+                    />
+                </button>
+            </div>
 
             <GroupsList
                 @openDeleteModal="deleteGroupStore.isDeleteModalOpen = true"
