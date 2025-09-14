@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex w-full h-full">
+    <div class="flex w-full h-full pr-5">
         <DefaultChatWindow />
         <MessagedUsersBar />
 
