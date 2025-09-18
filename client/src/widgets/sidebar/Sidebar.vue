@@ -31,28 +31,41 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="min-w-[200px] max-w-[250px] h-full flex-col justify-between">
+    <div class="min-w-[225px] max-w-[250px] h-full flex-col justify-between">
         <div>
             <!-- logo -->
             <RouterLink
                 to="/chat"
                 @click="clearRoom"
-                class="flex-col gap-1 cursor-pointer"
+                class="flex items-center gap-2 cursor-pointer"
             >
-                <div class="bg-purple-500 w-6 h-2 rounded-xl -ml-1"></div>
-                <div class="bg-purple-500 w-6 h-2 rounded-xl"></div>
-                <div class="bg-purple-500 w-6 h-2 rounded-xl ml-1"></div>
+                <div class="flex-col gap-1">
+                    <div class="bg-purple-500 w-6 h-1 rounded-xl -ml-1"></div>
+                    <div class="bg-purple-500 w-6 h-1 rounded-xl"></div>
+                    <div class="bg-purple-500 w-6 h-1 rounded-xl ml-1"></div>
+                </div>
+                <h3 class="text-2xl text-start font-bold">Bounce</h3>
             </RouterLink>
 
             <h1 class="text-xl font-light mt-10 mb-2 text-grayDull">Chats</h1>
 
-            <button
-                @click="modal.isModalOpen = true"
-                class="w-full bg-mainHoverDarkBg border border-mainBorder py-3 px-3 rounded-xl cursor-pointer gap-2 transition-all flex justify-between items-center"
-            >
-                Add Chat
-                <Icon icon="iconoir:plus" class="text-purple-400 text-2xl" />
-            </button>
+            <div class="relative">
+                <div
+                    class="absolute -inset-[3px] bg-gradient-to-tr from-purple-500 to-purple-800 rounded-lg z-0"
+                ></div>
+
+                <div
+                    class="absolute -inset-[1px] bg-gradient-to-tr from-purple-500 to-pink-800 blur-sm rounded-lg z-0"
+                ></div>
+
+                <button
+                    @click="modal.isModalOpen = true"
+                    class="relative w-full z-10 bg-gradient-to-tr from-purple-900 to-purple-500 border-3 border-mainHoverDarkBg rounded-lg h-11 px-3 cursor-pointer gap-2 transition-all flex justify-between items-center"
+                >
+                    New Chat
+                    <Icon icon="iconoir:plus" class="text-3xl" />
+                </button>
+            </div>
 
             <GroupsList
                 @openDeleteModal="deleteGroupStore.isDeleteModalOpen = true"

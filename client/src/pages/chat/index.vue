@@ -26,7 +26,7 @@ onMounted(async () => {
 
 <template>
     <div class="text-white flex h-full w-full overflow-hidden">
-        <div class="relative ml-10 w-full flex-col">
+        <div class="relative w-full flex-col">
             <ChatTopBar />
             <div class="relative flex h-[92%]">
                 <div class="relative w-full h-full flex-col">

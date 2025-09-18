@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-@layer base {
+/* @layer base {
     * {
         color: white;
     }
-}
+} */
 
 @theme {
     --font-display: "Poppins", "sans-serif";

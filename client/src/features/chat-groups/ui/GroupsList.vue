@@ -104,7 +104,7 @@ socket.on("to-banned:update-groups", (bannedMember: Member) => {
     <div class="relative">
         <ul
             @contextmenu.prevent="handleClick"
-            class="mt-5 bg-mainHoverDarkBg rounded-xl px-3 divide-y divide-mainBorder"
+            class="mt-5 bg-mainHoverDarkBg rounded-xl"
         >
             <SingleGroup
                 v-for="group of currentChatStore.groups"
