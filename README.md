@@ -18,14 +18,4 @@ Bounce is a modern, fast, and lightweight chat platform designed for seamless co
 
 ⚡ Lightweight & scalable — built for speed and growth
 
-<!-- not receicing direct message immediately (socket) -->
-<!-- fix auto scrolling to the bottom when opening a new chat, also make chat appear on the bottom -->
-<!-- you are probably sending multiple requests to get attachments, i moved it to watch(room id) and now i dont need to do this manually -->
-
-<!-- create pinned messages panel (button in message context) (OPTIONAL) -->
-<!-- redis (online status) -->
-<!-- tests -->
-<!-- optimization -->
-<!-- deploy (Render or something like this) -->
-
-<!-- tag test -->
+<!-- write proper README docs -->
