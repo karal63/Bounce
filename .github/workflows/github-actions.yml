@@ -25,42 +25,14 @@ jobs:
               working-directory: ./client
               run: npm test
 
+            - name: build app
+              working-directory: ./client
+              run: npm run build
+
             # - name: Install playwright browsers
             #   working-directory: ./client
             #   run: npx playwright install --with-deps
 
             # - name: Run e2e tests
-            #   working-directory: ./client
-            #   run: npm run test:e2e
-
-            - name: build app
-              working-directory: ./client
-              run: npm run build
-
-            # - name: install client modules
-            #   working-directory: ./client
-            #   run: npm install
-            # - name: install server modules
-            #   working-directory: ./server
-            #   run: npm install
-            # - name: build client app
-            #   working-directory: ./client
-            #   run: npm run build
-            # - name: run client
-            #   working-directory: ./client
-            #   run: npm run dev &
-            # # - name: run server
-            # #   working-directory: ./server
-            # #   run: npm start &
-            # - name: run unit tests
-            #   working-directory: ./client
-            #   run: npm run test
-            # - name: Install Playwright
-            #   working-directory: ./client
-            #   run: npx playwright install
-            # - name: Install Playwright browsers
-            #   working-directory: ./client
-            #   run: npx playwright install --with-deps
-            # - name: run e2e tests
             #   working-directory: ./client
             #   run: npm run test:e2e
