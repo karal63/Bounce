@@ -5,7 +5,8 @@
         "server"
     ],
     "scripts": {
-        "dev": "concurrently \"npm run dev --prefix client\" \"npm start --prefix server\""
+        "dev": "concurrently \"npm run dev --prefix client\" \"npm start --prefix server\"",
+        "build": "npm run build --workspaces"
     },
     "devDependencies": {
         "concurrently": "^9.2.1"
