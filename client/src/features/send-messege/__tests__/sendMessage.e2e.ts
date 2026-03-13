@@ -1,11 +1,9 @@
 import { test, expect } from "@playwright/test";
 
-// for tests you need created by user data, like group
-
 test.beforeEach(async ({ page }) => {
     await page.goto("/login");
     await page.getByTestId("login-email-input").fill("kuzmichleva1@gmail.com");
-    await page.getByTestId("login-password-input").fill("1111");
+    await page.getByTestId("login-password-input").fill("test");
     await page.getByTestId("auth-submit-button").click();
     await expect(page).toHaveURL("http://localhost:5173/chat");
 });
@@ -16,6 +14,6 @@ test("user can send a message", async ({ page }) => {
 
     const messages = page.getByTestId("single-message");
     await expect(messages.nth((await messages.count()) - 1)).toHaveText(
-        "mocked message"
+        "mocked message",
     );
 });

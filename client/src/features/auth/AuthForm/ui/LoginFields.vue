@@ -11,14 +11,14 @@ const modelValue = defineModel<AuthUser>();
             type="text"
             v-model="modelValue!.email"
             placeholder="Email"
-            class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
+            class="bg-gray-800 w-full py-2 rounded-md px-4 outline-none"
         />
         <input
             data-testid="login-password-input"
             type="password"
             v-model="modelValue!.password"
             placeholder="Password"
-            class="bg-gray-800 w-full py-2 rounded-md px-2 outline-none"
+            class="bg-gray-800 w-full py-2 rounded-md px-4 outline-none"
         />
     </div>
 </template>

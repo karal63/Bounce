@@ -8,16 +8,18 @@ export const useSessionStore = defineStore("sessionStore", () => {
     const isAuthenticated = ref(false);
 
     const checkAuth = async () => {
-        const response = await axiosInstance.get(`${API_URL}/refresh`);
-        if (response.status === 401)
-            return console.error("Authentication error");
+        try {
+            const response = await axiosInstance.get(`${API_URL}/refresh`);
 
-        localStorage.setItem("accessToken", response.data.accessToken);
-        user.value = response.data.user;
+            localStorage.setItem("accessToken", response.data.accessToken);
+            user.value = response.data.user;
 
-        if (!user.value) return;
+            if (!user.value) return;
 
-        isAuthenticated.value = true;
+            isAuthenticated.value = true;
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return { user, isAuthenticated, checkAuth };

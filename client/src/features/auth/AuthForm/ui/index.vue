@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import SocialLinks from "./SocialLinks.vue";
 import LoginFields from "./LoginFields.vue";
 import SignupFields from "./SignupFields.vue";
 import { useAuthStore } from "@/features/auth/model/index";
@@ -50,25 +49,10 @@ const handleSubmit = () => {
                     {{ isLoginAuthMode ? "Log in" : "Sign up" }}
                 </h1>
 
-                <SocialLinks />
-
-                <span class="mt-5 text-sm mb-2 text-gray-400"
-                    >or use your email for
-                    {{ isLoginAuthMode ? "logging in" : "regestration" }}</span
-                >
-
                 <div class="flex-col gap-2 w-full">
                     <LoginFields v-model="user" />
                     <SignupFields v-if="!isLoginAuthMode" v-model="user" />
                 </div>
-
-                <button
-                    @click.prevent
-                    v-if="isLoginAuthMode"
-                    class="mt-3 text-purple-400 cursor-pointer"
-                >
-                    Forgot password?
-                </button>
 
                 <div
                     v-if="authStore.isLoading"
@@ -101,10 +85,6 @@ const handleSubmit = () => {
                             isLoginAuthMode ? "Sign up" : "Log in"
                         }}</RouterLink
                     >
-                </p>
-
-                <p class="mt-9 text-gray-700">
-                    Privacy Policy | How we process your data
                 </p>
             </form>
         </div>
