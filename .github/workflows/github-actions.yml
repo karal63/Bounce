@@ -47,6 +47,9 @@ jobs:
             - name: Run server
               working-directory: ./server
               run: npm start
+              &backend
+              # runs in background
+              # use & or nohup depending on your runner
 
             - name: "Run e2e tests"
               working-directory: ./client
