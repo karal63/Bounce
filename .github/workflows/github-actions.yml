@@ -11,6 +11,26 @@ jobs:
         strategy:
             matrix:
                 node-version: [24.x]
+
+        services:
+            mysql:
+                image: mysql:8
+                env:
+                    DB_HOST: localhost
+                    DB_USER: root
+                    DB_NAME: bounce
+                ports:
+                    - 3306:3306
+            redis:
+                image: redis:7
+                env:
+                    REDIS_USERNAME: default
+                    REDIS_PASSWORD:
+                    REDIS_HOST: 127.0.0.1
+                    REDIS_PORT: 6379
+                ports:
+                    - 6379:6379
+
         steps:
             - uses: actions/checkout@v4
             - name: Starting node.js ${{matrix.node-version}}
