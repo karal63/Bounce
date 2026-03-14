@@ -2,18 +2,6 @@ import { test, expect } from "@playwright/test";
 import axios from "axios";
 
 test.beforeEach(async ({ page }) => {
-    const res = await axios.post("http://localhost:5000/api/signup", {
-        email: "test@gmail.com",
-        password: "test",
-        name: "test",
-    });
-
-    await axios.post(`http://localhost:5000/api/create-group`, {
-        name: "Test",
-        ownerId: res.data.id,
-        description: "Test",
-    });
-
     await page.goto("/login");
     await page.getByTestId("login-email-input").fill("test@gmail.com");
     await page.getByTestId("login-password-input").fill("test");
