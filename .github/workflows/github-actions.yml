@@ -44,6 +44,10 @@ jobs:
               working-directory: ./client
               run: npx playwright install --with-deps
 
+            - name: Run server
+              working-directory: ./server
+              run: npm start
+
             - name: "Run e2e tests"
               working-directory: ./client
               run: npm run test:e2e
