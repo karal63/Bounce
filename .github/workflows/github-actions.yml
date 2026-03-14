@@ -16,20 +16,17 @@ jobs:
             mysql:
                 image: mysql:8
                 env:
-                    PORT: 5000
-                    DB_HOST: localhost
-                    DB_USER: root
-                    DB_NAME: bounce
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: bounce
                 ports:
                     - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping -h localhost -uroot -proot"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
             redis:
                 image: redis:7
-                env:
-                    PORT: 5000
-                    REDIS_USERNAME: default
-                    REDIS_PASSWORD:
-                    REDIS_HOST: 127.0.0.1
-                    REDIS_PORT: 6379
                 ports:
                     - 6379:6379
 
