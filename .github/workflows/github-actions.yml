@@ -25,12 +25,15 @@ jobs:
               working-directory: ./client
               run: npx playwright install --with-deps
 
-            - name: Run tests
-              run: npm run test
-
-            - name: build app
+            - name: Build app
               working-directory: ./client
               run: npm run build
+
+            - name: "Run app"
+              run: npm run dev
+
+            - name: Run tests
+              run: npm run test
 
             # - name: Run e2e tests
             #   working-directory: ./client
