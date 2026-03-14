@@ -6,15 +6,15 @@ export default defineConfig({
     testMatch: "**/*.e2e.ts",
 
     use: {
-        headless: true,
+        headless: false,
         baseURL: "http://localhost:5173",
     },
 
-    webServer: {
-        command: "npm run dev",
-        port: 5000,
-        timeout: 120000,
-    },
+    // webServer: {
+    //     command: "npm run dev",
+    //     port: 5000,
+    //     timeout: 120000,
+    // },
 
     projects: [
         {
