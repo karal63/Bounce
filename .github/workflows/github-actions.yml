@@ -51,12 +51,11 @@ jobs:
               working-directory: ./client
               run: npm run build
 
-            - name: "Run app"
-              run: npm run dev
-
             - name: Run tests
               run: npm run test
 
             # - name: Run e2e tests
             #   working-directory: ./client
             #   run: npm run test:e2e
+
+# i feel like after running servers CI just freezes idk why

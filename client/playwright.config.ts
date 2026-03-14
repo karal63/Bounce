@@ -10,6 +10,12 @@ export default defineConfig({
         baseURL: "http://localhost:5173",
     },
 
+    webServer: {
+        command: "npm run dev",
+        port: 5173,
+        timeout: 120 * 1000,
+    },
+
     projects: [
         {
             name: "chromium",
