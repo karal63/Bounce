@@ -21,17 +21,16 @@ jobs:
             - name: install dependencies
               run: npm ci
 
-            - name: Run unit tests
+            - name: Install playwright browsers
               working-directory: ./client
-              run: npm test
+              run: npx playwright install --with-deps
+
+            - name: Run tests
+              run: npm run test
 
             - name: build app
               working-directory: ./client
               run: npm run build
-
-            # - name: Install playwright browsers
-            #   working-directory: ./client
-            #   run: npx playwright install --with-deps
 
             # - name: Run e2e tests
             #   working-directory: ./client
