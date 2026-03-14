@@ -1,14 +1,14 @@
-import { axiosInstance } from "@/shared/config/axiosInstance";
 import { test, expect } from "@playwright/test";
+import axios from "axios";
 
 test.beforeEach(async ({ page }) => {
-    const res = await axiosInstance.post("http://localhost:5000/api/signup", {
+    const res = await axios.post("http://localhost:5000/api/signup", {
         email: "test@gmail.com",
         password: "test",
         name: "test",
     });
 
-    await axiosInstance.post(`http://localhost:5000/api/create-group`, {
+    await axios.post(`http://localhost:5000/api/create-group`, {
         name: "Test",
         ownerId: res.data.id,
         description: "Test",
