@@ -10,11 +10,16 @@ export default defineConfig({
         baseURL: "http://localhost:5173",
     },
 
-    // webServer: {
-    //     command: "npm run dev",
-    //     port: 5000,
-    //     timeout: 120000,
-    // },
+    webServer: [
+        {
+            command: "npm run dev --prefix client",
+            port: 5173,
+        },
+        {
+            command: "npm run start --prefix server",
+            port: 5000,
+        },
+    ],
 
     projects: [
         {
