@@ -19,7 +19,7 @@ export default defineConfig({
             reuseExistingServer: !process.env.CI,
         },
         {
-            command: "npx nodemon server.js",
+            command: "node server.js",
             cwd: "../server",
             url: "http://localhost:5000",
             name: "Backend",
