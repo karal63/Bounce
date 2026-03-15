@@ -1,49 +1,22 @@
 import { defineConfig, devices, expect, test as setup } from "@playwright/test";
 
 export default defineConfig({
-    timeout: 30 * 1000, // 30 seconds per test
-    retries: 0,
     testMatch: "**/*.e2e.ts",
 
-    use: {
-        headless: true,
-        baseURL: "http://localhost:5173",
-    },
+    fullyParallel: true,
+    /* Fail the build on CI if you accidentally left test.only in the source code. */
+    forbidOnly: !!process.env.CI,
+    /* Retry on CI only */
+    retries: process.env.CI ? 2 : 0,
+    /* Opt out of parallel tests on CI. */
+    workers: process.env.CI ? 1 : undefined,
+    /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+    reporter: "html",
+    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 
-    webServer: [
-        {
-            command: "npm run dev",
-            url: "http://localhost:5173",
-            name: "Frontend",
-            timeout: 120 * 1000,
-            reuseExistingServer: !process.env.CI,
-        },
-        {
-            command: "node server.js",
-            cwd: "../server",
-            url: "http://localhost:5000",
-            name: "Backend",
-            timeout: 120 * 1000,
-            reuseExistingServer: !process.env.CI,
-            env: {
-                PORT: "5000",
-                CLIENT_HOST: "http://localhost:5173",
-                DB_HOST: "localhost",
-                DB_USER: "root",
-                MYSQL_ROOT_PASSWORD: "root",
-                DB_NAME: "bounce",
-                REDIS_USERNAME: "",
-                REDIS_PASSWORD: "",
-                ACCESS_TOKEN: "dummy_access",
-                REFRESH_TOKEN: "dummy_refresh",
-                SERVER_HOST: "http://localhost:5000",
-                SMTP_HOST: "localhost",
-                SMTP_PORT: "587",
-                SMTP_USER: "test",
-                SMTP_PASSWORD: "test",
-            },
-        },
-    ],
+    use: {
+        trace: "on-first-retry",
+    },
 
     projects: [
         {
@@ -66,5 +39,18 @@ export default defineConfig({
         //     name: "webkit",
         //     use: { ...devices["Desktop Safari"] },
         // },
+    ],
+
+    webServer: [
+        {
+            command: "npm run dev",
+            url: "http://localhost:5173",
+            reuseExistingServer: !process.env.CI,
+        },
+        {
+            command: "cd ../server && npm start",
+            url: "http://localhost:5000",
+            reuseExistingServer: !process.env.CI,
+        },
     ],
 });
