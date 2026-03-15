@@ -16,7 +16,7 @@ jobs:
             mysql:
                 image: mysql:8
                 env:
-                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_ROOT_PASSWORD: ""
                     MYSQL_DATABASE: bounce
                 ports:
                     - 3306:3306
@@ -64,13 +64,12 @@ jobs:
                   DB_HOST: localhost
                   DB_USER: root
                   DB_NAME: bounce
-                  MYSQL_ROOT_PASSWORD:
                   ACCESS_TOKEN: access_token
                   REFRESH_TOKEN: refresh_token
                   REDIS_USERNAME: default
-                  REDIS_PASSWORD:
+                  REDIS_PASSWORD: ""
                   REDIS_HOST: 127.0.0.1
-                  REDIS_PORT: 379
+                  REDIS_PORT: 6379
 
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
