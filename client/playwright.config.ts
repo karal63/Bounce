@@ -55,4 +55,5 @@ export default defineConfig({
     ],
 });
 
-// try creating new dir server2, express, completely empty and try connect to it in playwright
+// it seems like error is attached to sql connection because i receive 500 with Unknown error
+// Run: npx playwright show-report
