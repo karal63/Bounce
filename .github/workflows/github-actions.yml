@@ -32,6 +32,8 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
+            - name: Setup database
+              run: mysql -h localhost -u root -proot bounce < server/schema.sql
             - name: Starting node.js ${{matrix.node-version}}
               uses: actions/setup-node@v4
               with:
