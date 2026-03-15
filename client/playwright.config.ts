@@ -10,12 +10,23 @@ export default defineConfig({
         baseURL: "http://localhost:5173",
     },
 
-    webServer: {
-        command: "npm run dev",
-        port: 5173,
-        timeout: 160000,
-        reuseExistingServer: !process.env.CI,
-    },
+    webServer: [
+        {
+            command: "npm run dev",
+            url: "http://localhost:5173",
+            name: "Frontend",
+            timeout: 120 * 1000,
+            reuseExistingServer: !process.env.CI,
+        },
+        {
+            command: "npm start",
+            cwd: "../server",
+            url: "http://localhost:5000",
+            name: "Backend",
+            timeout: 120 * 1000,
+            reuseExistingServer: !process.env.CI,
+        },
+    ],
 
     projects: [
         {
