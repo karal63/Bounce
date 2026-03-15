@@ -25,6 +25,16 @@ export default defineConfig({
             name: "Backend",
             timeout: 120 * 1000,
             reuseExistingServer: !process.env.CI,
+            env: {
+                PORT: "5000",
+                CLIENT_HOST: "http://localhost:5173",
+                DB_HOST: "localhost",
+                DB_USER: "root",
+                MYSQL_ROOT_PASSWORD: "root",
+                DB_NAME: "bounce",
+                REDIS_HOST: "localhost",
+                REDIS_PORT: "6379",
+            },
         },
     ],
 
