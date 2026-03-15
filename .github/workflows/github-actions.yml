@@ -32,8 +32,10 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
+            - name: Install MySQL client
+              run: sudo apt-get update && sudo apt-get install -y mysql-client
             - name: Setup database
-              run: mysql -h localhost -u root -proot bounce < server/schema.sql
+              run: mysql -h 127.0.0.1 -P 3306 -u root -proot bounce < server/schema.sql
             - name: Starting node.js ${{matrix.node-version}}
               uses: actions/setup-node@v4
               with:
