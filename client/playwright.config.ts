@@ -48,9 +48,11 @@ export default defineConfig({
             reuseExistingServer: !process.env.CI,
         },
         {
-            command: "cd ../server && npm start",
+            command: "cd ../server && npm run start",
             url: "http://localhost:5000",
             reuseExistingServer: !process.env.CI,
         },
     ],
 });
+
+// try creating new dir server2, express, completely empty and try connect to it in playwright
