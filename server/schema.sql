@@ -11,7 +11,7 @@ CREATE TABLE users (
 );
 
 -- Create groups table
-CREATE TABLE groups (
+CREATE TABLE `groups` (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   avatar VARCHAR(255),
@@ -27,7 +27,7 @@ CREATE TABLE members (
   user_id INT,
   role ENUM('admin', 'member') DEFAULT 'member',
   joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (group_id) REFERENCES groups(id),
+  FOREIGN KEY (group_id) REFERENCES `groups`(id),
   FOREIGN KEY (user_id) REFERENCES users(id),
   UNIQUE KEY unique_member (group_id, user_id)
 );
@@ -39,7 +39,7 @@ CREATE TABLE messages (
   user_id INT,
   content TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (group_id) REFERENCES groups(id),
+  FOREIGN KEY (group_id) REFERENCES `groups`(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE messages (
 INSERT INTO users (email, password, name, is_activated) VALUES ('test@gmail.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Test User', 1);
 
 -- Insert test group
-INSERT INTO groups (name, created_by) VALUES ('Test Group', 1);
+INSERT INTO `groups` (name, created_by) VALUES ('Test Group', 1);
 
 -- Add user to group
 INSERT INTO members (group_id, user_id, role) VALUES (1, 1, 'admin');
