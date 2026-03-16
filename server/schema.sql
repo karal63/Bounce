@@ -44,10 +44,10 @@ CREATE TABLE messages (
 );
 
 -- Insert test user
-INSERT INTO users (email, password, name, is_activated) VALUES ('test@gmail.com', '$2b$10$D72KnB8kOlnCy2xL8NFrYuJdVjK/0aXkLPSpQPp4Na9oivHGIK0dG', 'Test User', 1);
+INSERT INTO users (id, email, password, name, is_activated) VALUES ('3b1c7f4e-2d58-4f4a-9a17-1c6a3d4c7e55', 'test@gmail.com', '$2b$10$D72KnB8kOlnCy2xL8NFrYuJdVjK/0aXkLPSpQPp4Na9oivHGIK0dG', 'Test User', 1);
 
 -- Insert test group
-INSERT INTO `groups` (name, created_by) VALUES ('Test Group', 1);
+INSERT INTO `groups` (id, name, created_by) VALUES ('d6c8b1c4-8f7c-4a5d-9f3c-6f1a7e2c9b54', 'Test Group', '3b1c7f4e-2d58-4f4a-9a17-1c6a3d4c7e55');
 
 -- Add user to group
-INSERT INTO members (group_id, user_id, role) VALUES (1, 1, 'admin');
+INSERT INTO members (group_id, user_id, role) VALUES ('d6c8b1c4-8f7c-4a5d-9f3c-6f1a7e2c9b54', '3b1c7f4e-2d58-4f4a-9a17-1c6a3d4c7e55', 'admin');
