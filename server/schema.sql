@@ -43,6 +43,15 @@ CREATE TABLE messages (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+-- Create messaged_users table
+CREATE TABLE messaged_users (
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  userId CHAR(36),
+  targetUserId CHAR(36),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (targetUserId) REFERENCES users(id)
+)
+
 -- Insert test user
 INSERT INTO users (id, email, password, name, is_activated) VALUES ('3b1c7f4e-2d58-4f4a-9a17-1c6a3d4c7e55', 'test@gmail.com', '$2b$10$D72KnB8kOlnCy2xL8NFrYuJdVjK/0aXkLPSpQPp4Na9oivHGIK0dG', 'Test User', 1);
 

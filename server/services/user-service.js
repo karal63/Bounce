@@ -14,11 +14,11 @@ class UserService {
         // check if exists
         const [rows] = await db.query(
             "SELECT * FROM users WHERE email = ? OR name = ?",
-            [email, name]
+            [email, name],
         );
         if (rows.length > 0) {
             throw ApiError.BadRequest(
-                "User with this email or name already exists."
+                "User with this email or name already exists.",
             );
         }
         const hashPassword = await bcrypt.hash(password, 10);
@@ -26,11 +26,11 @@ class UserService {
 
         await db.query(
             "INSERT INTO users (id, email, password, name, activationLink) VALUES (UUID(), ?, ?, ?, ?)",
-            [email, hashPassword, name, activationLink]
+            [email, hashPassword, name, activationLink],
         );
         await mail.sendActivationMail(
             email,
-            `${process.env.SERVER_HOST}/api/activate/${activationLink}`
+            `${process.env.SERVER_HOST}/api/activate/${activationLink}`,
         );
 
         const tokens = await token.generateTokens(email, name);
@@ -83,7 +83,7 @@ class UserService {
         const tokens = await token.generateTokens(
             userDto.id,
             userDto.email,
-            userDto.username
+            userDto.username,
         );
 
         const query = "SELECT * FROM users WHERE email = ?";
@@ -104,19 +104,19 @@ class UserService {
     async activate(activationLink) {
         const [rows] = await db.query(
             "SELECT * FROM users WHERE activationLink = ?",
-            [activationLink]
+            [activationLink],
         );
         if (!rows[0]) throw ApiError.BadRequest("Invalid activation link.");
         await db.query(
             "UPDATE users SET isActivated = TRUE WHERE activationLink = ?",
-            [activationLink]
+            [activationLink],
         );
     }
 
     async getUser(userDto) {
         const [userRows] = await db.query(
             "SELECT * FROM users WHERE email = ?",
-            [userDto.email]
+            [userDto.email],
         );
         return userRows[0];
     }
@@ -152,7 +152,7 @@ UNION
         m.targetUserId = ?
 )
         `,
-            [userId, userId]
+            [userId, userId],
         );
         return rows;
     }
@@ -160,7 +160,7 @@ UNION
     async addMessagedUser(userId, targetUserId) {
         await db.query(
             "INSERT INTO messaged_users (id, userId, targetUserId) VALUES (UUID(), ?, ?)",
-            [userId, targetUserId]
+            [userId, targetUserId],
         );
     }
 
@@ -178,7 +178,7 @@ UNION
         await db.query(sql, [...values, userId]);
         const [rows] = await db.query(
             "SELECT id, email, name, isActivated, avatarUrl FROM users WHERE id = ?",
-            [userId]
+            [userId],
         );
         return rows[0];
     }
