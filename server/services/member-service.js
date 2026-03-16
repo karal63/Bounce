@@ -4,7 +4,7 @@ class MemberService {
     async get(groupId) {
         const [rows] = await db.query(
             "SELECT members.*, users.name, avatarUrl FROM members JOIN users ON members.userId = users.id WHERE groupId = ? AND isBanned = false",
-            [groupId]
+            [groupId],
         );
         return rows;
     }
@@ -20,12 +20,12 @@ class MemberService {
     async ban(memberId, banReason) {
         await db.query(
             "UPDATE members SET isBanned = true, banReason = ? WHERE id = ?",
-            [banReason, memberId]
+            [banReason, memberId],
         );
 
         const [rows] = await db.query(
-            "SELECT members.*, groups.name FROM members JOIN groups ON groups.id = members.groupId WHERE members.id = ?",
-            [memberId]
+            "SELECT members.*, `groups`.name FROM members JOIN `groups` ON `groups`.id = members.groupId WHERE members.id = ?",
+            [memberId],
         );
         return rows[0];
     }
@@ -33,7 +33,7 @@ class MemberService {
     async getBanned(groupId) {
         const [rows] = await db.query(
             "SELECT members.*, users.name FROM members JOIN users ON users.id = members.userId WHERE members.groupId = ? AND members.isBanned = true",
-            [groupId]
+            [groupId],
         );
         return rows;
     }
@@ -41,7 +41,7 @@ class MemberService {
     async unban(id) {
         await db.query(
             "UPDATE members SET isBanned = false, banReason = '' WHERE id = ?",
-            [id]
+            [id],
         );
     }
 }

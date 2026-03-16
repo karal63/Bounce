@@ -6,7 +6,7 @@ CREATE TABLE users (
   activationLink VARCHAR(255),
   isActivated TINYINT DEFAULT 0,  -- Set to 1 to skip activation
   name VARCHAR(255),
-  avatar VARCHAR(255)
+  avatarUrl VARCHAR(255)
 );
 
 -- Create groups table
