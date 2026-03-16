@@ -55,5 +55,5 @@ export default defineConfig({
     ],
 });
 
-// it seems like error is attached to sql connection because i receive 500 with Unknown error
+// it seems like error is attached to sql or redis connection because i receive 500 with Unknown error
 // Run: npx playwright show-report
