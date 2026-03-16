@@ -44,7 +44,7 @@ CREATE TABLE messages (
 );
 
 -- Insert test user
-INSERT INTO users (email, password, name, is_activated) VALUES ('test@gmail.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Test User', 1);
+INSERT INTO users (email, password, name, is_activated) VALUES ('test@gmail.com', '$2b$10$D72KnB8kOlnCy2xL8NFrYuJdVjK/0aXkLPSpQPp4Na9oivHGIK0dG', 'Test User', 1);
 
 -- Insert test group
 INSERT INTO `groups` (name, created_by) VALUES ('Test Group', 1);
