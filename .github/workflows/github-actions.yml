@@ -50,6 +50,13 @@ jobs:
             - name: Setup database
               run: mysql -h 127.0.0.1 -P 3306 -u root -proot bounce < server/schema.sql
 
+            - name: Verify schema
+              env:
+                  MYSQL_PWD: root
+              run: |
+                  mysql -h 127.0.0.1 -u root -e "SHOW DATABASES;"
+                  mysql -h 127.0.0.1 -u root -e "USE bounce; SHOW TABLES;"
+
             - name: install client dependencies
               working-directory: ./client
               run: npm ci
