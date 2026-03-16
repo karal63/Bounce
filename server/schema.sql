@@ -6,7 +6,7 @@ CREATE TABLE users (
   activationLink VARCHAR(255),
   isActivated TINYINT DEFAULT 0,  -- Set to 1 to skip activation
   name VARCHAR(255),
-  avatar VARCHAR(255),
+  avatar VARCHAR(255)
 );
 
 -- Create groups table
@@ -45,12 +45,12 @@ CREATE TABLE messages (
   sentAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   editedAt TIMESTAMP DEFAULT NULL,
   isDeleted BOOLEAN DEFAULT 0,
-  recipientId: CHAR(36),
-  replyToMessageId: CHAR(36),
+  recipientId CHAR(36),
+  replyToMessageId CHAR(36),
   FOREIGN KEY (groupId) REFERENCES `groups`(id),
   FOREIGN KEY (senderId) REFERENCES users(id),
   FOREIGN KEY (recipientId) REFERENCES users(id),
-  FOREIGN KEY (replyToMessageId) REFERENCES messages(id),
+  FOREIGN KEY (replyToMessageId) REFERENCES messages(id)
 );
 
 -- Create messaged_users table
@@ -58,9 +58,9 @@ CREATE TABLE messaged_users (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   userId CHAR(36),
   targetUserId CHAR(36),
-  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (userId) REFERENCES users(id),
   FOREIGN KEY (targetUserId) REFERENCES users(id)
-)
+);
 
 -- Insert test user
 INSERT INTO users (id, email, password, name) VALUES ('3b1c7f4e-2d58-4f4a-9a17-1c6a3d4c7e55', 'test@gmail.com', '$2b$10$D72KnB8kOlnCy2xL8NFrYuJdVjK/0aXkLPSpQPp4Na9oivHGIK0dG', 'Test User');
