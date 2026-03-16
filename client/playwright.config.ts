@@ -16,6 +16,7 @@ export default defineConfig({
 
     use: {
         trace: "on-first-retry",
+        baseURL: "http://localhost:5173",
     },
 
     projects: [
@@ -58,3 +59,4 @@ export default defineConfig({
 // it seems like error is attached to sql or redis connection because i receive 500 with Unknown error
 // Run: npx playwright show-report
 // /opt/lampp/bin/mysql -u root -p
+// auth works !!!
