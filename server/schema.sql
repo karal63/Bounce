@@ -1,6 +1,6 @@
 -- Create users table
 CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
   activation_link VARCHAR(255),
@@ -12,19 +12,19 @@ CREATE TABLE users (
 
 -- Create groups table
 CREATE TABLE `groups` (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   name VARCHAR(255) NOT NULL,
   avatar VARCHAR(255),
-  created_by INT,
+  created_by CHAR(36),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (created_by) REFERENCES users(id)
 );
 
 -- Create members table
 CREATE TABLE members (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  group_id INT,
-  user_id INT,
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  group_id CHAR(36),
+  user_id CHAR(36),
   role ENUM('admin', 'member') DEFAULT 'member',
   joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (group_id) REFERENCES `groups`(id),
@@ -34,9 +34,9 @@ CREATE TABLE members (
 
 -- Create messages table
 CREATE TABLE messages (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  group_id INT,
-  user_id INT,
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  group_id CHAR(36),
+  user_id CHAR(36),
   content TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (group_id) REFERENCES `groups`(id),
