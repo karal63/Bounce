@@ -7,8 +7,10 @@ const redisClient = require("./redisClient");
 app.use("/api", router);
 app.use(errorMiddleware);
 
+app.get("/", (req, res, next) => res.send("OK"));
+
 // Server start
-server.listen(process.env.PORT, async () => {
+server.listen(process.env.PORT ?? 3000, async () => {
     await redisClient.connect();
-    console.log(`Server is listening on port ${process.env.PORT}`);
+    console.log(`Server is listening on port ${process.env.PORT}}`);
 });

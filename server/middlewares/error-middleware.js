@@ -10,5 +10,5 @@ module.exports = function (err, req, res, next) {
     }
 
     // console.log(err);
-    return res.status(500).json({ message: "Unknown error" });
+    return res.status(500).json({ message: "Unknown error", error: err });
 };

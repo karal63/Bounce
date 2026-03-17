@@ -10,29 +10,86 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [24.x]
+                node-version: [20.x]
+
+        services:
+            mysql:
+                image: mysql:8
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: bounce
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping -h localhost -uroot -proot"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+            redis:
+                image: redis:7
+                ports:
+                    - 6379:6379
+
         steps:
             - uses: actions/checkout@v4
-            - name: Starting node.js ${{matrix.node-version}}
-              uses: actions/setup-node@v4
+            - uses: actions/setup-node@v4
               with:
-                  node-version: ${{matrix.node-version}}
+                  node-version: lts/*
 
-            - name: install dependencies
+            - name: Install MySQL client
+              run: sudo apt-get update && sudo apt-get install -y mysql-client
+
+            - name: Wait for MySQL
+              run: |
+                  for i in {1..30}; do
+                    mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot --silent && break
+                    echo "Waiting for MySQL..."
+                    sleep 2
+                  done
+
+            - name: Setup database
+              run: mysql -h 127.0.0.1 -P 3306 -u root -proot bounce < server/schema.sql
+
+            - name: Verify schema
+              env:
+                  MYSQL_PWD: root
+              run: |
+                  mysql -h 127.0.0.1 -u root -e "SHOW DATABASES;"
+                  mysql -h 127.0.0.1 -u root -e "USE bounce; SHOW TABLES;"
+
+            - name: install client dependencies
+              working-directory: ./client
               run: npm ci
 
-            - name: Run unit tests
+            - name: install server dependencies
+              working-directory: ./server
+              run: npm ci
+
+            - name: Install playwright browsers
               working-directory: ./client
-              run: npm test
+              run: npx playwright install --with-deps
 
-            - name: build app
+            - name: Run e2e tests
               working-directory: ./client
-              run: npm run build
+              run: npx playwright test
+              env:
+                  SERVER_HOST: http://localhost:5000
+                  CLIENT_HOST: http://localhost:5173
+                  PORT: 5000
+                  DB_HOST: localhost
+                  DB_USER: root
+                  DB_NAME: bounce
+                  DB_PASSWORD: root
+                  ACCESS_TOKEN: access_token
+                  REFRESH_TOKEN: refresh_token
+                  REDIS_USERNAME: default
+                  REDIS_PASSWORD: ""
+                  REDIS_HOST: 127.0.0.1
+                  REDIS_PORT: 6379
 
-            # - name: Install playwright browsers
-            #   working-directory: ./client
-            #   run: npx playwright install --with-deps
-
-            # - name: Run e2e tests
-            #   working-directory: ./client
-            #   run: npm run test:e2e
+            - uses: actions/upload-artifact@v4
+              if: ${{ !cancelled() }}
+              with:
+                  name: playwright-report
+                  path: client/playwright-report/
+                  retention-days: 30

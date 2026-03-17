@@ -16,7 +16,7 @@ app.use(
         origin: [process.env.CLIENT_HOST, "https://admin.socket.io/"],
         methods: ["GET", "POST", "DELETE", "PATCH"],
         credentials: true,
-    })
+    }),
 );
 app.use(cookieParser());
 
