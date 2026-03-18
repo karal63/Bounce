@@ -121,7 +121,7 @@ src/
 1. Clone the repository
 
 ```bash
-  git clone https://github.com/karal63/Bounce.git bounce
+  git clone https://github.com/karal63/Bounce.git bounce && cd bounce
 ```
 
 2. Install dependencies

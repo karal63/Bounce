@@ -59,5 +59,3 @@ export default defineConfig({
 // Run: npx playwright show-report
 // /opt/lampp/bin/mysql -u root -p
 
-// try to run tests locally and then commit | because changed auth.json path
-//  try cloning this repo and install dependencies and check if works
