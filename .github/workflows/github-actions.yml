@@ -57,12 +57,7 @@ jobs:
                   mysql -h 127.0.0.1 -u root -e "SHOW DATABASES;"
                   mysql -h 127.0.0.1 -u root -e "USE bounce; SHOW TABLES;"
 
-            - name: install client dependencies
-              working-directory: ./client
-              run: npm ci
-
-            - name: install server dependencies
-              working-directory: ./server
+            - name: install all dependencies
               run: npm ci
 
             - name: build client app
