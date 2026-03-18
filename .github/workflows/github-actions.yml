@@ -65,6 +65,10 @@ jobs:
               working-directory: ./server
               run: npm ci
 
+            - name: build client app
+              working-directory: ./client
+              run: npm run build
+
             - name: Install playwright browsers
               working-directory: ./client
               run: npx playwright install --with-deps
