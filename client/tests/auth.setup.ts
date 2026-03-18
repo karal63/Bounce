@@ -7,5 +7,5 @@ setup("authenticate", async ({ page }) => {
     await page.getByTestId("auth-submit-button").click();
     await page.waitForURL("/chat");
 
-    await page.context().storageState({ path: "auth.json" });
+    await page.context().storageState({ path: "playwright/auth.json" });
 });

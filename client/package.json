@@ -11,7 +11,7 @@
         "test:ui": "vitest --ui",
         "test:watch": "vitest --watch",
         "test:e2e": "playwright test",
-        "test:all": "concurrently -k -s first \"npm run test\" \"npm run test:e2e\"",
+        "test:all": "npm run test && npm run test:e2e",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build"
     },

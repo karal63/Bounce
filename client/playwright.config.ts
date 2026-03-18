@@ -28,7 +28,7 @@ export default defineConfig({
             name: "chromium",
             use: {
                 ...devices["Desktop Chrome"],
-                storageState: "auth.json",
+                storageState: "playwright/auth.json",
             },
             dependencies: ["setup"],
         },
@@ -56,7 +56,8 @@ export default defineConfig({
     ],
 });
 
-// it seems like error is attached to sql or redis connection because i receive 500 with Unknown error
 // Run: npx playwright show-report
 // /opt/lampp/bin/mysql -u root -p
-// auth works !!!
+
+// try to run tests locally and then commit | because changed auth.json path
+//  try cloning this repo and install dependencies and check if works

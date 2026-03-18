@@ -39,11 +39,11 @@ YourAppName provides persistent chat servers, channels, voice communication, and
 
 ## Screenshots
 
-<img src="./docs/chat.png" width="100%" />
+<img src="./docs/chat.png" />
 
-<p style="gap: 7px; display: flex">
-  <img src="./docs//login.png" width="50%" />
-  <img src="./docs/call.png" width="50%" />
+<p align="center">
+    <img src="./docs/login.png" width="270">
+    <img src="./docs/call.png" width="270">
 </p>
 
 ## ✨ Tech Stack
@@ -138,17 +138,20 @@ Rename .env.example file to .env and fill it with your data:
 SERVER_HOST=http://localhost:5000
 CLIENT_HOST=http://localhost:5173
 PORT=5000
-DB_HOST=
-DB_USER=
-DB_NAME=
 
-ACCESS_TOKEN=
-REFRESH_TOKEN=
-REDIS_USERNAME=
+DB_HOST=localhost
+DB_USER=root
+DB_NAME=bounce
+DB_PASSWORD=
+
+ACCESS_TOKEN=your_secure_access_token
+REFRESH_TOKEN=your_secure_refresh_token
+REDIS_USERNAME=default
 REDIS_PASSWORD=
-REDIS_HOST=
-REDIS_PORT=
-SMTP_HOST=
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=
 SMTP_USER=
 SMTP_PASSWORD=
@@ -169,13 +172,7 @@ npm run dev
 To run tests, run the following command
 
 ```bash
-  npm run test
-```
-
-Run E2E tests
-
-```bash
-  npm run test:e2e
+npm run test
 ```
 
 ## 📍 Roadmap
