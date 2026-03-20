@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
+    import { Icon } from '@iconify/vue';
 
-defineEmits<{
-    (e: "filter", userInput: string): void;
-}>();
+    defineEmits<{
+        (e: 'filter', userInput: string): void;
+    }>();
 </script>
 
 <template>
     <div class="relative">
         <input
             type="text"
-            @input="(e) => $emit('filter', (e.target as HTMLInputElement).value)"
+            @input="e => $emit('filter', (e.target as HTMLInputElement).value)"
             class="w-full py-2 pl-3 pr-10 rounded-md border border-mainBorder focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
         />
         <Icon

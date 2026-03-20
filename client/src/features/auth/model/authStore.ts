@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useAuthStore = defineStore("authStore", () => {
+export const useAuthStore = defineStore('authStore', () => {
     const isLoading = ref(false);
-    const error = ref("");
+    const error = ref('');
 
     return { isLoading, error };
 });

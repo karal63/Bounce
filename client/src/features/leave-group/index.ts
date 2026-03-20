@@ -1,1 +1,1 @@
-export { useLeaveGroup } from "@/features/leave-group/model/useLeaveGroup";
+export { useLeaveGroup } from '@/features/leave-group/model/useLeaveGroup';

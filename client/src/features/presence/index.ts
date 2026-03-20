@@ -1,1 +1,1 @@
-export { usePresence } from "@/features/presence/model/usePresence";
+export { usePresence } from '@/features/presence/model/usePresence';

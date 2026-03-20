@@ -1,14 +1,14 @@
-const { validationResult } = require("express-validator");
-const UserService = require("../services/user-service");
+const { validationResult } = require('express-validator');
+const UserService = require('../services/user-service');
 const user = new UserService();
-const ApiError = require("../exceptions/api-error");
+const ApiError = require('../exceptions/api-error');
 
 class AuthController {
     async signup(req, res, next) {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return next(ApiError.BadRequest("Validation error."));
+                return next(ApiError.BadRequest('Validation error.'));
             }
 
             const { email, password, name } = req.body;
@@ -29,12 +29,12 @@ class AuthController {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return next(ApiError.BadRequest("Validation error."));
+                return next(ApiError.BadRequest('Validation error.'));
             }
             const { email, password } = req.body;
             const userData = await user.login(email, password);
             const { tokens, dbUser } = userData;
-            res.cookie("refreshToken", tokens.refreshToken, {
+            res.cookie('refreshToken', tokens.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
             });
@@ -49,8 +49,8 @@ class AuthController {
 
     async logout(req, res, next) {
         try {
-            res.clearCookie("refreshToken");
-            res.status(200).send("logout");
+            res.clearCookie('refreshToken');
+            res.status(200).send('logout');
         } catch (error) {
             next(error);
         }
@@ -62,7 +62,7 @@ class AuthController {
             const userData = await user.refresh(refreshToken);
             const { tokens, dbUser } = userData;
 
-            res.cookie("refreshToken", tokens.refreshToken, {
+            res.cookie('refreshToken', tokens.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
             });

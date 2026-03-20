@@ -1,6 +1,6 @@
-const { io } = require("../socket");
+const { io } = require('../socket');
 
-const MemberService = require("../services/member-service");
+const MemberService = require('../services/member-service');
 const member = new MemberService();
 
 class MemberController {
@@ -9,7 +9,7 @@ class MemberController {
             const { groupId } = req.params;
             const { senderId } = req.body;
             const members = await member.get(groupId);
-            io.to(senderId).emit("members-list", members);
+            io.to(senderId).emit('members-list', members);
             return res.status(200).json(members);
         } catch (error) {
             console.log(error);
@@ -22,13 +22,11 @@ class MemberController {
             const { memberId } = req.params;
             const deletedMember = await member.kick(memberId);
 
-            io.to(deletedMember.groupId).emit("member-kicked", memberId);
+            io.to(deletedMember.groupId).emit('member-kicked', memberId);
             const sockets = await io.fetchSockets();
             for (const socket of sockets) {
-                if (
-                    Number(socket.handshake.query.id) === deletedMember.userId
-                ) {
-                    io.to(socket.id).emit("deleted:leave-group", deletedMember);
+                if (Number(socket.handshake.query.id) === deletedMember.userId) {
+                    io.to(socket.id).emit('deleted:leave-group', deletedMember);
                 }
             }
             // make this directly to kicked user
@@ -44,14 +42,11 @@ class MemberController {
             const { memberId, banReason } = req.body;
             const bannedMember = await member.ban(memberId, banReason);
 
-            io.to(bannedMember.groupId).emit("member-banned", memberId);
+            io.to(bannedMember.groupId).emit('member-banned', memberId);
             const sockets = await io.fetchSockets();
             for (const socket of sockets) {
                 if (Number(socket.handshake.query.id) === bannedMember.userId) {
-                    io.to(socket.id).emit(
-                        "to-banned:update-groups",
-                        bannedMember
-                    );
+                    io.to(socket.id).emit('to-banned:update-groups', bannedMember);
                 }
             }
             // send him command to delete group locally and show modal with ban message

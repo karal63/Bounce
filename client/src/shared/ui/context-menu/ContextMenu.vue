@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
+    import { ref } from 'vue';
+    import { useClickOutside } from '@/shared/lib/hooks/useClickOutside';
 
-defineProps<{
-    width: string;
-    left?: number;
-    top?: number;
-    bottom?: number;
-}>();
-const emit = defineEmits<{
-    (e: "closeContext"): void;
-}>();
+    defineProps<{
+        width: string;
+        left?: number;
+        top?: number;
+        bottom?: number;
+    }>();
+    const emit = defineEmits<{
+        (e: 'closeContext'): void;
+    }>();
 
-const contextRef = ref<HTMLElement | null>(null);
+    const contextRef = ref<HTMLElement | null>(null);
 
-const close = () => {
-    emit("closeContext");
-};
+    const close = () => {
+        emit('closeContext');
+    };
 
-useClickOutside(contextRef, () => close());
+    useClickOutside(contextRef, () => close());
 </script>
 
 <template>

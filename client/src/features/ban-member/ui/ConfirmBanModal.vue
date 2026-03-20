@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import DefaultModal from "@/shared/ui/DefaultModal.vue";
-import { useBanMemberStore } from "../model/banMemberStore";
-import { useMemberStore } from "@/features/chat-members";
-import { useBanMember } from "../model/useBanMember";
-import ModalInput from "@/shared/ui/ModalInput.vue";
-import { ref } from "vue";
-import Button from "@/shared/ui/Button/Button.vue";
+    import DefaultModal from '@/shared/ui/DefaultModal.vue';
+    import { useBanMemberStore } from '../model/banMemberStore';
+    import { useMemberStore } from '@/features/chat-members';
+    import { useBanMember } from '../model/useBanMember';
+    import ModalInput from '@/shared/ui/ModalInput.vue';
+    import { ref } from 'vue';
+    import Button from '@/shared/ui/Button/Button.vue';
 
-const badMemberStore = useBanMemberStore();
-const memberStore = useMemberStore();
-const { banMember } = useBanMember();
+    const badMemberStore = useBanMemberStore();
+    const memberStore = useMemberStore();
+    const { banMember } = useBanMember();
 
-const banReason = ref("");
+    const banReason = ref('');
 </script>
 
 <template>
@@ -27,33 +27,24 @@ const banReason = ref("");
             <div class="flex-col items-center">
                 <p class="text-sm text-white/70 text-center max-w-[93%]">
                     Are you sure you want to ban
-                    <span class="text-red-500">{{
-                        memberStore.selectedMember?.name
-                    }}</span>
+                    <span class="text-red-500">{{ memberStore.selectedMember?.name }}</span>
                     from this group?
                 </p>
 
                 <div class="mt-5 max-w-[93%]">
-                    <p class="ml-3 text-sm text-white/70">
-                        Desctibe the reason:
-                    </p>
+                    <p class="ml-3 text-sm text-white/70">Desctibe the reason:</p>
                     <ModalInput v-model="banReason" class="mt-1" />
                 </div>
             </div>
 
             <div class="flex justify-between items-center">
-                <button
-                    @click="badMemberStore.isConfirmModalOpen = false"
-                    class="cursor-pointer"
-                >
+                <button @click="badMemberStore.isConfirmModalOpen = false" class="cursor-pointer">
                     Cancel
                 </button>
                 <Button
                     text="Ban"
                     color="red"
-                    @callback="
-                        banMember(memberStore.selectedMember?.id, banReason)
-                    "
+                    @callback="banMember(memberStore.selectedMember?.id, banReason)"
                 />
             </div>
         </div>

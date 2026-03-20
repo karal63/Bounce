@@ -1,1 +1,1 @@
-export { type Call } from "./model/types";
+export { type Call } from './model/types';

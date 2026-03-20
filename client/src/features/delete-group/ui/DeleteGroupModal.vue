@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import DefaultModal from "@/shared/ui/DefaultModal.vue";
-import { useDeleteGroupStore } from "../model/deleteGroupStore";
-import { ref } from "vue";
-import { useDeleteGroup } from "../model/useDeleteGroup";
+    import DefaultModal from '@/shared/ui/DefaultModal.vue';
+    import { useDeleteGroupStore } from '../model/deleteGroupStore';
+    import { ref } from 'vue';
+    import { useDeleteGroup } from '../model/useDeleteGroup';
 
-const deleteGroupStore = useDeleteGroupStore();
-const { deleteGroup } = useDeleteGroup();
+    const deleteGroupStore = useDeleteGroupStore();
+    const { deleteGroup } = useDeleteGroup();
 
-const repeatedName = ref("");
+    const repeatedName = ref('');
 
-const submit = () => {
-    if (repeatedName.value === deleteGroupStore.contextGroup?.name) {
-        deleteGroup();
-    }
-};
+    const submit = () => {
+        if (repeatedName.value === deleteGroupStore.contextGroup?.name) {
+            deleteGroup();
+        }
+    };
 </script>
 
 <template>
@@ -27,15 +27,13 @@ const submit = () => {
             <div class="flex-col items-center">
                 <p class="text-white/70 text-center">
                     Are you sure you want to delete
-                    <span class="text-red-500">{{
-                        deleteGroupStore.contextGroup?.name
-                    }}</span>
+                    <span class="text-red-500">{{ deleteGroupStore.contextGroup?.name }}</span>
                     group?
                 </p>
 
-                <span class="text-sm mt-6 text-white/70 mb-1"
-                    >Enter your group name to confirm</span
-                >
+                <span class="text-sm mt-6 text-white/70 mb-1">
+                    Enter your group name to confirm
+                </span>
                 <input
                     type="text"
                     v-model="repeatedName"
@@ -45,10 +43,7 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-between">
-                <button
-                    @click="deleteGroupStore.isDeleteModalOpen = false"
-                    class="cursor-pointer"
-                >
+                <button @click="deleteGroupStore.isDeleteModalOpen = false" class="cursor-pointer">
                     Back
                 </button>
                 <button

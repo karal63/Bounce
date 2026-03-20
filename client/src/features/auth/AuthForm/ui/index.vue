@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import LoginFields from "./LoginFields.vue";
-import SignupFields from "./SignupFields.vue";
-import { useAuthStore } from "@/features/auth/model/index";
-import { Icon } from "@iconify/vue";
-import type { AuthUser } from "@/features/auth/model/index";
+    import { computed, ref } from 'vue';
+    import LoginFields from './LoginFields.vue';
+    import SignupFields from './SignupFields.vue';
+    import { useAuthStore } from '@/features/auth/model/index';
+    import { Icon } from '@iconify/vue';
+    import type { AuthUser } from '@/features/auth/model/index';
 
-const authStore = useAuthStore();
+    const authStore = useAuthStore();
 
-const props = defineProps<{
-    mode: string;
-}>();
-const emits = defineEmits<{
-    (event: "submit", payload: AuthUser): void;
-}>();
+    const props = defineProps<{
+        mode: string;
+    }>();
+    const emits = defineEmits<{
+        (event: 'submit', payload: AuthUser): void;
+    }>();
 
-const user = ref<AuthUser>({
-    email: "",
-    password: "",
-    passwordRepeat: "",
-    name: "",
-});
+    const user = ref<AuthUser>({
+        email: '',
+        password: '',
+        passwordRepeat: '',
+        name: '',
+    });
 
-const isLoginAuthMode = computed(() => {
-    return props.mode === "login";
-});
+    const isLoginAuthMode = computed(() => {
+        return props.mode === 'login';
+    });
 
-const handleSubmit = () => {
-    authStore.isLoading = true;
-    emits("submit", user.value);
-};
+    const handleSubmit = () => {
+        authStore.isLoading = true;
+        emits('submit', user.value);
+    };
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const handleSubmit = () => {
                 class="text-white flex-col items-center py-10 w-[400px] bg-gray-900 border border-purple-950 px-10 rounded-2xl"
             >
                 <h1 class="text-3xl font-bold mb-5">
-                    {{ isLoginAuthMode ? "Log in" : "Sign up" }}
+                    {{ isLoginAuthMode ? 'Log in' : 'Sign up' }}
                 </h1>
 
                 <div class="flex-col gap-2 w-full">
@@ -67,24 +67,19 @@ const handleSubmit = () => {
                     type="submit"
                     class="mt-4 bg-purple-600 px-10 py-2 rounded-md cursor-pointer"
                 >
-                    {{ isLoginAuthMode ? "Log in" : "Sign up" }}
+                    {{ isLoginAuthMode ? 'Log in' : 'Sign up' }}
                 </button>
 
                 <p class="text-red-400 text-sm mt-1">{{ authStore.error }}</p>
 
                 <p class="mt-5 text-gray-400">
-                    {{
-                        isLoginAuthMode
-                            ? "Don't have a account yet?"
-                            : "Already have an account?"
-                    }}
+                    {{ isLoginAuthMode ? "Don't have a account yet?" : 'Already have an account?' }}
                     <RouterLink
                         :to="isLoginAuthMode ? '/sign-up' : 'login'"
                         class="text-purple-600"
-                        >{{
-                            isLoginAuthMode ? "Sign up" : "Log in"
-                        }}</RouterLink
                     >
+                        {{ isLoginAuthMode ? 'Sign up' : 'Log in' }}
+                    </RouterLink>
                 </p>
             </form>
         </div>

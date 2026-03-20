@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { ref, toRef } from "vue";
-import { sidebarStore } from "../model/sidebarStore";
-import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
-import { Icon } from "@iconify/vue";
-import { useUploadAvatar } from "@/features/upload-avatar";
-import { useLogout } from "@/features/auth/logout";
+    import { ref, toRef } from 'vue';
+    import { sidebarStore } from '../model/sidebarStore';
+    import { useClickOutside } from '@/shared/lib/hooks/useClickOutside';
+    import { Icon } from '@iconify/vue';
+    import { useUploadAvatar } from '@/features/upload-avatar';
+    import { useLogout } from '@/features/auth/logout';
 
-const sidebar = sidebarStore();
-const { uploadAvatar, loading } = useUploadAvatar();
-const { logout } = useLogout();
+    const sidebar = sidebarStore();
+    const { uploadAvatar, loading } = useUploadAvatar();
+    const { logout } = useLogout();
 
-const props = defineProps<{ buttonRef: HTMLElement | null }>();
+    const props = defineProps<{ buttonRef: HTMLElement | null }>();
 
-const buttonRef = toRef(props, "buttonRef");
-const contextRef = ref<HTMLElement | null>(null);
+    const buttonRef = toRef(props, 'buttonRef');
+    const contextRef = ref<HTMLElement | null>(null);
 
-useClickOutside(
-    contextRef,
-    () => {
-        sidebar.isProfileContextOpen = false;
-    },
-    buttonRef
-);
+    useClickOutside(
+        contextRef,
+        () => {
+            sidebar.isProfileContextOpen = false;
+        },
+        buttonRef
+    );
 
-const setFile = async (file: File | undefined) => {
-    if (!file) return;
-    await uploadAvatar(file);
-};
+    const setFile = async (file: File | undefined) => {
+        if (!file) return;
+        await uploadAvatar(file);
+    };
 </script>
 
 <template>
@@ -38,7 +38,11 @@ const setFile = async (file: File | undefined) => {
         <input
             type="file"
             id="input"
-            @change="(e) => { setFile((e.target as HTMLInputElement).files?.[0]) }"
+            @change="
+                e => {
+                    setFile((e.target as HTMLInputElement).files?.[0]);
+                }
+            "
             :disabled="loading"
             class="hidden"
         />
@@ -47,9 +51,8 @@ const setFile = async (file: File | undefined) => {
             class="flex items-center justify-between w-full text-left hover:bg-mainHoverDarkBg py-2 px-4 rounded-md transition-all cursor-pointer"
         >
             <span :class="loading ? 'text-gray-500' : ''">Attach avatar</span>
-            <span v-if="loading"
-                ><Icon icon="line-md:loading-loop" class="text-xl" /></span
-        ></label>
+            <span v-if="loading"><Icon icon="line-md:loading-loop" class="text-xl" /></span>
+        </label>
 
         <button
             @click="logout"

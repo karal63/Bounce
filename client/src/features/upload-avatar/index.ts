@@ -1,1 +1,1 @@
-export { useUploadAvatar } from "@/features/upload-avatar/model/useUploadAvatar";
+export { useUploadAvatar } from '@/features/upload-avatar/model/useUploadAvatar';

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
+    import { Icon } from '@iconify/vue';
 
-defineProps<{
-    mode: string;
-}>();
-const emit = defineEmits<{
-    (event: "setMode", mode: string): void;
-}>();
+    defineProps<{
+        mode: string;
+    }>();
+    const emit = defineEmits<{
+        (event: 'setMode', mode: string): void;
+    }>();
 </script>
 
 <template>
@@ -16,11 +16,7 @@ const emit = defineEmits<{
     >
         <h4 class="text-xl">{{ mode }} new group</h4>
         <div class="h-14 w-14 flex-center text-purple-500 rounded-md text-5xl">
-            <Icon
-                :icon="
-                    mode === 'Join' ? 'iconamoon:enter-thin' : 'iconoir:plus'
-                "
-            />
+            <Icon :icon="mode === 'Join' ? 'iconamoon:enter-thin' : 'iconoir:plus'" />
         </div>
     </button>
 </template>

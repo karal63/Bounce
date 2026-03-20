@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
-import { useAttachmentsStore } from "../model/attachmentsStore";
-import SingleAttachment from "./SingleAttachment.vue";
+    import { Icon } from '@iconify/vue';
+    import { useAttachmentsStore } from '../model/attachmentsStore';
+    import SingleAttachment from './SingleAttachment.vue';
 
-const attachmentsStore = useAttachmentsStore();
+    const attachmentsStore = useAttachmentsStore();
 </script>
 
 <template>

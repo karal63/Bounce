@@ -1,50 +1,48 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import ModalTransition from "@/shared/ui/ModalTransition.vue";
-import { useShareModalStore } from "../model/shareModalStore";
-import { Icon } from "@iconify/vue";
-import { getCurrentGroup } from "../lib/getCurrentGroup";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import type { Group } from "@/shared/types/Group";
-const shareModalStore = useShareModalStore();
-const currentChatStore = useCurrentChatStore();
+    import { ref, watch } from 'vue';
+    import ModalTransition from '@/shared/ui/ModalTransition.vue';
+    import { useShareModalStore } from '../model/shareModalStore';
+    import { Icon } from '@iconify/vue';
+    import { getCurrentGroup } from '../lib/getCurrentGroup';
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+    import type { Group } from '@/shared/types/Group';
+    const shareModalStore = useShareModalStore();
+    const currentChatStore = useCurrentChatStore();
 
-const showContent = ref(false);
-const currentGroup = ref<Group | null>(null);
-const isCopied = ref(false);
+    const showContent = ref(false);
+    const currentGroup = ref<Group | null>(null);
+    const isCopied = ref(false);
 
-const closeModal = () => {
-    shareModalStore.isShareModalOpen = false;
-    isCopied.value = false;
-};
+    const closeModal = () => {
+        shareModalStore.isShareModalOpen = false;
+        isCopied.value = false;
+    };
 
-const copyLink = () => {
-    navigator.clipboard.writeText(
-        `http://localhost:5173/${getCurrentGroup()?.invitationLink}`
-    );
-    isCopied.value = true;
-};
+    const copyLink = () => {
+        navigator.clipboard.writeText(`http://localhost:5173/${getCurrentGroup()?.invitationLink}`);
+        isCopied.value = true;
+    };
 
-watch(
-    () => shareModalStore.isShareModalOpen,
-    (isOpen) => {
-        if (isOpen) {
-            setTimeout(() => {
-                showContent.value = true;
-            }, 50);
-        } else {
-            showContent.value = false;
+    watch(
+        () => shareModalStore.isShareModalOpen,
+        isOpen => {
+            if (isOpen) {
+                setTimeout(() => {
+                    showContent.value = true;
+                }, 50);
+            } else {
+                showContent.value = false;
+            }
         }
-    }
-);
+    );
 
-watch(
-    () => currentChatStore.currentRoom.id,
-    () => {
-        currentGroup.value = getCurrentGroup() ?? null;
-    },
-    { immediate: true }
-);
+    watch(
+        () => currentChatStore.currentRoom.id,
+        () => {
+            currentGroup.value = getCurrentGroup() ?? null;
+        },
+        { immediate: true }
+    );
 </script>
 
 <template>

@@ -1,36 +1,34 @@
-const bcrypt = require("bcrypt");
-const TokenService = require("../services/token-service");
-const redisClient = require("../redisClient");
+const bcrypt = require('bcrypt');
+const TokenService = require('../services/token-service');
+const redisClient = require('../redisClient');
 const token = new TokenService();
-const uuid = require("uuid");
-const db = require("../db");
-const ApiError = require("../exceptions/api-error");
-const MailService = require("./mail-service");
+const uuid = require('uuid');
+const db = require('../db');
+const ApiError = require('../exceptions/api-error');
+const MailService = require('./mail-service');
 
 const mail = new MailService();
 
 class UserService {
     async signup(email, password, name) {
         // check if exists
-        const [rows] = await db.query(
-            "SELECT * FROM users WHERE email = ? OR name = ?",
-            [email, name],
-        );
+        const [rows] = await db.query('SELECT * FROM users WHERE email = ? OR name = ?', [
+            email,
+            name,
+        ]);
         if (rows.length > 0) {
-            throw ApiError.BadRequest(
-                "User with this email or name already exists.",
-            );
+            throw ApiError.BadRequest('User with this email or name already exists.');
         }
         const hashPassword = await bcrypt.hash(password, 10);
         const activationLink = uuid.v4();
 
         await db.query(
-            "INSERT INTO users (id, email, password, name, activationLink) VALUES (UUID(), ?, ?, ?, ?)",
-            [email, hashPassword, name, activationLink],
+            'INSERT INTO users (id, email, password, name, activationLink) VALUES (UUID(), ?, ?, ?, ?)',
+            [email, hashPassword, name, activationLink]
         );
         await mail.sendActivationMail(
             email,
-            `${process.env.SERVER_HOST}/api/activate/${activationLink}`,
+            `${process.env.SERVER_HOST}/api/activate/${activationLink}`
         );
 
         const tokens = await token.generateTokens(email, name);
@@ -50,16 +48,12 @@ class UserService {
     }
 
     async login(email, password) {
-        const [rows] = await db.query("SELECT * FROM users WHERE email = ?", [
-            email,
-        ]);
+        const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
         const user = rows[0];
-        if (!user)
-            throw ApiError.BadRequest("Email or password are incorrect.");
+        if (!user) throw ApiError.BadRequest('Email or password are incorrect.');
 
         const matchingPassword = await bcrypt.compare(password, user?.password);
-        if (!matchingPassword)
-            throw ApiError.BadRequest("Email or password are incorrect.");
+        if (!matchingPassword) throw ApiError.BadRequest('Email or password are incorrect.');
 
         const tokens = await token.generateTokens(user.id, email, user.name);
 
@@ -77,16 +71,12 @@ class UserService {
     }
 
     async refresh(refreshToken) {
-        if (!refreshToken) throw ApiError.BadRequest("Token is not provided.");
+        if (!refreshToken) throw ApiError.BadRequest('Token is not provided.');
         const userDto = await token.validateRefreshToken(refreshToken);
         if (!userDto) throw ApiError.UnauthorizedError();
-        const tokens = await token.generateTokens(
-            userDto.id,
-            userDto.email,
-            userDto.username,
-        );
+        const tokens = await token.generateTokens(userDto.id, userDto.email, userDto.username);
 
-        const query = "SELECT * FROM users WHERE email = ?";
+        const query = 'SELECT * FROM users WHERE email = ?';
         const [rows] = await db.query(query, [userDto.email]);
         const dbUser = rows[0];
         return {
@@ -102,22 +92,17 @@ class UserService {
     }
 
     async activate(activationLink) {
-        const [rows] = await db.query(
-            "SELECT * FROM users WHERE activationLink = ?",
-            [activationLink],
-        );
-        if (!rows[0]) throw ApiError.BadRequest("Invalid activation link.");
-        await db.query(
-            "UPDATE users SET isActivated = TRUE WHERE activationLink = ?",
-            [activationLink],
-        );
+        const [rows] = await db.query('SELECT * FROM users WHERE activationLink = ?', [
+            activationLink,
+        ]);
+        if (!rows[0]) throw ApiError.BadRequest('Invalid activation link.');
+        await db.query('UPDATE users SET isActivated = TRUE WHERE activationLink = ?', [
+            activationLink,
+        ]);
     }
 
     async getUser(userDto) {
-        const [userRows] = await db.query(
-            "SELECT * FROM users WHERE email = ?",
-            [userDto.email],
-        );
+        const [userRows] = await db.query('SELECT * FROM users WHERE email = ?', [userDto.email]);
         return userRows[0];
     }
 
@@ -152,33 +137,33 @@ UNION
         m.targetUserId = ?
 )
         `,
-            [userId, userId],
+            [userId, userId]
         );
         return rows;
     }
 
     async addMessagedUser(userId, targetUserId) {
         await db.query(
-            "INSERT INTO messaged_users (id, userId, targetUserId) VALUES (UUID(), ?, ?)",
-            [userId, targetUserId],
+            'INSERT INTO messaged_users (id, userId, targetUserId) VALUES (UUID(), ?, ?)',
+            [userId, targetUserId]
         );
     }
 
     async deleteMessagedUser(id) {
-        await db.query("DELETE FROM messaged_users WHERE id = ?", [id]);
+        await db.query('DELETE FROM messaged_users WHERE id = ?', [id]);
     }
 
     async update(userId, data) {
         const keys = Object.keys(data);
         const values = Object.values(data);
 
-        const setClause = keys.map((key) => `${key} = ?`).join(", "); // "avatarUrl = ?, name = ?"
+        const setClause = keys.map(key => `${key} = ?`).join(', '); // "avatarUrl = ?, name = ?"
 
         const sql = `UPDATE users SET ${setClause} WHERE id = ?`;
         await db.query(sql, [...values, userId]);
         const [rows] = await db.query(
-            "SELECT id, email, name, isActivated, avatarUrl FROM users WHERE id = ?",
-            [userId],
+            'SELECT id, email, name, isActivated, avatarUrl FROM users WHERE id = ?',
+            [userId]
         );
         return rows[0];
     }

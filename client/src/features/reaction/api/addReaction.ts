@@ -1,7 +1,7 @@
-import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
-import type { MessageWithName } from "@/shared/types/Message";
-import type { Reaction } from "@/shared/types/Reaction";
-import type { AxiosResponse } from "axios";
+import { API_URL, axiosInstance } from '@/shared/config/axiosInstance';
+import type { MessageWithName } from '@/shared/types/Message';
+import type { Reaction } from '@/shared/types/Reaction';
+import type { AxiosResponse } from 'axios';
 
 export const apiAddReaction = async (
     message: MessageWithName,

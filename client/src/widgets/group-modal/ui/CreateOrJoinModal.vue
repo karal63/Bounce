@@ -1,41 +1,41 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from "vue";
-import CreateButton from "./CreateButton.vue";
-import { useModalStore } from "@/features/create-or-join";
-import { CreateForm } from "@/features/create-or-join";
-import { JoinForm } from "@/features/create-or-join";
-import ModalTransition from "@/shared/ui/ModalTransition.vue";
+    import { onUnmounted, ref, watch } from 'vue';
+    import CreateButton from './CreateButton.vue';
+    import { useModalStore } from '@/features/create-or-join';
+    import { CreateForm } from '@/features/create-or-join';
+    import { JoinForm } from '@/features/create-or-join';
+    import ModalTransition from '@/shared/ui/ModalTransition.vue';
 
-const modalStore = useModalStore();
+    const modalStore = useModalStore();
 
-const showContent = ref(false);
+    const showContent = ref(false);
 
-const closeModal = () => {
-    modalStore.isModalOpen = false;
-    modalStore.mode = "";
-    modalStore.error = "";
-};
+    const closeModal = () => {
+        modalStore.isModalOpen = false;
+        modalStore.mode = '';
+        modalStore.error = '';
+    };
 
-const setMode = (mode: string) => {
-    modalStore.mode = mode;
-};
+    const setMode = (mode: string) => {
+        modalStore.mode = mode;
+    };
 
-watch(
-    () => modalStore.isModalOpen,
-    (isOpen) => {
-        if (isOpen) {
-            setTimeout(() => {
-                showContent.value = true;
-            }, 50);
-        } else {
-            showContent.value = false;
+    watch(
+        () => modalStore.isModalOpen,
+        isOpen => {
+            if (isOpen) {
+                setTimeout(() => {
+                    showContent.value = true;
+                }, 50);
+            } else {
+                showContent.value = false;
+            }
         }
-    }
-);
+    );
 
-onUnmounted(() => {
-    modalStore.mode = "";
-});
+    onUnmounted(() => {
+        modalStore.mode = '';
+    });
 </script>
 
 <template>
@@ -49,9 +49,7 @@ onUnmounted(() => {
                 v-show="showContent"
                 class="transition-all duration-300 ease-in-out overflow-hidden bg-mainBorder border border-white/10 rounded-xl flex flex-col gap-3"
                 :class="
-                    modalStore.mode
-                        ? 'w-[400px] h-[300px] px-7 pb-4'
-                        : 'w-[400px] h-[200px] p-5'
+                    modalStore.mode ? 'w-[400px] h-[300px] px-7 pb-4' : 'w-[400px] h-[200px] p-5'
                 "
             >
                 <!-- Default button selection -->
@@ -63,9 +61,7 @@ onUnmounted(() => {
                 <!-- Expanded mode content (placeholder) -->
                 <template v-else>
                     <div class="h-full flex-col">
-                        <h1
-                            class="text-center text-2xl font-semibold mt-5 mb-2"
-                        >
+                        <h1 class="text-center text-2xl font-semibold mt-5 mb-2">
                             {{ modalStore.mode }} group
                         </h1>
 

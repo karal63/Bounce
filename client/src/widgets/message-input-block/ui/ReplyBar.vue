@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
-import { Icon } from "@iconify/vue";
+    import { useReplyToMessageStore } from '@/shared/model/replyToMessageStore';
+    import { Icon } from '@iconify/vue';
 
-const replyToMessageStore = useReplyToMessageStore();
+    const replyToMessageStore = useReplyToMessageStore();
 </script>
 
 <template>
@@ -19,9 +19,7 @@ const replyToMessageStore = useReplyToMessageStore();
             <p class="text-purple-500 font-semibold">
                 Reply to
 
-                <span data-testid="reply-name">{{
-                    replyToMessageStore.replyMessage?.name
-                }}</span>
+                <span data-testid="reply-name">{{ replyToMessageStore.replyMessage?.name }}</span>
             </p>
             <p>
                 {{ replyToMessageStore.replyMessage?.content }}
@@ -31,10 +29,7 @@ const replyToMessageStore = useReplyToMessageStore();
         <div class="pr-3 pl-5">
             <!-- close icon -->
             <button @click="replyToMessageStore.clearReplyMessage()">
-                <Icon
-                    icon="pajamas:close"
-                    class="text-2xl text-purple-500 cursor-pointer"
-                />
+                <Icon icon="pajamas:close" class="text-2xl text-purple-500 cursor-pointer" />
             </button>
         </div>
     </div>

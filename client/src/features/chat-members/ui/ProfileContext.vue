@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import type { Context } from "@/shared/types/Context";
-import { useMemberStore } from "../model/memberStore";
-import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
-import { ref } from "vue";
-import UserAvatar from "@/shared/ui/UserAvatar.vue";
-import type { MemberWithName } from "@/shared/types/Member";
+    import type { Context } from '@/shared/types/Context';
+    import { useMemberStore } from '../model/memberStore';
+    import { useClickOutside } from '@/shared/lib/hooks/useClickOutside';
+    import { ref } from 'vue';
+    import UserAvatar from '@/shared/ui/UserAvatar.vue';
+    import type { MemberWithName } from '@/shared/types/Member';
 
-defineProps<{
-    memberContext: Context<MemberWithName>;
-}>();
-const emit = defineEmits<{
-    (event: "closeContext"): void;
-}>();
+    defineProps<{
+        memberContext: Context<MemberWithName>;
+    }>();
+    const emit = defineEmits<{
+        (event: 'closeContext'): void;
+    }>();
 
-const memberStore = useMemberStore();
+    const memberStore = useMemberStore();
 
-const contextRef = ref<HTMLElement | null>(null);
+    const contextRef = ref<HTMLElement | null>(null);
 
-useClickOutside(contextRef, () => emit("closeContext"));
+    useClickOutside(contextRef, () => emit('closeContext'));
 </script>
 
 <template>
@@ -30,11 +30,7 @@ useClickOutside(contextRef, () => emit("closeContext"));
         }"
     >
         <div class="flex justify-between w-full">
-            <UserAvatar
-                alt="avatar"
-                :src="memberContext.user?.avatarUrl"
-                size="48"
-            />
+            <UserAvatar alt="avatar" :src="memberContext.user?.avatarUrl" size="48" />
 
             <div>
                 <button

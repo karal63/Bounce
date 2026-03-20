@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useModalStore } from "../";
-import { useCreateGroup } from "../";
-const modalStore = useModalStore();
-const { createGroup } = useCreateGroup();
+    import { ref } from 'vue';
+    import { useModalStore } from '../';
+    import { useCreateGroup } from '../';
+    const modalStore = useModalStore();
+    const { createGroup } = useCreateGroup();
 
-const groupName = ref("");
+    const groupName = ref('');
 
-const handleSubmit = () => {
-    createGroup(groupName.value);
-};
+    const handleSubmit = () => {
+        createGroup(groupName.value);
+    };
 </script>
 
 <template>
     <div class="flex-col justify-between h-full">
         <div class="flex-col items-center">
             <p class="text-sm text-white/70 text-center max-w-3/4">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque
-                doloribus
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque doloribus
             </p>
 
             <div class="mt-10 flex-col relative">
@@ -26,9 +25,7 @@ const handleSubmit = () => {
                     v-model="groupName"
                     type="text"
                     class="w-[300px] px-3 py-3 border rounded-md focus:outline-none focus:ring-2 focus:border-white/10 focus:ring-purple-500 transition"
-                    :class="
-                        modalStore.error ? 'border-red-500' : 'border-white/10'
-                    "
+                    :class="modalStore.error ? 'border-red-500' : 'border-white/10'"
                     placeholder="your-group-name"
                 />
                 <p

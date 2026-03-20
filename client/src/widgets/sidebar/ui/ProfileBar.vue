@@ -1,41 +1,33 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { sidebarStore } from "../model/sidebarStore";
-import ProfileContext from "./ProfileContext.vue";
-import { ref } from "vue";
-import UserAvatar from "@/shared/ui/UserAvatar.vue";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+    import { Icon } from '@iconify/vue';
+    import { useSessionStore } from '@/shared/session/model/sessionStore';
+    import { sidebarStore } from '../model/sidebarStore';
+    import ProfileContext from './ProfileContext.vue';
+    import { ref } from 'vue';
+    import UserAvatar from '@/shared/ui/UserAvatar.vue';
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
-const sidebar = sidebarStore();
-const sessionStore = useSessionStore();
-const currentChatStore = useCurrentChatStore();
-const buttonRef = ref<HTMLElement | null>(null);
+    const sidebar = sidebarStore();
+    const sessionStore = useSessionStore();
+    const currentChatStore = useCurrentChatStore();
+    const buttonRef = ref<HTMLElement | null>(null);
 
-const emit = defineEmits<{
-    (event: "logout"): void;
-}>();
+    const emit = defineEmits<{
+        (event: 'logout'): void;
+    }>();
 </script>
 
 <template>
-    <div
-        class="border border-mainBorder shadow-purple-400 shadow-xl relative rounded-xl"
-    >
+    <div class="border border-mainBorder shadow-purple-400 shadow-xl relative rounded-xl">
         <div
             ref="buttonRef"
-            @click="
-                sidebar.isProfileContextOpen = !sidebar.isProfileContextOpen
-            "
+            @click="sidebar.isProfileContextOpen = !sidebar.isProfileContextOpen"
             class="flex justify-between items-center hover:bg-mainHoverDarkBg transition-all cursor-pointer px-4 py-2 rounded-xl"
         >
             <div class="flex items-center gap-4">
                 <div>
                     <div>
-                        <UserAvatar
-                            :src="sessionStore.user?.avatarUrl"
-                            alt="user"
-                            size="40"
-                        />
+                        <UserAvatar :src="sessionStore.user?.avatarUrl" alt="user" size="40" />
                     </div>
                 </div>
                 <div>
@@ -43,13 +35,12 @@ const emit = defineEmits<{
                     <div
                         v-if="
                             sessionStore.user?.id &&
-                            currentChatStore.onlineUsers.has(
-                                sessionStore.user?.id
-                            )
+                            currentChatStore.onlineUsers.has(sessionStore.user?.id)
                         "
                         class="mt-1"
                     >
-                        <span class="text-sm pr-1">🟢</span>Active
+                        <span class="text-sm pr-1">🟢</span>
+                        Active
                     </div>
                 </div>
             </div>

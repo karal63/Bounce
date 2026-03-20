@@ -1,4 +1,4 @@
-import type { MessageWithName } from "@/shared/types/Message";
+import type { MessageWithName } from '@/shared/types/Message';
 
 export type ReactionContext = {
     isVisible: boolean;

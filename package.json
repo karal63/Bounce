@@ -5,9 +5,13 @@
     ],
     "scripts": {
         "dev": "concurrently \"npm run dev --prefix client\" \"npm start --prefix server\"",
-        "test": "npm run test:all --prefix client"
+        "test": "npm run test:all --prefix client",
+        "prepare": "husky",
+        "format": "npx prettier . --write"
     },
     "devDependencies": {
-        "concurrently": "^9.2.1"
+        "concurrently": "^9.2.1",
+        "husky": "^9.1.7",
+        "prettier": "3.8.1"
     }
 }

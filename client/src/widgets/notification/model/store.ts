@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 type Notification = {
     isVisible: boolean;
@@ -9,13 +9,13 @@ type Notification = {
     message: string;
 };
 
-export const useNotificationStore = defineStore("notificationStore", () => {
+export const useNotificationStore = defineStore('notificationStore', () => {
     const notification = ref<Notification>({
         isVisible: false,
         senderId: null,
-        name: "",
-        senderAvatar: "",
-        message: "",
+        name: '',
+        senderAvatar: '',
+        message: '',
     });
 
     return { notification };

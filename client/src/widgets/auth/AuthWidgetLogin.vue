@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { AuthForm } from "@/features/auth/AuthForm";
-import { useLogin } from "@/features/auth/login";
-import type { AuthUser } from "@/features/auth/model";
+    import { AuthForm } from '@/features/auth/AuthForm';
+    import { useLogin } from '@/features/auth/login';
+    import type { AuthUser } from '@/features/auth/model';
 
-const { login } = useLogin();
+    const { login } = useLogin();
 
-const handleSubmit = async (user: AuthUser) => {
-    await login(user);
-};
+    const handleSubmit = async (user: AuthUser) => {
+        await login(user);
+    };
 </script>
 
 <template>

@@ -1,1 +1,1 @@
-export { findMessagedUserById } from "@/shared/lib/helpers/findMessagedUserById";
+export { findMessagedUserById } from '@/shared/lib/helpers/findMessagedUserById';

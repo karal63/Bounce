@@ -1,7 +1,7 @@
-import { AxiosError } from "axios";
-import { useDeleteGroupStore } from "./deleteGroupStore";
-import { apiDeleteGroup } from "../api/deleteGroup";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { AxiosError } from 'axios';
+import { useDeleteGroupStore } from './deleteGroupStore';
+import { apiDeleteGroup } from '../api/deleteGroup';
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
 export const useDeleteGroup = () => {
     const deleteGroupStore = useDeleteGroupStore();
@@ -11,10 +11,10 @@ export const useDeleteGroup = () => {
         try {
             if (!deleteGroupStore.contextGroup?.id) return;
             await apiDeleteGroup(deleteGroupStore.contextGroup?.id);
-            deleteGroupStore.error = "";
+            deleteGroupStore.error = '';
             deleteGroupStore.isDeleteModalOpen = false;
             currentChatStore.groups = currentChatStore.groups.filter(
-                (group) => group.id !== deleteGroupStore.contextGroup?.id
+                group => group.id !== deleteGroupStore.contextGroup?.id
             );
         } catch (error) {
             if (error instanceof AxiosError) {

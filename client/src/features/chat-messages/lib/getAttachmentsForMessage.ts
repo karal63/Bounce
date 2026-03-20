@@ -1,8 +1,6 @@
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
 export const getAttachmentsForMessage = (messageId: string) => {
     const currentChatStore = useCurrentChatStore();
-    return currentChatStore.attachments.filter(
-        (att) => att.messageId === messageId
-    );
+    return currentChatStore.attachments.filter(att => att.messageId === messageId);
 };

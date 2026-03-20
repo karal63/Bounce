@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useUiStore = defineStore("uiStore", () => {
+export const useUiStore = defineStore('uiStore', () => {
     const isMembersBarOpen = ref(false);
 
     const toggleMembersBar = () => {

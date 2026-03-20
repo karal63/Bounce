@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { checkPerson, getReactionsForMessage } from "@/features/chat-messages";
-import { useReaction } from "@/features/reaction";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import type { MessageWithName } from "@/shared/types/Message";
-import type { Reaction } from "@/shared/types/Reaction";
-import { ref, watch } from "vue";
-import { checkIfReacted } from "../lib/checkIfReacted";
+    import { checkPerson, getReactionsForMessage } from '@/features/chat-messages';
+    import { useReaction } from '@/features/reaction';
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+    import type { MessageWithName } from '@/shared/types/Message';
+    import type { Reaction } from '@/shared/types/Reaction';
+    import { ref, watch } from 'vue';
+    import { checkIfReacted } from '../lib/checkIfReacted';
 
-const currentChatStore = useCurrentChatStore();
-const { handleClick } = useReaction();
+    const currentChatStore = useCurrentChatStore();
+    const { handleClick } = useReaction();
 
-const props = defineProps<{
-    message: MessageWithName;
-}>();
+    const props = defineProps<{
+        message: MessageWithName;
+    }>();
 
-const reactions = ref<Reaction[]>([]);
+    const reactions = ref<Reaction[]>([]);
 
-watch(
-    () => currentChatStore.reactions,
-    () => {
-        reactions.value = getReactionsForMessage(props.message.id);
-    }
-);
+    watch(
+        () => currentChatStore.reactions,
+        () => {
+            reactions.value = getReactionsForMessage(props.message.id);
+        }
+    );
 </script>
 
 <template>

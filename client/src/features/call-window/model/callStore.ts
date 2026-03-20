@@ -1,11 +1,11 @@
-import type { Call } from "@/entities/call";
-import { useInclomingCallStore } from "@/features/incoming-call-window/@";
-import { useSocket } from "@/shared/config/useSocketStore";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import type { Call } from '@/entities/call';
+import { useInclomingCallStore } from '@/features/incoming-call-window/@';
+import { useSocket } from '@/shared/config/useSocketStore';
+import { useSessionStore } from '@/shared/session/model/sessionStore';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useCallStore = defineStore("call", () => {
+export const useCallStore = defineStore('call', () => {
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
     const incomingCallStore = useInclomingCallStore();
@@ -14,7 +14,7 @@ export const useCallStore = defineStore("call", () => {
 
     const callStatus = ref({
         isCalling: false,
-        status: "Connecting...",
+        status: 'Connecting...',
     });
 
     const call = ref<Call>({
@@ -23,27 +23,27 @@ export const useCallStore = defineStore("call", () => {
         isCalling: false,
         micEnabled: false,
         cameraEnabled: false,
-        type: "voice",
+        type: 'voice',
         durationSec: 0,
     });
     const hasRemoteVideo = ref();
 
     // === call user
-    const handleCall = (userId: string | null, type: "voice" | "video") => {
+    const handleCall = (userId: string | null, type: 'voice' | 'video') => {
         call.value = {
             ...call.value,
             to: userId,
             isCalling: true,
             micEnabled: true,
-            cameraEnabled: type === "video",
+            cameraEnabled: type === 'video',
             type,
         };
-        socket.emit("set:incoming-call", call.value);
+        socket.emit('set:incoming-call', call.value);
     };
 
     // === caller hangs out
     const dropCall = () => {
-        socket.emit("call:end", { from: call.value.from, to: call.value.to });
+        socket.emit('call:end', { from: call.value.from, to: call.value.to });
         incomingCallStore.callCanceled();
         call.value = {
             ...call.value,
@@ -54,14 +54,14 @@ export const useCallStore = defineStore("call", () => {
             durationSec: 0,
         };
 
-        setStatus(false, "Connecting...");
+        setStatus(false, 'Connecting...');
     };
 
     // socket to close call
     const callEnd = () => {
         incomingCallStore.callCanceled();
 
-        setStatus(false, "Canceled");
+        setStatus(false, 'Canceled');
         setTimeout(() => {
             call.value = {
                 ...call.value,
@@ -71,7 +71,7 @@ export const useCallStore = defineStore("call", () => {
                 cameraEnabled: false,
                 durationSec: 0,
             };
-            setStatus(false, "Connecting...");
+            setStatus(false, 'Connecting...');
         }, 1000);
     };
 
@@ -84,7 +84,7 @@ export const useCallStore = defineStore("call", () => {
 
     // socket to close call
     const busyCall = () => {
-        setStatus(false, "Busy");
+        setStatus(false, 'Busy');
         setTimeout(() => {
             call.value = {
                 ...call.value,
@@ -93,7 +93,7 @@ export const useCallStore = defineStore("call", () => {
                 micEnabled: false,
                 cameraEnabled: false,
             };
-            setStatus(false, "Connecting...");
+            setStatus(false, 'Connecting...');
         }, 2000);
     };
 

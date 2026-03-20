@@ -1,1 +1,1 @@
-export { default as IncomingCallWindow } from "./ui/IncomingCallWindow/IncomingCallWindow.vue";
+export { default as IncomingCallWindow } from './ui/IncomingCallWindow/IncomingCallWindow.vue';

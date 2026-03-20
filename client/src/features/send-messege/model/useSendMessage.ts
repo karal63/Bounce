@@ -1,9 +1,9 @@
-import { useAttachmentsStore } from "@/features/attachments-panel";
-import { apiSendDirectMessage } from "@/shared/api/message/sendDirectMessage";
-import { apiSendGroupMessage } from "@/shared/api/message/sendGroupMessage";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
-import type { ReadyMessage } from "@/shared/types/Message";
+import { useAttachmentsStore } from '@/features/attachments-panel';
+import { apiSendDirectMessage } from '@/shared/api/message/sendDirectMessage';
+import { apiSendGroupMessage } from '@/shared/api/message/sendGroupMessage';
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+import { useReplyToMessageStore } from '@/shared/model/replyToMessageStore';
+import type { ReadyMessage } from '@/shared/types/Message';
 
 export const useSendMessage = () => {
     const currentChatStore = useCurrentChatStore();
@@ -15,7 +15,7 @@ export const useSendMessage = () => {
             const room = currentChatStore.currentRoom;
             if (!room.id || !room.type) return;
 
-            if (room.type === "group") {
+            if (room.type === 'group') {
                 const readyMessage: ReadyMessage = {
                     ...message,
                     groupId: room.id,
@@ -23,7 +23,7 @@ export const useSendMessage = () => {
                     attachments: attachmentStore.attachments,
                 };
                 await apiSendGroupMessage(readyMessage, room.id);
-            } else if (room.type === "direct") {
+            } else if (room.type === 'direct') {
                 const readyMessage: ReadyMessage = {
                     ...message,
                     recipientId: room.id,
@@ -32,7 +32,7 @@ export const useSendMessage = () => {
                 };
                 await apiSendDirectMessage(readyMessage, room.id);
             } else {
-                console.warn("Unsupported room type:", room.type);
+                console.warn('Unsupported room type:', room.type);
             }
 
             replyToMessageStore.isReplyig = false;

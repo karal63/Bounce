@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, type Ref } from "vue";
+import { onMounted, onUnmounted, type Ref } from 'vue';
 
 export const useClickOutside = (
     targetRef: Ref<HTMLElement | null>,
@@ -19,10 +19,10 @@ export const useClickOutside = (
     };
 
     onMounted(() => {
-        addEventListener("mousedown", handleClick);
+        addEventListener('mousedown', handleClick);
     });
 
     onUnmounted(() => {
-        removeEventListener("mousedown", handleClick);
+        removeEventListener('mousedown', handleClick);
     });
 };

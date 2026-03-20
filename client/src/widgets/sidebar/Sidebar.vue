@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { Icon } from "@iconify/vue";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import ProfileBar from "./ui/ProfileBar.vue";
+    import { onMounted } from 'vue';
+    import { Icon } from '@iconify/vue';
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+    import ProfileBar from './ui/ProfileBar.vue';
 
-import { useGetGroups } from "@/features/chat-groups";
-import { useModalStore } from "@/features/create-or-join";
-import { GroupsList } from "@/features/chat-groups";
-import { useDeleteGroupStore } from "@/features/delete-group";
-import { useSocket } from "@/shared/config/useSocketStore";
+    import { useGetGroups } from '@/features/chat-groups';
+    import { useModalStore } from '@/features/create-or-join';
+    import { GroupsList } from '@/features/chat-groups';
+    import { useDeleteGroupStore } from '@/features/delete-group';
+    import { useSocket } from '@/shared/config/useSocketStore';
 
-const currentChatStore = useCurrentChatStore();
-const deleteGroupStore = useDeleteGroupStore();
+    const currentChatStore = useCurrentChatStore();
+    const deleteGroupStore = useDeleteGroupStore();
 
-const { getGroups } = useGetGroups();
-const modal = useModalStore();
-const { socket } = useSocket();
+    const { getGroups } = useGetGroups();
+    const modal = useModalStore();
+    const { socket } = useSocket();
 
-const clearRoom = () => {
-    socket.emit("leave-group", currentChatStore.currentRoom.id);
-    currentChatStore.currentRoom = {
-        id: null,
-        type: null,
+    const clearRoom = () => {
+        socket.emit('leave-group', currentChatStore.currentRoom.id);
+        currentChatStore.currentRoom = {
+            id: null,
+            type: null,
+        };
     };
-};
 
-onMounted(async () => {
-    await getGroups();
-});
+    onMounted(async () => {
+        await getGroups();
+    });
 </script>
 
 <template>

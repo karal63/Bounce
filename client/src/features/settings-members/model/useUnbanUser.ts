@@ -1,5 +1,5 @@
-import { apiUnbanUser } from "../api/unbanUser";
-import { useSettingsMembersStore } from "./store";
+import { apiUnbanUser } from '../api/unbanUser';
+import { useSettingsMembersStore } from './store';
 
 export const useUnbanUser = () => {
     const store = useSettingsMembersStore();
@@ -7,9 +7,7 @@ export const useUnbanUser = () => {
         try {
             if (!id) return;
             await apiUnbanUser(id);
-            store.bannedUsers = store.bannedUsers?.filter(
-                (user) => user.id !== id
-            );
+            store.bannedUsers = store.bannedUsers?.filter(user => user.id !== id);
         } catch (error) {
             console.log(error);
         }

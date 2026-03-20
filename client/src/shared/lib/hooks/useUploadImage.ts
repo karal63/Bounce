@@ -1,6 +1,6 @@
-import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
-import type { AttachmentToUpload } from "@/shared/types/Attachment";
-import { ref } from "vue";
+import { API_URL, axiosInstance } from '@/shared/config/axiosInstance';
+import type { AttachmentToUpload } from '@/shared/types/Attachment';
+import { ref } from 'vue';
 
 export function useUploadImage() {
     const loading = ref(false);
@@ -10,12 +10,9 @@ export function useUploadImage() {
 
         try {
             const formData = new FormData();
-            formData.append("image", file);
+            formData.append('image', file);
 
-            const response = await axiosInstance.post(
-                `${API_URL}/upload-image`,
-                formData
-            );
+            const response = await axiosInstance.post(`${API_URL}/upload-image`, formData);
             return response.data;
         } finally {
             loading.value = false;

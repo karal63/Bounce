@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import type { Context } from "@/shared/types/Context";
-import type { MemberWithName } from "@/shared/types/Member";
-import { useUnbanUser } from "../model/useUnbanUser";
-import { ContextButton, ContextMenu } from "@/shared/ui";
+    import type { Context } from '@/shared/types/Context';
+    import type { MemberWithName } from '@/shared/types/Member';
+    import { useUnbanUser } from '../model/useUnbanUser';
+    import { ContextButton, ContextMenu } from '@/shared/ui';
 
-const props = defineProps<{
-    context: Context<MemberWithName>;
-}>();
-const emit = defineEmits<{
-    (e: "closeContext"): void;
-}>();
+    const props = defineProps<{
+        context: Context<MemberWithName>;
+    }>();
+    const emit = defineEmits<{
+        (e: 'closeContext'): void;
+    }>();
 
-const { unbanUser } = useUnbanUser();
+    const { unbanUser } = useUnbanUser();
 
-const unban = async () => {
-    await unbanUser(props.context.user?.id);
-    emit("closeContext");
-};
+    const unban = async () => {
+        await unbanUser(props.context.user?.id);
+        emit('closeContext');
+    };
 </script>
 
 <template>
@@ -27,6 +27,6 @@ const unban = async () => {
         :top="context.posY"
         @closeContext="emit('closeContext')"
     >
-        <ContextButton :important="true" @click="unban"> Unban </ContextButton>
+        <ContextButton :important="true" @click="unban">Unban</ContextButton>
     </ContextMenu>
 </template>

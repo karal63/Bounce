@@ -1,18 +1,18 @@
-import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { createPinia, setActivePinia } from "pinia";
+import { useSessionStore } from '@/shared/session/model/sessionStore';
+import { createPinia, setActivePinia } from 'pinia';
 
-describe("chat-messages/checkPerson", () => {
+describe('chat-messages/checkPerson', () => {
     beforeEach(() => {
         setActivePinia(createPinia());
     });
 
-    it("check if reaction in reactions array", async () => {
+    it('check if reaction in reactions array', async () => {
         const sessionStore = useSessionStore();
 
         sessionStore.user = {
-            id: "userId",
+            id: 'userId',
         } as any;
-        const message = { senderId: "userId" };
+        const message = { senderId: 'userId' };
 
         expect(sessionStore.user?.id).toEqual(message.senderId);
     });

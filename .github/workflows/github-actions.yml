@@ -57,6 +57,10 @@ jobs:
                   mysql -h 127.0.0.1 -u root -e "SHOW DATABASES;"
                   mysql -h 127.0.0.1 -u root -e "USE bounce; SHOW TABLES;"
 
+            # - name: install client dependencies
+            #   working-directory: ./client
+            #   run: npm ci
+
             - name: install all dependencies
               run: npm ci
 
@@ -82,7 +86,7 @@ jobs:
                   ACCESS_TOKEN: access_token
                   REFRESH_TOKEN: refresh_token
                   REDIS_USERNAME: default
-                  REDIS_PASSWORD: ""
+                  REDIS_PASSWORD: ''
                   REDIS_HOST: 127.0.0.1
                   REDIS_PORT: 6379
 

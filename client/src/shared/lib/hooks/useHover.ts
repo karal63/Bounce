@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, type Ref } from "vue";
+import { onMounted, onUnmounted, type Ref } from 'vue';
 
 export const useHover = (
     targetRef: Ref<HTMLElement | null>,
@@ -14,12 +14,12 @@ export const useHover = (
     };
 
     onMounted(() => {
-        targetRef.value?.addEventListener("mouseover", handleHover);
-        targetRef.value?.addEventListener("mouseleave", handleUnhover);
+        targetRef.value?.addEventListener('mouseover', handleHover);
+        targetRef.value?.addEventListener('mouseleave', handleUnhover);
     });
 
     onUnmounted(() => {
-        removeEventListener("mouseover", handleHover);
-        removeEventListener("mouseleave", handleUnhover);
+        removeEventListener('mouseover', handleHover);
+        removeEventListener('mouseleave', handleUnhover);
     });
 };

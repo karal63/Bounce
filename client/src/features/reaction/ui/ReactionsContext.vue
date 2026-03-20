@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import type { ReactionContext } from "@/features/reaction/model/types";
-import { useClickOutside } from "@/shared/lib/hooks/useClickOutside";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { Icon } from "@iconify/vue";
-import { ref } from "vue";
-import { useReaction } from "../model/useReaction";
+    import type { ReactionContext } from '@/features/reaction/model/types';
+    import { useClickOutside } from '@/shared/lib/hooks/useClickOutside';
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+    import { Icon } from '@iconify/vue';
+    import { ref } from 'vue';
+    import { useReaction } from '../model/useReaction';
 
-const currentChatStore = useCurrentChatStore();
-const { addReaction } = useReaction();
+    const currentChatStore = useCurrentChatStore();
+    const { addReaction } = useReaction();
 
-const props = defineProps<{
-    reactionPanelContext: ReactionContext;
-}>();
-const emit = defineEmits<{
-    (e: "closeReactions"): void;
-}>();
+    const props = defineProps<{
+        reactionPanelContext: ReactionContext;
+    }>();
+    const emit = defineEmits<{
+        (e: 'closeReactions'): void;
+    }>();
 
-const contextRef = ref<HTMLElement | null>(null);
+    const contextRef = ref<HTMLElement | null>(null);
 
-useClickOutside(contextRef, () => emit("closeReactions"));
+    useClickOutside(contextRef, () => emit('closeReactions'));
 
-const add = async (stickerId: string) => {
-    if (!props.reactionPanelContext.message) return;
-    await addReaction(props.reactionPanelContext.message, stickerId);
-    props.reactionPanelContext.isVisible = false;
-};
+    const add = async (stickerId: string) => {
+        if (!props.reactionPanelContext.message) return;
+        await addReaction(props.reactionPanelContext.message, stickerId);
+        props.reactionPanelContext.isVisible = false;
+    };
 </script>
 
 <template>

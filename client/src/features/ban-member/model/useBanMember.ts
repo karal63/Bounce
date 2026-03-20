@@ -1,12 +1,9 @@
-import { apiBanMember } from "../api/banMember";
-import { useBanMemberStore } from "./banMemberStore";
+import { apiBanMember } from '../api/banMember';
+import { useBanMemberStore } from './banMemberStore';
 
 export const useBanMember = () => {
     const banMemberStore = useBanMemberStore();
-    const banMember = async (
-        memberId: string | undefined,
-        banReason: string
-    ) => {
+    const banMember = async (memberId: string | undefined, banReason: string) => {
         try {
             if (!memberId) return;
             await apiBanMember(memberId, banReason);

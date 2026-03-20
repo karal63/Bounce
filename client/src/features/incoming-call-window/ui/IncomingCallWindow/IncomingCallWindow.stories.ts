@@ -1,7 +1,7 @@
-import { type Meta, type StoryObj } from "@storybook/vue3-vite";
-import IncomingCallWindow from "./IncomingCallWindow.vue";
-import { createPinia, setActivePinia } from "pinia";
-import { useInclomingCallStore } from "../../model/incomingCallStore";
+import { type Meta, type StoryObj } from '@storybook/vue3-vite';
+import IncomingCallWindow from './IncomingCallWindow.vue';
+import { createPinia, setActivePinia } from 'pinia';
+import { useInclomingCallStore } from '../../model/incomingCallStore';
 
 const meta = {
     component: IncomingCallWindow,
@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-    render: (args) => ({
+    render: args => ({
         components: { IncomingCallWindow },
         setup() {
             setActivePinia(createPinia());
