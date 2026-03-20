@@ -1,5 +1,5 @@
-import { useSessionStore } from "@/shared/session/model/sessionStore";
-import type { MessageWithName } from "@/shared/types/Message";
+import { useSessionStore } from '@/shared/session/model/sessionStore';
+import type { MessageWithName } from '@/shared/types/Message';
 
 export const checkPerson = (message: MessageWithName) => {
     const sessionStore = useSessionStore();

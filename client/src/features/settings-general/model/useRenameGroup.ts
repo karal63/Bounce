@@ -1,4 +1,4 @@
-import { apiRenameGroup } from "../api/renameGroup";
+import { apiRenameGroup } from '../api/renameGroup';
 
 export const useRenameGroup = () => {
     const renameGroup = async (prevGroupId: string, newGroupName: string) => {

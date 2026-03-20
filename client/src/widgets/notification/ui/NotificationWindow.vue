@@ -1,66 +1,66 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, watch } from "vue";
-import UserAvatar from "@/shared/ui/UserAvatar.vue";
-import { Icon } from "@iconify/vue";
-import { useNotificationStore } from "../model/store";
-import { useSocket } from "@/shared/config/useSocketStore";
-import type { MessageWithName } from "@/shared/types/Message";
-import ModalTransition from "@/shared/ui/ModalTransition.vue";
-import { getGroupById } from "@/shared/lib/helpers/getGroupById";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+    import { computed, onMounted, onUnmounted, watch } from 'vue';
+    import UserAvatar from '@/shared/ui/UserAvatar.vue';
+    import { Icon } from '@iconify/vue';
+    import { useNotificationStore } from '../model/store';
+    import { useSocket } from '@/shared/config/useSocketStore';
+    import type { MessageWithName } from '@/shared/types/Message';
+    import ModalTransition from '@/shared/ui/ModalTransition.vue';
+    import { getGroupById } from '@/shared/lib/helpers/getGroupById';
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
-const notificationStore = useNotificationStore();
-const currentChatStore = useCurrentChatStore();
-const { socket } = useSocket();
+    const notificationStore = useNotificationStore();
+    const currentChatStore = useCurrentChatStore();
+    const { socket } = useSocket();
 
-let notificationTimeout: ReturnType<typeof setTimeout> | null = null;
+    let notificationTimeout: ReturnType<typeof setTimeout> | null = null;
 
-const getValidMessage = computed(() => {
-    return notificationStore.notification.message.length > 30
-        ? notificationStore.notification.message.slice(0, 20) + "..."
-        : notificationStore.notification.message;
-});
+    const getValidMessage = computed(() => {
+        return notificationStore.notification.message.length > 30
+            ? notificationStore.notification.message.slice(0, 20) + '...'
+            : notificationStore.notification.message;
+    });
 
-watch(
-    () => notificationStore.notification.isVisible,
-    () => {
-        if (notificationStore.notification.isVisible) {
-            if (notificationTimeout) clearTimeout(notificationTimeout);
-            notificationTimeout = setTimeout(() => {
-                notificationStore.notification.isVisible = false;
-            }, 5000);
+    watch(
+        () => notificationStore.notification.isVisible,
+        () => {
+            if (notificationStore.notification.isVisible) {
+                if (notificationTimeout) clearTimeout(notificationTimeout);
+                notificationTimeout = setTimeout(() => {
+                    notificationStore.notification.isVisible = false;
+                }, 5000);
+            }
         }
-    }
-);
+    );
 
-const showNotification = (message: MessageWithName) => {
-    let name: string | undefined = "";
-    if (message.groupId) {
-        name = getGroupById(currentChatStore.groups, message.groupId)?.name;
-    } else if (message.recipientId) {
-        name = message.name;
-    }
+    const showNotification = (message: MessageWithName) => {
+        let name: string | undefined = '';
+        if (message.groupId) {
+            name = getGroupById(currentChatStore.groups, message.groupId)?.name;
+        } else if (message.recipientId) {
+            name = message.name;
+        }
 
-    notificationStore.notification = {
-        isVisible: true,
-        senderId: message.senderId,
-        name: name ? name : "error: Unknown name",
-        senderAvatar: message.avatarUrl,
-        message: message.content,
+        notificationStore.notification = {
+            isVisible: true,
+            senderId: message.senderId,
+            name: name ? name : 'error: Unknown name',
+            senderAvatar: message.avatarUrl,
+            message: message.content,
+        };
     };
-};
 
-onMounted(() => {
-    socket.on("mention:show-notification", (message: MessageWithName) =>
-        showNotification(message)
-    );
-});
+    onMounted(() => {
+        socket.on('mention:show-notification', (message: MessageWithName) =>
+            showNotification(message)
+        );
+    });
 
-onUnmounted(() => {
-    socket.off("mention:show-notification", (message: MessageWithName) =>
-        showNotification(message)
-    );
-});
+    onUnmounted(() => {
+        socket.off('mention:show-notification', (message: MessageWithName) =>
+            showNotification(message)
+        );
+    });
 </script>
 
 <template>

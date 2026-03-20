@@ -1,1 +1,1 @@
-export { useSound } from "./useSound";
+export { useSound } from './useSound';

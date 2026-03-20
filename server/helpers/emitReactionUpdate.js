@@ -1,4 +1,4 @@
-const { io, userSocketMap } = require("../socket");
+const { io, userSocketMap } = require('../socket');
 
 function emitReactionUpdate(event, payload, groupId, recipientId, senderId) {
     if (groupId) {

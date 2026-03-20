@@ -1,5 +1,5 @@
-import { apiGetMessagedUsers } from "@/shared/api/user/getMessagedUsers";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { apiGetMessagedUsers } from '@/shared/api/user/getMessagedUsers';
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
 export const useGetMessagedUsers = () => {
     const currentChatStore = useCurrentChatStore();

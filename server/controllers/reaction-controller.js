@@ -1,6 +1,6 @@
-const emitReactionUpdate = require("../helpers/emitReactionUpdate");
-const ReactionService = require("../services/reaction-service");
-const { userSocketMap, io } = require("../socket");
+const emitReactionUpdate = require('../helpers/emitReactionUpdate');
+const ReactionService = require('../services/reaction-service');
+const { userSocketMap, io } = require('../socket');
 
 const reactionService = new ReactionService();
 
@@ -9,15 +9,11 @@ class ReactionController {
         try {
             const { message, stickerId } = req.body;
 
-            const newReaction = await reactionService.add(
-                req.user,
-                message,
-                stickerId
-            );
+            const newReaction = await reactionService.add(req.user, message, stickerId);
             if (!newReaction) return res.sendStatus(200);
 
             await emitReactionUpdate(
-                "reactionAdded",
+                'reactionAdded',
                 newReaction,
                 message.groupId,
                 message.recipientId,

@@ -1,8 +1,8 @@
-import { type Meta, type StoryObj } from "@storybook/vue3-vite";
-import CallWindow from "./CallWindow.vue";
-import { createPinia, setActivePinia } from "pinia";
-import { useCallStore } from "../../@";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { type Meta, type StoryObj } from '@storybook/vue3-vite';
+import CallWindow from './CallWindow.vue';
+import { createPinia, setActivePinia } from 'pinia';
+import { useCallStore } from '../../@';
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
 const meta = {
     component: CallWindow,
@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-    render: (args) => ({
+    render: args => ({
         components: { CallWindow },
         setup() {
             setActivePinia(createPinia());
@@ -20,7 +20,7 @@ export const Primary: Story = {
             const currentChatStore = useCurrentChatStore();
 
             callStore.call.isCalling = true;
-            currentChatStore.currentRoom.type = "direct";
+            currentChatStore.currentRoom.type = 'direct';
 
             return { args };
         },

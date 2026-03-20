@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useModalStore = defineStore("modalStore", () => {
+export const useModalStore = defineStore('modalStore', () => {
     const isModalOpen = ref(false);
-    const error = ref("");
-    const mode = ref("");
+    const error = ref('');
+    const mode = ref('');
     return { isModalOpen, mode, error };
 });

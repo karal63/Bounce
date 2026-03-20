@@ -1,5 +1,5 @@
-import { useAttachmentsStore } from "@/features/attachments-panel";
-import { apiUploadImage } from "../api/uploadImage";
+import { useAttachmentsStore } from '@/features/attachments-panel';
+import { apiUploadImage } from '../api/uploadImage';
 
 export const useUploadImage = () => {
     const attachmentsStore = useAttachmentsStore();
@@ -9,7 +9,7 @@ export const useUploadImage = () => {
             if (!file) return;
 
             const formData = new FormData();
-            formData.append("image", file);
+            formData.append('image', file);
 
             const image = await apiUploadImage(formData);
             attachmentsStore.attachments.push(image.data);

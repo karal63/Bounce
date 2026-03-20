@@ -1,1 +1,1 @@
-export { default as MessagedUsersList } from "@/features/chat-messaged-users/ui/MessagedUsersList.vue";
+export { default as MessagedUsersList } from '@/features/chat-messaged-users/ui/MessagedUsersList.vue';

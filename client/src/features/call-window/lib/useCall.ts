@@ -1,12 +1,12 @@
-import { useInclomingCallStore } from "@/features/incoming-call-window/@";
-import { useSocket } from "@/shared/config/useSocketStore";
-import type { Ref } from "vue";
-import { useCallStore } from "../@";
+import { useInclomingCallStore } from '@/features/incoming-call-window/@';
+import { useSocket } from '@/shared/config/useSocketStore';
+import type { Ref } from 'vue';
+import { useCallStore } from '../@';
 
 const servers = {
     iceServers: [
         {
-            urls: "stun:stun.l.google.com:19302",
+            urls: 'stun:stun.l.google.com:19302',
         },
     ],
 };
@@ -22,8 +22,7 @@ export const useCall = () => {
     ) => {
         localStream.value = await navigator.mediaDevices.getUserMedia({
             video:
-                incomingCallStore.incomingCall.type === "video" ||
-                callStore.call.type === "video",
+                incomingCallStore.incomingCall.type === 'video' || callStore.call.type === 'video',
             audio: true,
         });
         if (localVideo.value) {
@@ -39,25 +38,25 @@ export const useCall = () => {
     ) => {
         pc.value = new RTCPeerConnection(servers);
 
-        pc.value.onicecandidate = (event) => {
+        pc.value.onicecandidate = event => {
             if (event.candidate) {
-                socket.emit("webrtc:candidate", {
+                socket.emit('webrtc:candidate', {
                     candidate: event.candidate,
                     to: callStore.call.to,
                 });
             }
         };
 
-        pc.value.ontrack = (event) => {
+        pc.value.ontrack = event => {
             if (remoteVideo.value) {
                 remoteVideo.value.srcObject = event.streams[0];
             }
-            if (remoteVoice.value && callStore.call.type === "voice") {
+            if (remoteVoice.value && callStore.call.type === 'voice') {
                 remoteVoice.value.srcObject = event.streams[0];
             }
 
             // handling call screen
-            if (event.track.kind === "video") {
+            if (event.track.kind === 'video') {
                 event.track.onunmute = () => {
                     callStore.hasRemoteVideo = true;
                 };
@@ -71,9 +70,7 @@ export const useCall = () => {
         };
 
         if (localStream.value) {
-            localStream.value
-                .getTracks()
-                .forEach((t) => pc.value?.addTrack(t, localStream.value!));
+            localStream.value.getTracks().forEach(t => pc.value?.addTrack(t, localStream.value!));
         }
     };
 
@@ -86,7 +83,7 @@ export const useCall = () => {
     ) => {
         if (!localStream.value) return;
 
-        localStream.value.getTracks().forEach((track) => track.stop());
+        localStream.value.getTracks().forEach(track => track.stop());
         localStream.value = null;
 
         pc.value?.close();

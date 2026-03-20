@@ -1,7 +1,7 @@
-import type { MessageWithName } from "@/shared/types/Message";
-import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
-import type { AxiosResponse } from "axios";
-import type { CurrentRoom } from "@/shared/types/CurrentRoom";
+import type { MessageWithName } from '@/shared/types/Message';
+import { API_URL, axiosInstance } from '@/shared/config/axiosInstance';
+import type { AxiosResponse } from 'axios';
+import type { CurrentRoom } from '@/shared/types/CurrentRoom';
 
 export const apiGetMessages = async (
     currentRoom: CurrentRoom,

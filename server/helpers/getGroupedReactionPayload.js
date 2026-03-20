@@ -1,4 +1,4 @@
-const db = require("../db");
+const db = require('../db');
 
 async function getGroupedReactionPayload(messageId, stickerId, currentUserId) {
     const [[result]] = await db.query(

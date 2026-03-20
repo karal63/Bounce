@@ -1,4 +1,4 @@
-const StickerService = require("../services/sticker-service");
+const StickerService = require('../services/sticker-service');
 
 const sticker = new StickerService();
 

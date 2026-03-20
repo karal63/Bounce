@@ -1,8 +1,8 @@
-import { useRouter } from "vue-router";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { apiLogout } from "@/features/auth/logout/index";
-import { useSocket } from "@/shared/config/useSocketStore";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { useRouter } from 'vue-router';
+import { useSessionStore } from '@/shared/session/model/sessionStore';
+import { apiLogout } from '@/features/auth/logout/index';
+import { useSocket } from '@/shared/config/useSocketStore';
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
 export const useLogout = () => {
     const sessionStore = useSessionStore();
@@ -12,17 +12,17 @@ export const useLogout = () => {
 
     const logout = async () => {
         // remove typing status for user that logged out
-        socket.emit("user-not-typing", {
+        socket.emit('user-not-typing', {
             typingUserId: sessionStore.user?.id,
             recipientId: currentChatStore.currentRoom.id,
         });
 
         await apiLogout();
-        router.push("/login");
+        router.push('/login');
         disconnectSocket();
 
         // cleanup
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem('accessToken');
 
         sessionStore.user = null;
         sessionStore.isAuthenticated = false;

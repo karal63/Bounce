@@ -1,9 +1,9 @@
-import { createApp } from "vue";
-import "@/app/style.css";
-import App from "@/app/App.vue";
-import appRouter from "@/app/router/index";
-import { createPinia } from "pinia";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { createApp } from 'vue';
+import '@/app/style.css';
+import App from '@/app/App.vue';
+import appRouter from '@/app/router/index';
+import { createPinia } from 'pinia';
+import { useSessionStore } from '@/shared/session/model/sessionStore';
 
 const bootstrap = async () => {
     const app = createApp(App);
@@ -12,11 +12,11 @@ const bootstrap = async () => {
 
     const sessionStore = useSessionStore();
 
-    if (localStorage.getItem("accessToken")) {
+    if (localStorage.getItem('accessToken')) {
         await sessionStore.checkAuth();
     }
 
-    app.use(appRouter).mount("#app");
+    app.use(appRouter).mount('#app');
 };
 
 bootstrap();

@@ -4,12 +4,12 @@ export type Call = {
     isCalling: boolean;
     micEnabled: boolean;
     cameraEnabled: boolean;
-    type: "voice" | "video";
+    type: 'voice' | 'video';
     durationSec: number;
 };
 
 export type IncomingCall = {
     isCalling: boolean;
     callingUserId: string | null;
-    type: "voice" | "video";
+    type: 'voice' | 'video';
 };

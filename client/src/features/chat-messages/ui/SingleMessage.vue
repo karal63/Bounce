@@ -1,78 +1,72 @@
 <script setup lang="ts">
-import type { MessageWithName } from "@/shared/types/Message";
-import { checkPerson } from "../lib/checkPerson";
-import { ref, type Ref } from "vue";
-import { useHover } from "@/shared/lib/hooks/useHover";
-import { Icon } from "@iconify/vue";
-import { useReplyToMessageStore } from "@/shared/model/replyToMessageStore";
-import { findMessageById } from "@/shared/lib/helpers/findMessageById";
-import { getTime } from "@/shared/lib/helpers/getTime";
-import { getAttachmentsForMessage } from "../lib/getAttachmentsForMessage";
-import { useImagePreviewStore } from "@/features/image-preview";
-import UserAvatar from "@/shared/ui/UserAvatar.vue";
-import heartIcon from "@/shared/assets/heart.png";
-import MessageReactions from "./MessageReactions.vue";
-import { useReaction } from "@/features/reaction";
+    import type { MessageWithName } from '@/shared/types/Message';
+    import { checkPerson } from '../lib/checkPerson';
+    import { ref, type Ref } from 'vue';
+    import { useHover } from '@/shared/lib/hooks/useHover';
+    import { Icon } from '@iconify/vue';
+    import { useReplyToMessageStore } from '@/shared/model/replyToMessageStore';
+    import { findMessageById } from '@/shared/lib/helpers/findMessageById';
+    import { getTime } from '@/shared/lib/helpers/getTime';
+    import { getAttachmentsForMessage } from '../lib/getAttachmentsForMessage';
+    import { useImagePreviewStore } from '@/features/image-preview';
+    import UserAvatar from '@/shared/ui/UserAvatar.vue';
+    import heartIcon from '@/shared/assets/heart.png';
+    import MessageReactions from './MessageReactions.vue';
+    import { useReaction } from '@/features/reaction';
 
-const replyToMessageStore = useReplyToMessageStore();
-const imagePreviewStore = useImagePreviewStore();
-const { addReaction } = useReaction();
+    const replyToMessageStore = useReplyToMessageStore();
+    const imagePreviewStore = useImagePreviewStore();
+    const { addReaction } = useReaction();
 
-const props = defineProps<{
-    message: MessageWithName;
-    pos: HTMLElement | null;
-}>();
-const emit = defineEmits<{
-    (
-        e: "showContext",
-        targetElement: Ref<HTMLElement | null>,
-        message: MessageWithName,
-        type: "reactions" | "context"
-    ): void;
-}>();
+    const props = defineProps<{
+        message: MessageWithName;
+        pos: HTMLElement | null;
+    }>();
+    const emit = defineEmits<{
+        (
+            e: 'showContext',
+            targetElement: Ref<HTMLElement | null>,
+            message: MessageWithName,
+            type: 'reactions' | 'context'
+        ): void;
+    }>();
 
-const messageRef = ref<HTMLElement | null>(null);
-const buttonRef = ref<HTMLElement | null>(null);
+    const messageRef = ref<HTMLElement | null>(null);
+    const buttonRef = ref<HTMLElement | null>(null);
 
-const isHovering = ref(false);
+    const isHovering = ref(false);
 
-useHover(
-    messageRef,
-    () => (isHovering.value = true),
-    () => (isHovering.value = false)
-);
+    useHover(
+        messageRef,
+        () => (isHovering.value = true),
+        () => (isHovering.value = false)
+    );
 
-const showContext = () => {
-    emit("showContext", buttonRef, props.message, "context");
-};
+    const showContext = () => {
+        emit('showContext', buttonRef, props.message, 'context');
+    };
 
-const showReactions = () => {
-    emit("showContext", messageRef, props.message, "reactions");
-};
+    const showReactions = () => {
+        emit('showContext', messageRef, props.message, 'reactions');
+    };
 
-const replyToMessage = (message: MessageWithName) => {
-    replyToMessageStore.setReplyMessage(message);
-};
+    const replyToMessage = (message: MessageWithName) => {
+        replyToMessageStore.setReplyMessage(message);
+    };
 
-const loveMessage = () => {
-    addReaction(props.message, "love");
-};
+    const loveMessage = () => {
+        addReaction(props.message, 'love');
+    };
 </script>
 
 <template>
-    <div
-        class="flex relative"
-        :class="checkPerson(message) ? 'justify-end' : 'justify-start'"
-    >
+    <div class="flex relative" :class="checkPerson(message) ? 'justify-end' : 'justify-start'">
         <div
             ref="messageRef"
             class="flex items-center gap-3"
             :class="checkPerson(message) ? 'items-end' : 'items-start'"
         >
-            <div
-                class="flex items-end gap-3"
-                :class="checkPerson(message) && 'flex-row-reverse'"
-            >
+            <div class="flex items-end gap-3" :class="checkPerson(message) && 'flex-row-reverse'">
                 <UserAvatar alt="member" :src="message.avatarUrl" size="30" />
 
                 <div
@@ -84,11 +78,7 @@ const loveMessage = () => {
                             : 'bg-white/20 rounded-bl-none'
                     "
                 >
-                    <div
-                        v-for="attachment of getAttachmentsForMessage(
-                            message.id
-                        )"
-                    >
+                    <div v-for="attachment of getAttachmentsForMessage(message.id)">
                         <img
                             @click="
                                 imagePreviewStore.previewImage = {
@@ -112,30 +102,19 @@ const loveMessage = () => {
                         "
                     >
                         <div class="flex-col">
-                            <span class="font-semibold">{{
-                                findMessageById(message.replyToMessageId)?.name
-                            }}</span>
-                            <p
-                                class="text-sm max-w-[300px] white-space: normal"
-                            >
-                                {{
-                                    findMessageById(message.replyToMessageId)
-                                        ?.content
-                                }}
+                            <span class="font-semibold">
+                                {{ findMessageById(message.replyToMessageId)?.name }}
+                            </span>
+                            <p class="text-sm max-w-[300px] white-space: normal">
+                                {{ findMessageById(message.replyToMessageId)?.content }}
                             </p>
                         </div>
-                        <span
-                            ><Icon icon="ic:baseline-reply" class="text-lg"
-                        /></span>
+                        <span><Icon icon="ic:baseline-reply" class="text-lg" /></span>
                     </div>
 
                     <div
                         class="flex gap-3"
-                        :class="
-                            checkPerson(message)
-                                ? 'justify-end'
-                                : 'justify-start'
-                        "
+                        :class="checkPerson(message) ? 'justify-end' : 'justify-start'"
                     >
                         <p
                             data-testid="single-message"
@@ -145,18 +124,15 @@ const loveMessage = () => {
                         </p>
 
                         <div class="flex-col justify-end">
-                            <span class="text-[.6rem] text-gray-300">{{
-                                getTime(message.sentAt)
-                            }}</span>
+                            <span class="text-[.6rem] text-gray-300">
+                                {{ getTime(message.sentAt) }}
+                            </span>
                         </div>
                     </div>
 
                     <!--  -->
                     <!-- reactions -->
-                    <MessageReactions
-                        @checkPerson="checkPerson($event)"
-                        :message="message"
-                    />
+                    <MessageReactions @checkPerson="checkPerson($event)" :message="message" />
                 </div>
 
                 <div

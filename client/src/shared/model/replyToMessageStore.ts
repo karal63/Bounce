@@ -1,8 +1,8 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import type { MessageWithName } from "../types/Message";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import type { MessageWithName } from '../types/Message';
 
-export const useReplyToMessageStore = defineStore("replyToMessageStore", () => {
+export const useReplyToMessageStore = defineStore('replyToMessageStore', () => {
     const isReplyig = ref(false);
     const replyMessage = ref<MessageWithName | null>(null);
 

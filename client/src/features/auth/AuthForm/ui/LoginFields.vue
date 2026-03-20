@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { AuthUser } from "@/features/auth/model/index";
+    import type { AuthUser } from '@/features/auth/model/index';
 
-const modelValue = defineModel<AuthUser>();
+    const modelValue = defineModel<AuthUser>();
 </script>
 
 <template>

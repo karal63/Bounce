@@ -1,5 +1,5 @@
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { apiLeaveGroup } from "../api/leaveGroup";
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+import { apiLeaveGroup } from '../api/leaveGroup';
 
 export const useLeaveGroup = () => {
     const currentChatStore = useCurrentChatStore();
@@ -7,9 +7,7 @@ export const useLeaveGroup = () => {
     const leaveGroup = async (groupId: string) => {
         try {
             await apiLeaveGroup(groupId);
-            currentChatStore.groups = currentChatStore.groups.filter(
-                (group) => group.id !== groupId
-            );
+            currentChatStore.groups = currentChatStore.groups.filter(group => group.id !== groupId);
         } catch (error) {
             console.log(error);
         }

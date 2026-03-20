@@ -1,1 +1,1 @@
-export { default as NotificationWindow } from "@/widgets/notification/ui/NotificationWindow.vue";
+export { default as NotificationWindow } from '@/widgets/notification/ui/NotificationWindow.vue';

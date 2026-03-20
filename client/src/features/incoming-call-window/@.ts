@@ -1,1 +1,1 @@
-export { useInclomingCallStore } from "./model/incomingCallStore";
+export { useInclomingCallStore } from './model/incomingCallStore';

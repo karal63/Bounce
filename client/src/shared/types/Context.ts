@@ -1,4 +1,4 @@
-import type { MessageWithName } from "./Message";
+import type { MessageWithName } from './Message';
 
 export type Context<T = {}> = {
     isVisible: boolean;
@@ -6,5 +6,5 @@ export type Context<T = {}> = {
     posY?: number;
     user?: T | null;
     message?: MessageWithName | null;
-    type?: "actions" | "profile" | null;
+    type?: 'actions' | 'profile' | null;
 };

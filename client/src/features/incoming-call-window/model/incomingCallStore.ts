@@ -1,15 +1,15 @@
-import type { IncomingCall } from "@/entities/call/model/types";
-import { useCallStore } from "@/features/call-window/@";
-import { useSocket } from "@/shared/config/useSocketStore";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import type { IncomingCall } from '@/entities/call/model/types';
+import { useCallStore } from '@/features/call-window/@';
+import { useSocket } from '@/shared/config/useSocketStore';
+import { useSessionStore } from '@/shared/session/model/sessionStore';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-import IncomingCallSound from "@/shared/assets/incomingCallSound.mp3";
+import IncomingCallSound from '@/shared/assets/incomingCallSound.mp3';
 // fix .mp3 file import
 // reset sound time when start playing
 
-export const useInclomingCallStore = defineStore("incomingCall", () => {
+export const useInclomingCallStore = defineStore('incomingCall', () => {
     const callStore = useCallStore();
     const { socket } = useSocket();
     const sessionStore = useSessionStore();
@@ -17,12 +17,10 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
     const incomingCall = ref<IncomingCall>({
         isCalling: false,
         callingUserId: null,
-        type: "voice",
+        type: 'voice',
     });
     const offer = ref();
-    const incomingCallSound = ref<HTMLAudioElement>(
-        new Audio(IncomingCallSound)
-    );
+    const incomingCallSound = ref<HTMLAudioElement>(new Audio(IncomingCallSound));
 
     const callCanceled = (from?: string) => {
         if (from && incomingCall.value.callingUserId !== from) return;
@@ -31,7 +29,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
         incomingCall.value = {
             isCalling: false,
             callingUserId: null,
-            type: "voice",
+            type: 'voice',
         };
 
         offer.value = null;
@@ -40,7 +38,7 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
     const decline = () => {
         incomingCallSound.value.pause();
 
-        socket.emit("call:end", {
+        socket.emit('call:end', {
             from: sessionStore.user?.id,
             to: incomingCall.value.callingUserId,
         });
@@ -56,16 +54,16 @@ export const useInclomingCallStore = defineStore("incomingCall", () => {
             isCalling: true,
             to: incomingCall.value.callingUserId,
             micEnabled: true,
-            cameraEnabled: incomingCall.value.type === "video",
+            cameraEnabled: incomingCall.value.type === 'video',
             type: incomingCall.value.type,
         };
-        socket.emit("call:accept", {
+        socket.emit('call:accept', {
             from: sessionStore.user?.id,
             to: incomingCall.value.callingUserId,
         });
 
         callStore.callStatus.isCalling = true;
-        callStore.callStatus.status = "00:00";
+        callStore.callStatus.status = '00:00';
 
         incomingCall.value.isCalling = false;
     };

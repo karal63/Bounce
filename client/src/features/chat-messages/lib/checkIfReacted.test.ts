@@ -1,16 +1,16 @@
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { createPinia, setActivePinia } from "pinia";
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+import { createPinia, setActivePinia } from 'pinia';
 
-describe("checkIfReacted", () => {
+describe('checkIfReacted', () => {
     beforeEach(() => {
         setActivePinia(createPinia());
     });
 
-    it("check if reaction in reactions array", async () => {
+    it('check if reaction in reactions array', async () => {
         const currentChatStore = useCurrentChatStore();
-        const reaction = { name: "reaction" };
+        const reaction = { name: 'reaction' };
 
-        currentChatStore.reactions = [{ name: "reaction" } as any];
+        currentChatStore.reactions = [{ name: 'reaction' } as any];
 
         expect(currentChatStore.reactions).toContainEqual(reaction);
     });

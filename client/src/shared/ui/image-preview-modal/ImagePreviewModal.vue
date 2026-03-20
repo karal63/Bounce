@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useImagePreviewStore } from "@/features/image-preview";
-import ModalTransition from "../ModalTransition.vue";
-import { Icon } from "@iconify/vue";
+    import { useImagePreviewStore } from '@/features/image-preview';
+    import ModalTransition from '../ModalTransition.vue';
+    import { Icon } from '@iconify/vue';
 
-const imagePreviewStore = useImagePreviewStore();
+    const imagePreviewStore = useImagePreviewStore();
 </script>
 
 <template>

@@ -1,6 +1,6 @@
-import { apiUpdateUser } from "@/shared/api/user/updateUser";
-import { useUploadImage } from "@/shared/lib/hooks/useUploadImage";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
+import { apiUpdateUser } from '@/shared/api/user/updateUser';
+import { useUploadImage } from '@/shared/lib/hooks/useUploadImage';
+import { useSessionStore } from '@/shared/session/model/sessionStore';
 
 export const useUploadAvatar = () => {
     const sessionStore = useSessionStore();

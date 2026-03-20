@@ -1,19 +1,16 @@
-import type { Reaction } from "@/shared/types/Reaction";
-import { apiAddReaction } from "../api/addReaction";
-import { apiHandleClick } from "../api/handleClick";
-import type { MessageWithName } from "@/shared/types/Message";
-import { apiGetAllReactions } from "../api/getAllReactions";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
+import type { Reaction } from '@/shared/types/Reaction';
+import { apiAddReaction } from '../api/addReaction';
+import { apiHandleClick } from '../api/handleClick';
+import type { MessageWithName } from '@/shared/types/Message';
+import { apiGetAllReactions } from '../api/getAllReactions';
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+import { useSessionStore } from '@/shared/session/model/sessionStore';
 
 export const useReaction = () => {
     const currentChatStore = useCurrentChatStore();
     const sessionStore = useSessionStore();
 
-    const addReaction = async (
-        message: MessageWithName,
-        reactionId: string
-    ) => {
+    const addReaction = async (message: MessageWithName, reactionId: string) => {
         try {
             await apiAddReaction(message, reactionId);
         } catch (error) {
@@ -21,10 +18,7 @@ export const useReaction = () => {
         }
     };
 
-    const handleClick = async (
-        message: MessageWithName,
-        reaction: Reaction
-    ) => {
+    const handleClick = async (message: MessageWithName, reaction: Reaction) => {
         try {
             await apiHandleClick(message, reaction);
         } catch (error) {
@@ -34,11 +28,9 @@ export const useReaction = () => {
 
     const getAllReactions = async () => {
         if (!currentChatStore.currentRoom.id) return;
-        const allReactions = await apiGetAllReactions(
-            currentChatStore.currentRoom.id
-        );
+        const allReactions = await apiGetAllReactions(currentChatStore.currentRoom.id);
         currentChatStore.allReactions = allReactions.data.filter(
-            (reaction) => reaction.senderId === sessionStore.user?.id
+            reaction => reaction.senderId === sessionStore.user?.id
         );
     };
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { RouterLink, useRouter } from "vue-router";
-import gradientBg from "@/shared/assets/gradient-bg.jpg";
-const router = useRouter();
+    import { onMounted } from 'vue';
+    import { RouterLink, useRouter } from 'vue-router';
+    import gradientBg from '@/shared/assets/gradient-bg.jpg';
+    const router = useRouter();
 
-onMounted(() => {
-    if (localStorage.getItem("accessToken")) {
-        router.push("/chat");
-    }
-});
+    onMounted(() => {
+        if (localStorage.getItem('accessToken')) {
+            router.push('/chat');
+        }
+    });
 </script>
 
 <template>
@@ -24,13 +24,9 @@ onMounted(() => {
             <nav class="flex justify-between items-center px-10 py-5">
                 <div class="flex items-center gap-2">
                     <div class="flex-col gap-1 cursor-pointer">
-                        <div
-                            class="bg-purple-500 w-4 h-1 rounded-xl -ml-1"
-                        ></div>
+                        <div class="bg-purple-500 w-4 h-1 rounded-xl -ml-1"></div>
                         <div class="bg-purple-500 w-4 h-1 rounded-xl"></div>
-                        <div
-                            class="bg-purple-500 w-4 h-1 rounded-xl ml-1"
-                        ></div>
+                        <div class="bg-purple-500 w-4 h-1 rounded-xl ml-1"></div>
                     </div>
                     <h1 class="font-semibold text-2xl">Bounce</h1>
                 </div>
@@ -55,11 +51,9 @@ onMounted(() => {
                 <h1 class="text-6xl">Chat. Chill.</h1>
                 <h1 class="text-6xl">Bounce around.</h1>
 
-                <p
-                    class="mt-8 w-[500px] text-center space-y-10 text-white/70 text-[1.1rem]"
-                >
-                    We’re making group chats feel more like real hangouts. With
-                    Bounce, staying close is simple, chill, and always in sync.
+                <p class="mt-8 w-[500px] text-center space-y-10 text-white/70 text-[1.1rem]">
+                    We’re making group chats feel more like real hangouts. With Bounce, staying
+                    close is simple, chill, and always in sync.
                 </p>
 
                 <RouterLink
@@ -90,9 +84,7 @@ onMounted(() => {
                         <div class="text-lg">About</div>
                     </div>
                 </div>
-                <div class="flex justify-end text-white/70">
-                    @Copyright Bounce 2025
-                </div>
+                <div class="flex justify-end text-white/70">@Copyright Bounce 2025</div>
             </div>
         </footer>
     </div>

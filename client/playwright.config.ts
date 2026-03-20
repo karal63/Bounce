@@ -1,7 +1,7 @@
-import { defineConfig, devices, expect, test as setup } from "@playwright/test";
+import { defineConfig, devices, expect, test as setup } from '@playwright/test';
 
 export default defineConfig({
-    testMatch: "**/*.e2e.ts",
+    testMatch: '**/*.e2e.ts',
 
     fullyParallel: true,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -11,26 +11,26 @@ export default defineConfig({
     /* Opt out of parallel tests on CI. */
     workers: process.env.CI ? 1 : undefined,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-    reporter: "html",
+    reporter: 'html',
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 
     use: {
-        trace: "on-first-retry",
-        baseURL: "http://localhost:5173",
+        trace: 'on-first-retry',
+        baseURL: 'http://localhost:5173',
     },
 
     projects: [
         {
-            name: "setup",
+            name: 'setup',
             testMatch: /auth\.setup\.ts/,
         },
         {
-            name: "chromium",
+            name: 'chromium',
             use: {
-                ...devices["Desktop Chrome"],
-                storageState: "playwright/auth.json",
+                ...devices['Desktop Chrome'],
+                storageState: 'playwright/auth.json',
             },
-            dependencies: ["setup"],
+            dependencies: ['setup'],
         },
         // {
         //     name: "firefox",
@@ -44,13 +44,13 @@ export default defineConfig({
 
     webServer: [
         {
-            command: "npm run dev",
-            url: "http://localhost:5173",
+            command: 'npm run dev',
+            url: 'http://localhost:5173',
             reuseExistingServer: !process.env.CI,
         },
         {
-            command: "cd ../server && npm run start",
-            url: "http://localhost:5000",
+            command: 'cd ../server && npm run start',
+            url: 'http://localhost:5000',
             reuseExistingServer: !process.env.CI,
         },
     ],
@@ -58,4 +58,3 @@ export default defineConfig({
 
 // Run: npx playwright show-report
 // /opt/lampp/bin/mysql -u root -p
-

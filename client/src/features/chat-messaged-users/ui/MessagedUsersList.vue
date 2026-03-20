@@ -1,73 +1,73 @@
 <script setup lang="ts">
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { onMounted, ref } from "vue";
-import { useGetMessagedUsers } from "../model/useGetMessagedUsers";
-import { useSessionStore } from "@/shared/session/model/sessionStore";
-import UserAvatar from "@/shared/ui/UserAvatar.vue";
-import { useSocket } from "@/shared/config/useSocketStore";
-import type { MessagedUser } from "@/shared/types/MessagedUser";
-import { useGetMessages } from "@/features/chat-messages";
-import UserContext from "./UserContext.vue";
-import type { Context } from "@/shared/types/Context";
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+    import { onMounted, ref } from 'vue';
+    import { useGetMessagedUsers } from '../model/useGetMessagedUsers';
+    import { useSessionStore } from '@/shared/session/model/sessionStore';
+    import UserAvatar from '@/shared/ui/UserAvatar.vue';
+    import { useSocket } from '@/shared/config/useSocketStore';
+    import type { MessagedUser } from '@/shared/types/MessagedUser';
+    import { useGetMessages } from '@/features/chat-messages';
+    import UserContext from './UserContext.vue';
+    import type { Context } from '@/shared/types/Context';
 
-const currentChatStore = useCurrentChatStore();
-const sessionStore = useSessionStore();
-const { socket } = useSocket();
-const { getMessages } = useGetMessages();
-const { getMessagedUsers } = useGetMessagedUsers();
+    const currentChatStore = useCurrentChatStore();
+    const sessionStore = useSessionStore();
+    const { socket } = useSocket();
+    const { getMessages } = useGetMessages();
+    const { getMessagedUsers } = useGetMessagedUsers();
 
-defineProps<{ filteredUsers: MessagedUser[] }>();
+    defineProps<{ filteredUsers: MessagedUser[] }>();
 
-const userContext = ref<Context<MessagedUser>>({
-    isVisible: false,
-    posX: 0,
-    posY: 0,
-    user: null,
-});
-const contextRef = ref<HTMLElement | null>(null);
-
-onMounted(async () => {
-    if (!sessionStore.user?.id) return;
-    await getMessagedUsers(sessionStore.user?.id);
-});
-
-const goToConversation = async (user: MessagedUser) => {
-    if (!sessionStore.user?.id) return;
-
-    socket.emit("set-group", {
-        prevRoom: currentChatStore.currentRoom.id,
-        newRoom: user.otherUserId,
-    });
-
-    currentChatStore.currentRoom = {
-        id: user.otherUserId,
-        type: "direct",
-    };
-
-    // move this api call to onMounted in chat list
-    currentChatStore.messages = await getMessages();
-};
-
-const openContextMenu = (user: MessagedUser, e: MouseEvent) => {
-    const contextPos = contextRef.value?.getBoundingClientRect();
-    if (!contextPos) return;
-
-    userContext.value = {
-        isVisible: true,
-        posX: e.clientX - contextPos?.left,
-        posY: e.clientY - contextPos?.top + 70,
-        user: user,
-    };
-};
-
-const closeContext = () => {
-    userContext.value = {
+    const userContext = ref<Context<MessagedUser>>({
         isVisible: false,
         posX: 0,
         posY: 0,
         user: null,
+    });
+    const contextRef = ref<HTMLElement | null>(null);
+
+    onMounted(async () => {
+        if (!sessionStore.user?.id) return;
+        await getMessagedUsers(sessionStore.user?.id);
+    });
+
+    const goToConversation = async (user: MessagedUser) => {
+        if (!sessionStore.user?.id) return;
+
+        socket.emit('set-group', {
+            prevRoom: currentChatStore.currentRoom.id,
+            newRoom: user.otherUserId,
+        });
+
+        currentChatStore.currentRoom = {
+            id: user.otherUserId,
+            type: 'direct',
+        };
+
+        // move this api call to onMounted in chat list
+        currentChatStore.messages = await getMessages();
     };
-};
+
+    const openContextMenu = (user: MessagedUser, e: MouseEvent) => {
+        const contextPos = contextRef.value?.getBoundingClientRect();
+        if (!contextPos) return;
+
+        userContext.value = {
+            isVisible: true,
+            posX: e.clientX - contextPos?.left,
+            posY: e.clientY - contextPos?.top + 70,
+            user: user,
+        };
+    };
+
+    const closeContext = () => {
+        userContext.value = {
+            isVisible: false,
+            posX: 0,
+            posY: 0,
+            user: null,
+        };
+    };
 </script>
 
 <template>
@@ -80,7 +80,7 @@ const closeContext = () => {
             <li
                 v-for="user of filteredUsers"
                 class="cursor-pointer"
-                @contextmenu.prevent="(e) => openContextMenu(user, e)"
+                @contextmenu.prevent="e => openContextMenu(user, e)"
             >
                 <RouterLink
                     :to="'/chat/' + user.userId"
@@ -88,11 +88,7 @@ const closeContext = () => {
                     class="flex items-center gap-3 py-1 px-1 rounded-xl transition-all hover:bg-mainHoverOnGray"
                 >
                     <div>
-                        <UserAvatar
-                            alt="user"
-                            :src="user.avatarUrl"
-                            size="40"
-                        />
+                        <UserAvatar alt="user" :src="user.avatarUrl" size="40" />
                     </div>
                     <div class="w-full">
                         <h3 class="text-lg">
@@ -101,19 +97,15 @@ const closeContext = () => {
                         <p
                             class="w-full text-sm text-end"
                             :class="
-                                currentChatStore.onlineUsers.has(
-                                    user.otherUserId
-                                )
+                                currentChatStore.onlineUsers.has(user.otherUserId)
                                     ? 'text-green-400'
                                     : 'text-secondary'
                             "
                         >
                             {{
-                                currentChatStore.onlineUsers.has(
-                                    user.otherUserId
-                                )
-                                    ? "Online"
-                                    : "Offline"
+                                currentChatStore.onlineUsers.has(user.otherUserId)
+                                    ? 'Online'
+                                    : 'Offline'
                             }}
                         </p>
                     </div>

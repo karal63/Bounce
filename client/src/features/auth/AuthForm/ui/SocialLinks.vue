@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
+    import { Icon } from '@iconify/vue';
 </script>
 
 <template>
@@ -8,20 +8,20 @@ import { Icon } from "@iconify/vue";
             href="#"
             class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"
         >
-            <Icon icon="mdi:google"
-        /></a>
+            <Icon icon="mdi:google" />
+        </a>
         <a
             href="#"
             class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"
         >
-            <Icon icon="ic:baseline-apple"
-        /></a>
+            <Icon icon="ic:baseline-apple" />
+        </a>
         <a
             href="#"
             class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"
         >
-            <Icon icon="ic:baseline-facebook"
-        /></a>
+            <Icon icon="ic:baseline-facebook" />
+        </a>
         <a
             href="#"
             class="h-10 w-10 border border-purple-600 rounded-md flex-center text-2xl hover:bg-gray-800"

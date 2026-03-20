@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import type { Group } from "@/shared/types/Group";
-import { Icon } from "@iconify/vue";
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+    import type { Group } from '@/shared/types/Group';
+    import { Icon } from '@iconify/vue';
 
-const currentChatStore = useCurrentChatStore();
+    const currentChatStore = useCurrentChatStore();
 
-const props = defineProps<{
-    group: Group;
-}>();
-const emit = defineEmits<{
-    (event: "setGroup"): void;
-    (event: "setContextGroup", group: Group): void;
-}>();
+    const props = defineProps<{
+        group: Group;
+    }>();
+    const emit = defineEmits<{
+        (event: 'setGroup'): void;
+        (event: 'setContextGroup', group: Group): void;
+    }>();
 </script>
 
 <template>
@@ -25,9 +25,7 @@ const emit = defineEmits<{
             icon="lets-icons:chat-light"
             class="text-3xl"
             :class="
-                currentChatStore.currentRoom.id === group.id
-                    ? 'text-purple-500'
-                    : 'text-grayDull'
+                currentChatStore.currentRoom.id === group.id ? 'text-purple-500' : 'text-grayDull'
             "
         />
         {{ group.name }}

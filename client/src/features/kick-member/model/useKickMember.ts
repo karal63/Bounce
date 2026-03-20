@@ -1,5 +1,5 @@
-import { apiKickMember } from "../api/kickMember";
-import { useKickMemberStore } from "./kickMemberStore";
+import { apiKickMember } from '../api/kickMember';
+import { useKickMemberStore } from './kickMemberStore';
 
 export const useKickMember = () => {
     const kickMemberStore = useKickMemberStore();

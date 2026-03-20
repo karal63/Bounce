@@ -1,4 +1,4 @@
-import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
+import { API_URL, axiosInstance } from '@/shared/config/axiosInstance';
 
 export const apiKickMember = async (memberId: string) => {
     await axiosInstance.delete(`${API_URL}/kick-member/${memberId}`);

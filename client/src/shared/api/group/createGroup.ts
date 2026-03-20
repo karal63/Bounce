@@ -1,6 +1,6 @@
-import type { Group } from "@/shared/types/Group";
-import { API_URL, axiosInstance } from "@/shared/config/axiosInstance";
-import type { AxiosResponse } from "axios";
+import type { Group } from '@/shared/types/Group';
+import { API_URL, axiosInstance } from '@/shared/config/axiosInstance';
+import type { AxiosResponse } from 'axios';
 
 export const apiCreateGroup = async (
     name: string,

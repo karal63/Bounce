@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/vue3-vite";
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import NotificationWindow from "./NotificationWindow.vue";
-import { createPinia, setActivePinia } from "pinia";
-import { useNotificationStore } from "../model/store";
+import NotificationWindow from './NotificationWindow.vue';
+import { createPinia, setActivePinia } from 'pinia';
+import { useNotificationStore } from '../model/store';
 
 const meta = {
     component: NotificationWindow,
@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-    render: (args) => ({
+    render: args => ({
         components: { NotificationWindow },
         setup() {
             setActivePinia(createPinia());
@@ -22,10 +22,10 @@ export const Primary: Story = {
                 notification: {
                     isVisible: true,
                     message:
-                        "Hello World paalore adaoskda loremasd are asdasd cu eq 21 qdwqda dsasc",
-                    name: "Leo",
-                    senderAvatar: "",
-                    senderId: "",
+                        'Hello World paalore adaoskda loremasd are asdasd cu eq 21 qdwqda dsasc',
+                    name: 'Leo',
+                    senderAvatar: '',
+                    senderId: '',
                 },
             });
 

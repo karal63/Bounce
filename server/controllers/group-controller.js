@@ -1,8 +1,8 @@
-const { validationResult } = require("express-validator");
-const ApiError = require("../exceptions/api-error");
-const GroupService = require("../services/group-service");
-const { io } = require("../socket");
-const MemberService = require("../services/member-service");
+const { validationResult } = require('express-validator');
+const ApiError = require('../exceptions/api-error');
+const GroupService = require('../services/group-service');
+const { io } = require('../socket');
+const MemberService = require('../services/member-service');
 
 const group = new GroupService();
 const memberService = new MemberService();
@@ -22,7 +22,7 @@ class GroupController {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return next(ApiError.BadRequest("Validation error."));
+                return next(ApiError.BadRequest('Validation error.'));
             }
             const { name, ownerId, description } = req.body;
             const newGroup = await group.create(name, ownerId, description);
@@ -37,7 +37,7 @@ class GroupController {
             const { link } = req.params;
             const { userId } = req.body;
             const { newGroup, newMember } = await group.join(link, userId);
-            io.to(newGroup.id).emit("member-joined", newMember);
+            io.to(newGroup.id).emit('member-joined', newMember);
             res.status(200).json(newGroup);
         } catch (error) {
             console.log(error);
@@ -51,18 +51,18 @@ class GroupController {
             await group.delete(groupId, req.user);
 
             const members = await memberService.get(groupId);
-            io.fetchSockets().then((sockets) => {
-                sockets.forEach((socket) => {
+            io.fetchSockets().then(sockets => {
+                sockets.forEach(socket => {
                     for (const member of members) {
                         if (socket.handshake.query.id == member.userId) {
                             if (member.userId === req.user.id) continue;
-                            io.to(socket.id).emit("group-deleted", groupId);
+                            io.to(socket.id).emit('group-deleted', groupId);
                             break;
                         }
                     }
                 });
             });
-            await res.status(200).json("group deleted");
+            await res.status(200).json('group deleted');
         } catch (error) {
             console.log(error);
             next(error);
@@ -73,8 +73,8 @@ class GroupController {
         try {
             const { groupId } = req.params;
             await group.leave(groupId, req.user);
-            io.to(Number(groupId)).emit("member-left", req.user.id);
-            res.status(200).json("group left");
+            io.to(Number(groupId)).emit('member-left', req.user.id);
+            res.status(200).json('group left');
         } catch (error) {
             console.log(error);
             next(error);
@@ -88,7 +88,7 @@ class GroupController {
             await group.rename(id, newGroupName);
             // update this emit
             // io.to(Number(groupId)).emit("member-left", req.user.id);
-            res.status(200).json("group renamed");
+            res.status(200).json('group renamed');
         } catch (error) {
             console.log(error);
             next(error);

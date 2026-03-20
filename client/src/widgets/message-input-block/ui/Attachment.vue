@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import ContextButton from "@/shared/ui/context-menu/ContextButton.vue";
-import ContextMenu from "@/shared/ui/context-menu/ContextMenu.vue";
-import { Icon } from "@iconify/vue";
-import { useUploadImage } from "../model/useUploadImage";
+    import ContextButton from '@/shared/ui/context-menu/ContextButton.vue';
+    import ContextMenu from '@/shared/ui/context-menu/ContextMenu.vue';
+    import { Icon } from '@iconify/vue';
+    import { useUploadImage } from '../model/useUploadImage';
 
-const { uploadImage } = useUploadImage();
+    const { uploadImage } = useUploadImage();
 
-defineProps<{
-    areAttachmentsOpen: Boolean;
-}>();
+    defineProps<{
+        areAttachmentsOpen: Boolean;
+    }>();
 
-const emit = defineEmits<{
-    (e: "closeAttachments"): void;
-}>();
+    const emit = defineEmits<{
+        (e: 'closeAttachments'): void;
+    }>();
 
-const setFile = async (file: File | undefined) => {
-    await uploadImage(file);
-    emit("closeAttachments");
-};
+    const setFile = async (file: File | undefined) => {
+        await uploadImage(file);
+        emit('closeAttachments');
+    };
 </script>
 
 <template>
@@ -29,17 +29,21 @@ const setFile = async (file: File | undefined) => {
         @close-context="$emit('closeAttachments')"
         class="z-10"
     >
-        <ContextButton :important="false" class="flex items-center gap-2"
-            ><Icon icon="proicons:attach" class="text-xl" /> Attach
-            file</ContextButton
-        >
-        <ContextButton :important="false" class="flex items-center gap-2"
-            ><Icon icon="ic:round-photo" class="text-xl" />
+        <ContextButton :important="false" class="flex items-center gap-2">
+            <Icon icon="proicons:attach" class="text-xl" />
+            Attach file
+        </ContextButton>
+        <ContextButton :important="false" class="flex items-center gap-2">
+            <Icon icon="ic:round-photo" class="text-xl" />
             <input
                 type="file"
                 id="input"
                 class="hidden"
-                @change="(e) => { setFile((e.target as HTMLInputElement).files?.[0]) }"
+                @change="
+                    e => {
+                        setFile((e.target as HTMLInputElement).files?.[0]);
+                    }
+                "
             />
             <label for="input" class="cursor-pointer">Attach photo</label>
         </ContextButton>

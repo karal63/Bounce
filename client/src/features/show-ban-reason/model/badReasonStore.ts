@@ -1,11 +1,11 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useBanReasonStore = defineStore("banReasonStore", () => {
+export const useBanReasonStore = defineStore('banReasonStore', () => {
     const banReason = ref({
         isVisible: false,
-        groupName: "",
-        reason: "",
+        groupName: '',
+        reason: '',
     });
 
     return { banReason };

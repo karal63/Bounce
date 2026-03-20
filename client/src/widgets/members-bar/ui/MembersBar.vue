@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { MembersList } from "@/features/chat-members";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
-import { useUiStore } from "@/shared/model/uiStore";
+    import { MembersList } from '@/features/chat-members';
+    import { useCurrentChatStore } from '@/shared/model/currentChatStore';
+    import { useUiStore } from '@/shared/model/uiStore';
 
-const currentChatStore = useCurrentChatStore();
-const uiStore = useUiStore();
+    const currentChatStore = useCurrentChatStore();
+    const uiStore = useUiStore();
 </script>
 
 <template>

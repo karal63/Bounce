@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import ModalTransition from "./ModalTransition.vue";
-import { useClickOutside } from "../lib/hooks/useClickOutside";
+    import { onMounted, ref } from 'vue';
+    import ModalTransition from './ModalTransition.vue';
+    import { useClickOutside } from '../lib/hooks/useClickOutside';
 
-const emit = defineEmits<{
-    (event: "closeModal"): void;
-}>();
-defineProps<{
-    event: string;
-    storeState: boolean;
-    sizeX?: string;
-    sizeY?: string;
-}>();
+    const emit = defineEmits<{
+        (event: 'closeModal'): void;
+    }>();
+    defineProps<{
+        event: string;
+        storeState: boolean;
+        sizeX?: string;
+        sizeY?: string;
+    }>();
 
-const showContent = ref(false);
-const modalRef = ref<HTMLElement | null>(null);
+    const showContent = ref(false);
+    const modalRef = ref<HTMLElement | null>(null);
 
-onMounted(() => {
-    setTimeout(() => {
-        showContent.value = true;
-    }, 50);
-});
+    onMounted(() => {
+        setTimeout(() => {
+            showContent.value = true;
+        }, 50);
+    });
 
-useClickOutside(modalRef, () => emit("closeModal"));
+    useClickOutside(modalRef, () => emit('closeModal'));
 </script>
 
 <template>

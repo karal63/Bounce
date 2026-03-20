@@ -1,5 +1,5 @@
-import { apiDeleteMessage } from "@/shared/api/message/deleteMessage";
-import { useCurrentChatStore } from "@/shared/model/currentChatStore";
+import { apiDeleteMessage } from '@/shared/api/message/deleteMessage';
+import { useCurrentChatStore } from '@/shared/model/currentChatStore';
 
 export const useDeleteMessage = () => {
     const currentChatStore = useCurrentChatStore();
@@ -8,7 +8,7 @@ export const useDeleteMessage = () => {
         try {
             await apiDeleteMessage(messageId);
             currentChatStore.messages = currentChatStore.messages.filter(
-                (msg) => msg.id !== messageId
+                msg => msg.id !== messageId
             );
         } catch (error) {
             console.log(error);

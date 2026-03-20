@@ -1,22 +1,21 @@
-const { v4 } = require("uuid");
-const db = require("../db");
-const { io } = require("../socket");
-const emitReactionUpdate = require("../helpers/emitReactionUpdate");
-const getGroupedReactionPayload = require("../helpers/getGroupedReactionPayload");
+const { v4 } = require('uuid');
+const db = require('../db');
+const { io } = require('../socket');
+const emitReactionUpdate = require('../helpers/emitReactionUpdate');
+const getGroupedReactionPayload = require('../helpers/getGroupedReactionPayload');
 
 class ReactionService {
     async add(userDto, message, stickerId) {
         const reactionId = v4();
 
         const [reactionRows] = await db.query(
-            "SELECT * FROM message_reactions WHERE messageId = ? AND senderId = ? AND stickerId = ?",
+            'SELECT * FROM message_reactions WHERE messageId = ? AND senderId = ? AND stickerId = ?',
             [message.id, userDto.id, stickerId]
         );
-        if (reactionRows.length > 0)
-            return this.handleClick(userDto, reactionRows[0], message);
+        if (reactionRows.length > 0) return this.handleClick(userDto, reactionRows[0], message);
 
         await db.query(
-            "INSERT INTO message_reactions (id, messageId, stickerId, senderId) VALUES (?, ?, ?, ?)",
+            'INSERT INTO message_reactions (id, messageId, stickerId, senderId) VALUES (?, ?, ?, ?)',
             [reactionId, message.id, stickerId, userDto.id]
         );
         const [rows] = await db.query(
@@ -49,23 +48,11 @@ class ReactionService {
 
         if (existingReaction) {
             // Delete reaction
-            payload = await getGroupedReactionPayload(
-                messageId,
-                stickerId,
-                userId
-            );
+            payload = await getGroupedReactionPayload(messageId, stickerId, userId);
 
-            await db.query(`DELETE FROM message_reactions WHERE id = ?`, [
-                existingReaction.id,
-            ]);
+            await db.query(`DELETE FROM message_reactions WHERE id = ?`, [existingReaction.id]);
 
-            emitReactionUpdate(
-                "reactionRemoved",
-                payload,
-                groupId,
-                recipientId,
-                senderId
-            );
+            emitReactionUpdate('reactionRemoved', payload, groupId, recipientId, senderId);
         } else {
             // Add reaction
             const reactionId = v4();
@@ -75,19 +62,9 @@ class ReactionService {
                 [reactionId, messageId, stickerId, userId]
             );
 
-            payload = await getGroupedReactionPayload(
-                messageId,
-                stickerId,
-                userId
-            );
+            payload = await getGroupedReactionPayload(messageId, stickerId, userId);
 
-            emitReactionUpdate(
-                "reactionAdded",
-                payload,
-                groupId,
-                recipientId,
-                senderId
-            );
+            emitReactionUpdate('reactionAdded', payload, groupId, recipientId, senderId);
         }
     }
 

@@ -1,4 +1,4 @@
-import type { AttachmentToUpload } from "./Attachment";
+import type { AttachmentToUpload } from './Attachment';
 
 export type ReadyMessage = {
     groupId?: string | null;

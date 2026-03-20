@@ -1,11 +1,11 @@
 <script setup lang="ts">
-defineProps<{
-    text: string;
-    color: string;
-}>();
-const emit = defineEmits<{
-    (e: "callback"): void;
-}>();
+    defineProps<{
+        text: string;
+        color: string;
+    }>();
+    const emit = defineEmits<{
+        (e: 'callback'): void;
+    }>();
 </script>
 
 <template>
